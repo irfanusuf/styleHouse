@@ -1,0 +1,285 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Style House</title>
+    <link rel="stylesheet" href="/css/layout.css">
+    <script defer src="./js/slideshow.js"></script>
+  
+  </head>
+  <body>
+
+    <!-- Hero Section with Slideshow -->
+    <section class="hero">
+      <div class="slideshow-container">
+        <div class="slide fade">
+          <img
+            src="./assets/hero-background.jpg"
+            alt="Hero Image 1"
+            class="slide-image"
+          />
+          <div class="hero-content">
+            <h1>Welcome to Style House</h1>
+            <p>Discover the latest trends in fashion at unbeatable prices. Shop
+              now and save big!</p>
+            <a href="shop.html" class="btn-hero">Shop Now</a>
+          </div>
+        </div>
+        <div class="slide fade">
+          <img
+            src="./assets/discount.jpg"
+            alt="Hero Image 2"
+            class="slide-image"
+          />
+          <div class="hero-content">
+            <h1>Exclusive Discounts</h1>
+            <p>Enjoy up to 50% off on selected items. Don't miss out on our
+              special offers!</p>
+            <a href="shop.html" class="btn-hero">Shop Now</a>
+          </div>
+        </div>
+
+        <!-- Navigation buttons -->
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+      </div>
+
+      <!-- Navigation dots -->
+      <div class="dots-container">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+      </div>
+    </section>
+    <!-- Shop by Categories Section -->
+    <section class="shop-categories">
+      <h2>Shop by Categories</h2>
+      <div class="categories-container">
+        <div class="category-box">
+          <a href="mens.html">
+            <img src="./assets/mens.jpg" alt="Shop for Men" />
+            <div class="category-content">
+              <h3>Shop for Men</h3>
+            </div>
+          </a>
+        </div>
+        <div class="category-box">
+          <a href="womens.html">
+            <img src="./assets/womens.jpg" alt="Shop for Women" />
+            <div class="category-content">
+              <h3>Shop for Women</h3>
+            </div>
+          </a>
+        </div>
+        <div class="category-box">
+          <a href="kids.html">
+            <img src="./assets/kids.jpg" alt="Shop for Kids" />
+            <div class="category-content">
+              <h3>Shop for Kids</h3>
+            </div>
+          </a>
+        </div>
+        <div class="category-box">
+          <a href="accessories.html">
+            <img
+              src="./assets/accessories.jpg"
+              alt="Shop for Accessories and Shoes"
+            />
+            <div class="category-content">
+              <h3>Shop for Accessories & Shoes</h3>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Top Selling Categories Section -->
+    <section class="top-selling-categories">
+      <h2>Top Selling Categories</h2>
+
+      <!-- Clothing Section -->
+      <div class="category-group">
+        <h3>Clothing</h3>
+        <div class="categories-container">
+          <div class="category-box">
+            <a href="#">
+              <img src="./assets/sarees.jpg" alt="Sarees" />
+              <div class="category-content">
+                <h4>Sarees</h4>
+              </div>
+            </a>
+          </div>
+          <div class="category-box">
+            <a href="#">
+              <img src="./assets/lehengas.jpg" alt="Lehengas" />
+              <div class="category-content">
+                <h4>Lehengas</h4>
+              </div>
+            </a>
+          </div>
+          <div class="category-box">
+            <a href="#">
+              <img src="./assets/sherwanis.jpg" alt="Sherwanis" />
+              <div class="category-content">
+                <h4>Sherwanis</h4>
+              </div>
+            </a>
+          </div>
+          <div class="category-box">
+            <a href="#">
+              <img src="./assets/kurta_pajama.jpg" alt="Kurta Pajama Sets" />
+              <div class="category-content">
+                <h4>Kurta Pajama Sets</h4>
+              </div>
+            </a>
+          </div>
+          <div class="category-box">
+            <a href="#">
+              <img
+                src="./assets/girls_anarkali.jpg"
+                alt="Girls' Anarkali Dresses"
+              />
+              <div class="category-content">
+                <h4>Girls' Anarkali Dresses</h4>
+              </div>
+            </a>
+          </div>
+          <div class="category-box">
+            <a href="#">
+              <img
+                src="./assets/kids_ethnic_sets.jpg"
+                alt="Kids' Ethnic Sets"
+              />
+              <div class="category-content">
+                <h4>Kids' Ethnic Sets</h4>
+              </div>
+            </a>
+          </div>
+          <div class="category-box">
+            <a href="#">
+              <img src="./assets/baby_frocks.jpg" alt="Baby Girl Frocks" />
+              <div class="category-content">
+                <h4>Baby Girl Frocks</h4>
+              </div>
+            </a>
+          </div>
+          <div class="category-box">
+            <a href="#">
+              <img src="./assets/baby_rompers.jpg" alt="Baby Rompers" />
+              <div class="category-content">
+                <h4>Baby Rompers</h4>
+              </div>
+            </a>
+          </div>
+          <div class="category-box">
+            <a href="#">
+              <img
+                src="./assets/Baby Boy Kurta.jpg"
+                alt="Baby Boy Kurta Pajama"
+              />
+              <div class="category-content">
+                <h4>Baby Boy Kurta Pajama</h4>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessories Section -->
+      <div class="category-group">
+        <h3>Accessories</h3>
+        <div class="categories-container">
+          <div class="category-box">
+            <a href="#">
+              <img src="./assets/bangles.jpg" alt="Bangles" />
+              <div class="category-content">
+                <h4>Bangles</h4>
+              </div>
+            </a>
+          </div>
+          <div class="category-box">
+            <a href="#">
+              <img src="./assets/jhumkas.jpg" alt="Jhumkas" />
+              <div class="category-content">
+                <h4>Jhumkas</h4>
+              </div>
+            </a>
+          </div>
+          <div class="category-box">
+            <a href="#">
+              <img src="./assets/handbags.jpg" alt="Handbags" />
+              <div class="category-content">
+                <h4>Handbags</h4>
+              </div>
+            </a>
+          </div>
+          <div class="category-box">
+            <a href="#">
+              <img src="./assets/clutches.jpg" alt="Clutches" />
+              <div class="category-content">
+                <h4>Clutches</h4>
+              </div>
+            </a>
+          </div>
+          <div class="category-box">
+            <a href="#">
+              <img src="./assets/stoles_shawls.jpg" alt="Stoles and Shawls" />
+              <div class="category-content">
+                <h4>Stoles and Shawls</h4>
+              </div>
+            </a>
+          </div>
+          <div class="category-box">
+            <a href="#">
+              <img src="./assets/necklaces.jpg" alt="Necklaces" />
+              <div class="category-content">
+                <h4>Necklaces</h4>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shoes Section -->
+      <div class="category-group">
+        <h3>Shoes</h3>
+        <div class="categories-container">
+          <div class="category-box">
+            <a href="#">
+              <img src="./assets/juttis.jpg" alt="Juttis" />
+              <div class="category-content">
+                <h4>Juttis</h4>
+              </div>
+            </a>
+          </div>
+          <div class="category-box">
+            <a href="#">
+              <img src="./assets/kolhapuris.jpg" alt="Kolhapuris" />
+              <div class="category-content">
+                <h4>Kolhapuris</h4>
+              </div>
+            </a>
+          </div>
+          <div class="category-box">
+            <a href="#">
+              <img src="./assets/kids_juttis.jpg" alt="Kids' Juttis" />
+              <div class="category-content">
+                <h4>Kids' Juttis</h4>
+              </div>
+            </a>
+          </div>
+          <div class="category-box">
+            <a href="#">
+              <img src="./assets/baby_booties.jpg" alt="Baby Booties" />
+              <div class="category-content">
+                <h4>Baby Booties</h4>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </section>
+    <!-- Footer Section -->
+
+  </body>
+</html>
