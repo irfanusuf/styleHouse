@@ -1,0 +1,105 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+
+    <div class="modal-header">
+      <h4 class="modal-title">Add Product</h4>
+      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+
+    <div class="modal-body">
+
+      <form method="post" action="/product/add" enctype="multipart/form-data">
+        <div class="mb-3 mt-3">
+
+          <label for="name" class="form-label"> Product Name :</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Name"
+            name="name"
+          />
+        </div>
+
+        <div class="mb-3 mt-3">
+
+          <label for="category" class="form-label"> Add Category:</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Product Category"
+            name="category"
+          />
+        </div>
+
+        <div class="mb-3 mt-3">
+
+          <label for="searchTag" class="form-label"> Add Tags:</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Product Category"
+            name="searchTag"
+          />
+        </div>
+
+        <label class="form-label"> Add size and color: </label>
+        <div class="mb-3 d-flex">
+
+          <input
+            type="text"
+            class="form-control me-3"
+            placeholder="Product Size"
+            name="size"
+          />
+
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Product Color"
+            name="color"
+          />
+        </div>
+
+        <label class="form-label"> Add Price, Discount and Qunatity:</label>
+
+        <div class="d-flex">
+
+          <input
+            type="number"
+            class="form-control me-3"
+            placeholder="Price"
+            name="price"
+          />
+          <input
+            type="number"
+            class="form-control me-3"
+            placeholder="Discount "
+            name="discount"
+          />
+          <input
+            type="number"
+            class="form-control"
+            placeholder=" Quantity "
+            name="itemQty"
+          />
+        </div>
+
+        <div class="mb-3 mt-3">
+
+          <label for="image" class="form-label"> Select Image:</label>
+          <input
+            type="file"
+            class="form-control"
+            placeholder="Select Image"
+            name="image"
+            accept="image/*"
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary"> Add Book </button>
+      </form>
+
+    </div>
+
+  </div>
+</div>

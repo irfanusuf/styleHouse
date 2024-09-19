@@ -73,17 +73,17 @@ header {
       cursor: pointer;
       margin-left: 5px;
       transition: background-color 0.3s ease;
+      &:hover {
+        background-color: #ff3b3b;
+      }
     }
-    &:hover {
-      background-color: #ff3b3b;
-    }
+   
   }
 }
 
+.main-menu{
 
-.main-menu {
-
-  >.icons{
+.icons{
     margin-left: 10px;
     >li{
       margin-right: 2px;
@@ -98,7 +98,7 @@ header {
         font-weight: 700;
       }
     }
-  }
+}
 }
 
 .lower-menu {
@@ -129,7 +129,7 @@ header {
   border-radius: 6px;
   top: 50;
   right: 0;
-  z-index: 1;
+  z-index: 2;
 
   > img {
     width: 15px;

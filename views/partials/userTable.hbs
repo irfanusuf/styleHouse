@@ -3,42 +3,44 @@
 
 
 <div class="container table-responsive mt-5">
-      <div class="h1"> Active User Details </div>
+      <div class="h1"> User Details </div>
       <table
-        class="table table-striped table-bordered table-hover table-dark table-responsive-sm"
+        class="table table-striped table-bordered table-hover  table-responsive-sm"
       >
         <thead>
           <tr class="table-primary">
-            <th>Id</th>
-            <th>Username</th>
-            <th>email</th>
-            <th>address</th>
-            <th>first name</th>
-            <th>last name</th>
-            <th>caste</th>
-            <th>Action</th>
+         
+            <th>Email</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Address</th>
+            <th>Email verified</th>
+            <th>Cart</th>
+            <th>Order</th>
+            <th>Status</th>
           </tr>
         </thead>
 
         <tbody>
+
+          {{#each users}}
           <tr>
-            <td>456</td>
-            <td>Fiza</td>
-            <td>fiza@gmail.com</td>
-            <td>lalchowk</td>
-            <td>lalchowk</td>
-            <td>lalchowk</td>
-            <td>9906599065</td>
+            <td>{{this.email}}</td>
+            <td>{{this.firstname}}</td>
+            <td>{{this.lastname}}</td>
+            <td>{{this.street}},{{this.landmark}},<br>{{this.city}}{{this.state}}</td>
+            <td>{{this.isEmailVerified}}</td>
+            <td>{{this.cart.length}}</td>
+            <td>{{this.order.length}}</td>
+          
             <td>
               <div>
-                <a class="btn btn-outline-primary" href="/user/edit"> Edit </a>
-                <a class="btn btn-outline-danger" href="/user/delete">
-                  Delete</a>
-
+                <a class="btn btn-outline-primary" href="/user/edit/{{this._id}}"> Dispatch Order </a>
               </div>
 
             </td>
           </tr>
+          {{/each}}
 
         </tbody>
       </table>

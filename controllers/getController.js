@@ -1,13 +1,24 @@
-const Book = require("../models/itemModel");
+
+const Product = require("../models/itemModel");
+const Order = require("../models/oderModel");
 const User = require("../models/userModel");
 
 const getAdminPage = async (req, res) => {
   try {
-    // const data = await Book.find().lean();
+    const products = await Product.find().lean();
+    const users = await User.find().lean()
+    const orders = await Order.find().lean()
+
 
     res.render("admin", {
-      pageTitle: "Style house  | AdminDashboard",
-      // data: data,
+      
+        id: req.session.id,
+        username: req.session.username,
+        cartlength: req.session.cartlength,
+        pageTitle: "Style house  | AdminDashboard",
+        products : products,
+        users : users,
+        orders :orders
     });
   } catch (error) {
     console.log(error);
@@ -27,15 +38,12 @@ const getIndexPage = async (req, res) => {
     } else {
       res.render("index", {
         pageTitle: "Style House | Home",
-        // data: data,
       });
     }
   } catch (error) {
     console.log(error);
   }
 };
-
-
 
 
 

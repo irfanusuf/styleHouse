@@ -1,0 +1,102 @@
+<style>
+
+</style>
+
+<div class="container mt-5">
+
+  <div class="h1">Currently Available Products </div>
+
+  <button
+    type="button"
+    class="btn btn-success"
+    data-bs-toggle="modal"
+    data-bs-target="#addBookModal"
+  >
+    Add Product
+  </button>
+
+  <div class="modal" id="addBookModal">
+  {{> addModal}}
+  </div>
+
+
+
+
+
+  <table class="table table-striped table-hover mt-5">
+
+    <thead>
+      <tr>
+
+        <th> Produtc Name </th>
+        <th> Category</th>
+        <th> Search Tag </th>
+        <th> Size</th>
+        <th> color</th>
+        <th> Price</th>
+        <th> Discount</th>
+        <th> Item Qty. </th>
+        <th> Image </th>
+        <th> Action </th>
+
+  
+      </tr>
+
+    </thead>
+
+    <tbody>
+
+      {{#each products}}
+
+        <div class="modal" id="editModal-{{this._id}}">
+       {{> editModal}}
+        </div>
+
+        <!-- The Modal -->
+        <div class="modal" id="delModal-{{this._id}}">
+        {{> deleteModal}}
+        </div>
+
+        <tr>
+
+          <td> {{this.name}} </td>
+          <td> {{this.category}} </td>
+          <td> {{this.searchTag}} </td>
+          <td> {{this.size}} </td>
+          <td> {{this.color}} </td>
+          <td> {{this.price}}$</td>
+          <td> {{this.discount}}% </td>
+          <td> {{this.itemQty}} no.s </td>
+          
+          <td> <img width="50px" src={{this.imageUrl}} alt="no-image" /> </td>
+          <td>
+
+            <button
+              type="button"
+              class="btn btn-success"
+              data-bs-toggle="modal"
+              data-bs-target="#editModal-{{this._id}}"
+            >
+              Edit
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#delModal-{{this._id}}"
+            >
+              Delete
+            </button>
+
+          </td>
+
+        </tr>
+
+      {{/each}}
+
+    </tbody>
+
+  </table>
+
+</div>

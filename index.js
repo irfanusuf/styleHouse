@@ -14,11 +14,11 @@ const { isAuthenticated, isAdmin } = require("./authorization/auth");
 
 // crud operation on Book Model
 const {
-  createItem,
-  editItem,
-  deleteItem,
-  itemPayment,
-} = require("./controllers/itemController");
+  createProduct,
+  editProduct,
+  deleteProduct,
+  productPayment,
+} = require("./controllers/productController");
 
 const multMid = require("./middlewares/multMid");
 const {
@@ -136,11 +136,11 @@ app.post("/user/register", registerhandler);
 app.post("/user/login", loginhandler);
 
 // Book routes
-app.post("/item/add", multMid, createItem);
-app.post("/item/edit/:id", multMid, editItem);
-app.get("/item/delete/:id", deleteItem);
+app.post("/product/add", multMid, createProduct);
+app.post("/product/edit/:id", multMid, editProduct);
+app.get("/product/delete/:id", deleteProduct);
 
-app.get("/item/payment/:itemId/:userId", itemPayment);
+app.get("/product/payment/:productId/:userId", productPayment);
 
 app.listen(port, () => {
   console.log(`server started on  ${port}`);
