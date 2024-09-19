@@ -8,7 +8,10 @@ const Item = mongoose.model("Item" , {
     price : Number,
     discount : Number,
     imageUrl : String,
-    searchTag: String
+    searchTag: String,
+    itemQty : Number,
+    size :String,
+    color : String
     
 
 })

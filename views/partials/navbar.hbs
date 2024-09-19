@@ -10,27 +10,47 @@
 
       <div class="main-menu">
         <ul>
-          <li><a href="/about">About Us</a></li>
+
+          <li><a href="/services">Men</a></li>
+          <li><a href="/services">Women </a></li>
+          <li><a href="/services">kids </a></li>
+          <li><a href="/services">Accesories</a></li>
           <li><a href="/services">Our Services</a></li>
-          <li><a href="#site-map">Site Map</a></li>
+          <li><a href="/about">About Us</a></li>
           <li><a href="./assets/catalog.pdf" download>Download Catalog</a></li>
 
+        </ul>
+
+        <form method="post" action="/search">
+          <input type="text" placeholder="Search items..." />
+          <button type="submit" class="search-btn">Search</button>
+        </form>
+
+        <ul class="icons">
+
+          <li>
+            <a href="/locator">
+              <img src="/assets/locator.svg" alt="locator icon" /></a>
+          </li>
+
           <li>{{#if username}}
-              <a href="/user/dashboard/"> Dashboard</a>
+              <a href="/user/dashboard/">
+                <img src="/assets/user.svg" alt="user-icon" /></a>
             {{else}}
-              <a href="/user/login">Sign In</a>
+              <a href="/user/login"><img
+                  src="/assets/user.svg"
+                  alt="cart icon"
+                /></a>
 
             {{/if}}
           </li>
-          <li><a href="/user/cart">Shopping Cart ({{#if username}}
-                {{cartlength}}
-              {{/if}})</a></li>
-
           <li>
-            <form method="post" action="/search">
-              <input type="text" placeholder="Search items..." />
-              <button type="submit" class="search-btn">Search</button>
-            </form>
+            <a href="/user/cart">
+              <img src="/assets/cart.svg" alt="cart icon" />
+            </a>
+            {{#if username}}
+               <span>{{cartlength}}</span> 
+              {{/if}}
           </li>
 
         </ul>

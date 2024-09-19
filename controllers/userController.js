@@ -80,7 +80,7 @@ const loginhandler = async (req, res) => {
        return res.redirect(`/user/dashboard`);
       
       } else {
-        res.render("login", { message: "PassWord incorrect!" });
+        res.render("login", { message: "Password incorrect!" });
       }
     } else {
       res.render("login", { message: "User Not Found!" });
