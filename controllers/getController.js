@@ -6,8 +6,24 @@ const User = require("../models/userModel");
 const getAdminPage = async (req, res) => {
   try {
     const products = await Product.find().lean();
-    const users = await User.find().lean()
-    const orders = await Order.find().lean()
+
+    // console.log(products)
+
+    const users = await User.find().populate({
+      path : 'cart.productId',
+      select : 'name price'
+    }).populate({
+      path : "orders",
+      select : "totalAmount"
+
+    }).lean()
+    const orders = await Order.find().populate({
+      path: 'user',
+      select: 'username email', 
+    }).populate({
+      path: 'products.productId',
+      select: 'name price', 
+    }).lean();
 
 
     res.render("admin", {

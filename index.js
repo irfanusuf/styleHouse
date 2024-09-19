@@ -26,6 +26,7 @@ const {
   getAdminPage,
   getUserDash,
 } = require("./controllers/getController");
+const { createOrder } = require("./controllers/orderController");
 
 const port = 4000;
 const app = express();
@@ -124,9 +125,10 @@ app.get("/locator", (req, res) => {
 app.get('/user/logout', (req, res) => {
   req.session.destroy(err => {
     if (err) {
-      return res.status(500).send("Error logging out");
+      return res.render("notification" , {message : "Some Error in Network "})
     }
     res.clearCookie('connect.sid');  // Clear session cookie
+    res.clearCookie("token")
     res.redirect('/user/login');
   });
 });
@@ -139,6 +141,11 @@ app.post("/user/login", loginhandler);
 app.post("/product/add", multMid, createProduct);
 app.post("/product/edit/:id", multMid, editProduct);
 app.get("/product/delete/:id", deleteProduct);
+
+
+
+app.post("/order/add/:productId" ,createOrder)
+
 
 app.get("/product/payment/:productId/:userId", productPayment);
 

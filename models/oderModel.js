@@ -1,17 +1,18 @@
 const  mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },  // Reference to the User who placed the order
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },  
     products: [
       {
-        productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },  // Reference to the Product model
-        quantity: { type: Number, required: true },  // Quantity of the product ordered
-       
+        productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },  
+        quantity: { type: Number, required: true },  
+        price : {type :Number}
       }
     ],
-    totalAmount: { type: Number, required: true }, // Total amount of the order
-    orderDate: { type: Date, default: Date.now },  // Date when the order was placed
-    status: { type: String, default: 'pending' }   // Status of the order (e.g., pending, shipped, completed)
+    totalAmount: { type: Number, required: true }, 
+    orderDate: { type: Date, default: Date.now },  
+    shippingTime: { type: Date, default: () => new Date(new Date().setDate(new Date().getDate() + 7)) },
+    status: { type: String, default: 'pending' } , 
   });
   
   const Order = mongoose.model('Order', orderSchema);
