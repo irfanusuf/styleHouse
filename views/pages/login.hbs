@@ -11,7 +11,7 @@
     <section class="sign-in-section">
       <div class="sign-in-container">
         <h2>Sign In</h2>
-        <form action="dashboard.html" method="POST">
+        <form action="/user/login" method="POST">
           <label for="email">Email Address:</label>
           <input
             type="email"
@@ -32,7 +32,11 @@
 
           <button type="submit" class="btn-signin">Sign In</button>
         </form>
-        <p>Don't have an account? <a href="signup.html">Sign up here</a>.</p>
+
+           {{#if message}}
+        <p class="message">{{message}}</p>
+        {{/if}}
+        <p>Don't have an account? <a href="/user/register">Sign up here</a>.</p>
       </div>
     </section>
   </body>

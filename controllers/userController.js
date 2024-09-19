@@ -17,13 +17,13 @@ const registerhandler = async (req, res) => {
       });
       await newUser.save();
 
-      // res.render("register" , {successMessage : "User saved Succesfully!"});
+      // res.render("register" , {successMessage : "User Sign Up Succesfull!"});
       res.redirect("/user/login");
     } else {
-      res.render("register", { message: "User already Exists!" });
+      res.render("signup", { message: "User already Exists!" });
     }
   } else {
-    res.render("register", { message: "All Credentials Required !" });
+    res.render("signup", { message: "All Credentials Required !" });
   }
 };
 
@@ -54,9 +54,7 @@ const loginhandler = async (req, res) => {
    // example 
 
    // seeding admin
-      const AdminEmail = "irfanusuf33@gmail.com"
-      const AdminPassWord = "12345"
-
+ 
 
   if (email !== "" && password !== "") {
     const isExistingUser = await User.findOne({ email });
@@ -71,17 +69,15 @@ const loginhandler = async (req, res) => {
 
         res.cookie("token", generateToken, {
           maxAge: 24 * 60 * 60 * 1000, // milliseconds
-          secure: true,
+          secure: false,
           httpOnly: true,
         });
 
+        req.session.username = isExistingUser.username
+        req.session.id = isExistingUser._id
+        req.session.cartlength = isExistingUser.cart.length
 
-        if(email === AdminEmail && password === AdminPassWord) {
-            res.redirect("/admin/dashboard");
-        }
-        else{
-          res.redirect("/user/dashboard");
-        }
+       return res.redirect(`/user/dashboard`);
       
       } else {
         res.render("login", { message: "PassWord incorrect!" });
@@ -93,8 +89,6 @@ const loginhandler = async (req, res) => {
     res.render("login", { message: "All credentials Required!" });
   }
 };
-
-
 
 
 

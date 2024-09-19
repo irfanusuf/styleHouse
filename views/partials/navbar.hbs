@@ -1,27 +1,68 @@
+<header>
+  <div class="header-container">
+    <div class="logo">
+      <a href="/">
+        <img src="/assets/logo.png" alt="Style House Logo" class="logo-img" />
+      </a>
+    </div>
 
-    <header>
-        <div class="header-container">
-            <div class="logo">
-                <a href="/">
-                    <img src="/assets/logo.png" alt="Style House Logo" class="logo-img">
-                </a>
-            </div>
-            <nav class="main-menu">
-                <ul>
-                    <li><a href="about">About Us</a></li>
-                    <li><a href="services">Our Services</a></li>
-                    <li><a href="#site-map">Site Map</a></li>
-                    <li>
-                        <form method="post" action="/search">
-                        <input type="text" placeholder="Search items...">
-                        <button type="submit" class="search-btn">Search</button>
-                        </form>
-                        
-                    </li>
-                    <li><a href="./assets/catalog.pdf" download>Download Catalog</a></li>
-                    <li><a href="/user/login">Sign In</a></li>
-                    <li><a href="/user/cart">Shopping Cart</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <div>
+
+      <div class="main-menu">
+        <ul>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/services">Our Services</a></li>
+          <li><a href="#site-map">Site Map</a></li>
+          <li><a href="./assets/catalog.pdf" download>Download Catalog</a></li>
+
+          <li>{{#if username}}
+              <a href="/user/dashboard/"> Dashboard</a>
+            {{else}}
+              <a href="/user/login">Sign In</a>
+
+            {{/if}}
+          </li>
+          <li><a href="/user/cart">Shopping Cart ({{#if username}}
+                {{cartlength}}
+              {{/if}})</a></li>
+
+          <li>
+            <form method="post" action="/search">
+              <input type="text" placeholder="Search items..." />
+              <button type="submit" class="search-btn">Search</button>
+            </form>
+          </li>
+
+        </ul>
+      </div>
+
+      <div class="lower-menu">
+
+        {{#if username}}
+          <p>Hi,
+            {{username}}
+            We Welcome u Back!
+
+            <img id="dropdown" src="/assets/arrowDown.svg" alt="no image" />
+
+          </p>
+
+          <div id="dropdown-list" class="dropdown-list display-none">
+
+            <img id="dropdown-close" src="/assets/close.svg" alt="no image" />
+            <ul>
+
+              <li>
+                <a id="logout" href="/user/logout"> Logout </a>
+              </li>
+            </ul>
+
+          </div>
+
+        {{/if}}
+
+      </div>
+
+    </div>
+  </div>
+</header>
