@@ -96,7 +96,6 @@ app.get("/user/cart", isAuthenticated ,(req, res) => {
     pageTitle: "Style House | Cart",
   });
 });
-
 app.get("/about", dataHelper ,(req, res) => {
   res.render("about", {
     userId: req.userId,

@@ -17,7 +17,8 @@
             <th>Email verified</th>
             <th>Cart</th>
             <th>Order</th>
-            <th>Status</th>
+            <th>Dispatched</th>
+            <th>Cancelled</th>
           </tr>
         </thead>
 
@@ -32,13 +33,9 @@
             <td>{{this.isEmailVerified}}</td>
             <td>{{this.cart.length}}</td>
             <td>{{this.orders.length}}</td>
+            <td>0</td>
+            <td>0</td>
           
-            <td>
-              <div>
-                <a class="btn btn-outline-primary" href="/user/edit/{{this._id}}"> Dispatch Order </a>
-              </div>
-
-            </td>
           </tr>
           {{/each}}
 

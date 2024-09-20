@@ -14,15 +14,15 @@ const getAdminPage = async (req, res) => {
       select : 'name price'
     }).populate({
       path : "orders",
-      select : "totalAmount"
+      select : "totalAmount" 
 
     }).lean()
+
+
     const orders = await Order.find().populate({
       path: 'user',
-      select: 'username email', 
     }).populate({
       path: 'products.productId',
-      select: 'name price', 
     }).lean();
 
 
