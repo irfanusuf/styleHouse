@@ -6,6 +6,7 @@ const connectDB = require("./config/dbConnect");
 const {
   registerhandler,
   loginhandler,
+  deleteHandler,
 } = require("./controllers/userController");
 
 const bodyParser = require("body-parser");
@@ -160,11 +161,15 @@ app.get("/baby-booties", dataHelper , (req,res)=>{renderProductPage(req,res,"Bab
 
 
 
+//payment Route
+app.get("/product/payment/:productId/:userId", productPayment);
+
 
 
 //user post and del routes
 app.post("/user/register", registerhandler);
 app.post("/user/login", loginhandler);
+app.post("/user/delete/:userId" ,deleteHandler)
 
 // Book routes
 app.post("/product/add", multMid, createProduct);
@@ -176,12 +181,10 @@ app.get("/product/delete/:id", deleteProduct);
 app.post("/order/add/:productId" ,createOrder)
 
 
-
-
 app.post("/cart/add/:productId" ,isAuthenticated , addToCart)
 
 
-app.get("/product/payment/:productId/:userId", productPayment);
+
 
 app.listen(port, () => {
   console.log(`server started on  ${port}`);
