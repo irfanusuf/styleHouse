@@ -55,7 +55,7 @@ const createOrder = async (req, res) => {
 
 const addToCart= async (req, res) => {
   try {
-    const userId = req.session.userId; 
+    const userId = req.userId; 
     const productId = req.params.productId; 
     const { quantity } = req.body; 
 
@@ -65,13 +65,10 @@ const addToCart= async (req, res) => {
       return res.render("productPage" , {message : "Some Error , Kindly Login Again!"})
     }
 
-  
     const product = await Product.findById(productId);
     if (!product) {
       return res.render("productPage" , {message : "Product Not available"})
     }
-
-   
 
     const cartItemIndex = user.cart.findIndex(item => item.productId.toString() === productId);
 

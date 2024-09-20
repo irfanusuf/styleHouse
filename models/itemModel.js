@@ -5,6 +5,7 @@ const Product = mongoose.model("Product" , {
 
     name : String,
     category : String,
+    subCategory : String,
     searchTag: String,
     size :String,
     color : String,

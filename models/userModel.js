@@ -12,7 +12,7 @@ const User = mongoose.model("User",{
     State: String,
     isAdmin : Boolean,
     isEmailVerified : Boolean,
-    totalAmount : {type : Number },
+    cartValue : {type : Number },
     cart: [
         {
           productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },

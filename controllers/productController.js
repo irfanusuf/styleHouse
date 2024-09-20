@@ -66,7 +66,7 @@ const editProduct = async (req, res) => {
   try {
     const _id = req.params.id;
 
-    const { name, category, searchTag, size, color, price, discount, itemQty } = req.body;
+    const { name, category,subCategory, searchTag, size, color, price, discount, itemQty } = req.body;
 
     // const image = req.file.path;
 
@@ -90,6 +90,7 @@ const editProduct = async (req, res) => {
         price :price,
         discount : discount,
         itemQty :itemQty,
+        subCategory: subCategory
         // imageUrl : imageUrl
       }
     );

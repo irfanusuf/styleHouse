@@ -20,9 +20,7 @@ const isAuthenticated = async (req, res, next) => {
 
           const findUser = await User.findById(resolve.userId);
 
-          req.username = findUser.username;
-          req.cart = findUser.cart;
-          req.orders = findUser.orders;
+          req.user = findUser
 
           return next();
         }
@@ -63,9 +61,8 @@ const dataHelper = async (req, res, next) => {
 
           const findUser = await User.findById(resolve.userId);
 
-          req.username = findUser.username;
-          req.cart = findUser.cart;
-          req.orders = findUser.orders;
+          req.user = findUser;
+        
 
           return next();
         }
