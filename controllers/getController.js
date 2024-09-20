@@ -28,9 +28,9 @@ const getAdminPage = async (req, res) => {
 
     res.render("admin", {
       
-        id: req.session.id,
-        username: req.session.username,
-        cartlength: req.session.cartlength,
+        id: req.userId,
+        username: req.username,
+        cart: req.cart,
         pageTitle: "Style house  | AdminDashboard",
         products : products,
         users : users,
@@ -43,12 +43,13 @@ const getAdminPage = async (req, res) => {
 
 const getIndexPage = async (req, res) => {
   try {
-
-    if (req.session.id) {
+    
+   
+    if (req.userId) {
       res.render("userDash", {
-        id: req.session.id,
-        username: req.session.username,
-        cartlength: req.session.cartlength,
+        userId: req.userId,
+        username: req.username,
+        cart: req.cart,
         pageTitle: "Style House | Dashboard",
       });
     } else {
@@ -67,9 +68,10 @@ const getUserDash = async (req, res) => {
   try {
   
     res.render("userDash", {
-      id: req.session.id,
-      username: req.session.username,
-      cartlength: req.session.cartlength,
+      id: req.userId,
+      username: req.username,
+      cart: req.cart,
+      order : req.order,
       pageTitle: "Style House | Dashboard",
     });
   } catch (error) {

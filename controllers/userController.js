@@ -51,10 +51,7 @@ const deleteHandler = async (req, res) => {
 
 const loginhandler = async (req, res) => {
   const { email, password } = req.body;
-   // example 
-
-   // seeding admin
- 
+   
 
   if (email !== "" && password !== "") {
     const isExistingUser = await User.findOne({ email });
@@ -73,10 +70,7 @@ const loginhandler = async (req, res) => {
           httpOnly: true,
         });
 
-        req.session.username = isExistingUser.username
-        req.session.id = isExistingUser._id
-        req.session.cartlength = isExistingUser.cart.length
-
+     
        return res.redirect(`/user/dashboard`);
       
       } else {

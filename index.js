@@ -10,7 +10,7 @@ const {
 } = require("./controllers/userController");
 
 const bodyParser = require("body-parser");
-const { isAuthenticated, isAdmin } = require("./authorization/auth");
+const { isAuthenticated, isAdmin, dataHelper } = require("./authorization/auth");
 
 // crud operation on Book Model
 const {
@@ -30,7 +30,7 @@ const { createOrder } = require("./controllers/orderController");
 
 const port = 4000;
 const app = express();
-
+  
 app.engine(
   "hbs",
   xhbs.engine({
@@ -44,14 +44,14 @@ app.engine(
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "views", "pages"));
 
-app.use(
-  session({
-    secret: "your-secret-key", // Change to a strong secret key
-    resave: false, // Avoid saving session if unmodified
-    saveUninitialized: true, // Save session even if it's uninitialized
-    cookie: { secure: false }, // Set secure: true if using HTTPS
-  })
-);
+// app.use(
+//   session({
+//     secret: "your-secret-key", // Change to a strong secret key
+//     resave: false, // Avoid saving session if unmodified
+//     saveUninitialized: true, // Save session even if it's uninitialized
+//     cookie: { secure: false }, // Set secure: true if using HTTPS
+//   })
+// );
 
 connectDB();
 
@@ -63,8 +63,8 @@ app.use(cookie());
 
 // rendering is on server side      SSR
 
-app.get("/", getIndexPage);
-app.get("/user/dashboard", getUserDash);
+app.get("/", dataHelper ,getIndexPage);
+app.get("/user/dashboard",isAuthenticated, getUserDash);
 
 // admin Routes
 
@@ -72,65 +72,68 @@ app.get("/admin/dashboard", isAuthenticated, isAdmin, getAdminPage);
 
 // user Routes
 
-app.get("/user/register", (req, res) => {
+app.get("/user/register",dataHelper, (req, res) => {
   res.render("signup", {
-    id: req.session.id,
-    username: req.session.username,
-    cartlength: req.session.cartlength,
+    userId: req.userId,
+    username: req.username,
+    cart: req.cart,
     pageTitle: "Style House | Signup",
   });
 });
-app.get("/user/login", (req, res) => {
+app.get("/user/login",dataHelper, (req, res) => {
   res.render("login", {
-    id: req.session.id,
-    username: req.session.username,
-    cartlength: req.session.cartlength,
+    userId: req.userId,
+    username: req.username,
+    cart: req.cart,
     pageTitle: "Style House | Login",
   });
 });
-app.get("/user/cart", (req, res) => {
+app.get("/user/cart", isAuthenticated ,(req, res) => {
   res.render("cart", {
-    id: req.session.id,
-    username: req.session.username,
-    cartlength: req.session.cartlength,
+    userId: req.userId,
+    username: req.username,
+    cartlength: req.cart,
     pageTitle: "Style House | Cart",
   });
 });
 
-app.get("/about", (req, res) => {
+app.get("/about", dataHelper ,(req, res) => {
   res.render("about", {
-    id: req.session.id,
-    username: req.session.username,
-    cartlength: req.session.cartlength,
+    userId: req.userId,
+    username: req.username,
+    cart: req.cart,
     pageTitle: "Style House | About",
   });
 });
-app.get("/services", (req, res) => {
+app.get("/services",dataHelper, (req, res) => {
   res.render("services", {
-    id: req.session.id,
-    username: req.session.username,
-    cartlength: req.session.cartlength,
+    userId: req.userId,
+    username: req.username,
+    cart: req.cart,
     pageTitle: "Style House | Services",
   });
 });
-app.get("/locator", (req, res) => {
+app.get("/locator", dataHelper,(req, res) => {
   res.render("locator", {
-    id: req.session.id,
-    username: req.session.username,
-    cartlength: req.session.cartlength,
+    userId: req.userId,
+    username: req.username,
+    cart: req.cart,
     pageTitle: "Style House | Store location",
   });
 });
 
 app.get('/user/logout', (req, res) => {
-  req.session.destroy(err => {
-    if (err) {
-      return res.render("notification" , {message : "Some Error in Network "})
+  try {
+    const { token } = req.cookies;
+    if(token){
+      res.clearCookie("token")
+      res.redirect('/');
     }
-    res.clearCookie('connect.sid');  // Clear session cookie
-    res.clearCookie("token")
-    res.redirect('/user/login');
-  });
+    
+  } catch (error) {
+    console.log(error)
+  }
+ 
 });
 
 //user post and del routes

@@ -48,12 +48,12 @@ const createProduct = async (req, res) => {
       if (save) {
         res.redirect("/admin/dashboard");
       } else {
-        res.render("/admin/dashboard", {
+        res.render("admin", {
           message: "Some Error during saving ",
         });
       }
     } else {
-      res.render("/admin/dashboard", { message: "All Details Required" });
+      res.render("admin", { message: "All Details Required" });
     }
   } catch (err) {
     console.log(err);
@@ -86,7 +86,7 @@ const editProduct = async (req, res) => {
         size :size,
         color: color,
         price :price,
-        discount : price,
+        discount : discount,
         itemQty :itemQty,
         imageUrl : imageUrl
       }
@@ -115,6 +115,10 @@ const deleteProduct = async (req, res) => {
     console.log(error);
   }
 };
+
+
+
+
 
 const productPayment = async (req, res) => {
   try {
