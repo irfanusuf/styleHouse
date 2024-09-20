@@ -1,0 +1,72 @@
+
+
+
+
+/* Our Services Section Styling */
+.services-content {
+    padding: 60px 20px;
+    background-color: #2a2a2a;
+    color: #f5f5f5;
+    max-width: 1200px;
+    margin: 40px auto;
+    text-align: left;
+    border-radius: 8px;
+}
+
+.services-content h1 {
+    font-size: 36px;
+    margin-bottom: 40px;
+    color: #ff6b6b;
+    text-align: center;
+}
+
+.service-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+
+.service-item {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 8px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+   
+}
+
+.service-item h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #ff6b6b;
+}
+
+.service-item p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #ccc;
+    text-align: justify;
+}
+
+.service-item:hover {
+    transform: scale(1.05);
+    background-color: #444;
+}
+
+@media (min-width: 768px) {
+    .services-content {
+        padding: 80px 40px;
+    }
+
+    .services-content h1 {
+        font-size: 42px;
+    }
+
+    .service-item h2 {
+        font-size: 28px;
+    }
+
+    .service-item p {
+        font-size: 18px;
+    }
+}

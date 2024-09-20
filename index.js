@@ -25,6 +25,10 @@ const {
   getIndexPage,
   getAdminPage,
   getUserDash,
+  getMenPage,
+  getWomenPage,
+  getKidsPage,
+  getAccesoriesPage,
 } = require("./controllers/getController");
 const { createOrder } = require("./controllers/orderController");
 
@@ -120,7 +124,6 @@ app.get("/locator", dataHelper,(req, res) => {
     pageTitle: "Style House | Store location",
   });
 });
-
 app.get('/user/logout', (req, res) => {
   try {
     const { token } = req.cookies;
@@ -134,6 +137,11 @@ app.get('/user/logout', (req, res) => {
   }
  
 });
+app.get("/men", dataHelper , getMenPage);
+app.get("/women", dataHelper , getWomenPage);
+app.get("/kids", dataHelper , getKidsPage);
+app.get("/accessories", dataHelper , getAccesoriesPage);
+
 
 //user post and del routes
 app.post("/user/register", registerhandler);

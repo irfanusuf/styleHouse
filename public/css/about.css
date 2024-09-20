@@ -1,0 +1,53 @@
+/* About Us Section Styling */
+.about-us-content {
+    padding: 60px 20px;
+    background-color: #2a2a2a;
+    color: #f5f5f5;
+    max-width: 800px;
+    margin: 40px auto;
+    text-align: left;
+    border-radius: 8px;
+}
+
+.about-us-content h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #ff6b6b;
+    text-align: center;
+}
+
+.about-us-content p {
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    color: #ccc;
+    text-align: justify;
+}
+
+.about-us-content p:last-child {
+    margin-bottom: 0;
+}
+
+.about-us-content a {
+    color: #ff6b6b;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.about-us-content a:hover {
+    color: #ff3b3b;
+}
+
+@media (min-width: 768px) {
+    .about-us-content {
+        padding: 80px 40px;
+    }
+
+    .about-us-content h1 {
+        font-size: 42px;
+    }
+
+    .about-us-content p {
+        font-size: 18px;
+    }
+}
