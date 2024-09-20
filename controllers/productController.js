@@ -68,17 +68,17 @@ const editProduct = async (req, res) => {
 
     const { name, category, searchTag, size, color, price, discount, itemQty } = req.body;
 
-    const image = req.file.path;
+    // const image = req.file.path;
 
-    if (!image || image === undefined) {
-      return res.render("admin", { message: "No image Selected" });
-    }
+    // if (!image || image === undefined) {
+    //   return res.render("admin", { message: "No image Selected" });
+    // }
 
-    const fileUpload = await cloudinary.uploader.upload(req.file.path, {
-      folder: "style-house",
-    });
+    // const fileUpload = await cloudinary.uploader.upload(req.file.path, {
+    //   folder: "style-house",
+    // });
 
-    const imageUrl = fileUpload.secure_url;
+    // const imageUrl = fileUpload.secure_url;
 
     const updateProduct = await Product.findByIdAndUpdate(_id, 
       {
@@ -90,7 +90,7 @@ const editProduct = async (req, res) => {
         price :price,
         discount : discount,
         itemQty :itemQty,
-        imageUrl : imageUrl
+        // imageUrl : imageUrl
       }
     );
 
