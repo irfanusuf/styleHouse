@@ -11,3 +11,26 @@
 
 
 {{/if}}
+
+
+<div class="product-cards">
+  {{#each products}}
+    <div class="product-card">
+      <div class="product-image">
+        <img src="{{this.imageUrl}}" alt="{{this.name}}" />
+      </div>
+      <div class="product-details">
+        <h2>{{this.name}}</h2>
+        <p><strong>Size:</strong> {{this.size}}</p>
+        <p><strong>Color:</strong> {{this.color}}</p>
+        <p><strong>Discount:</strong> {{this.discount}}</p>
+        <p><strong>Category:</strong> {{this.category}}</p>
+        <p class="product-description">{{this.description}}</p>
+      </div>
+    </div>
+  {{/each}}
+</div>
+
+
+
+
