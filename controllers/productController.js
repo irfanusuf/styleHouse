@@ -11,7 +11,7 @@ cloudinary.config({
 
 const createProduct = async (req, res) => {
   try {
-    const { name, category, searchTag, size, color, price, discount, itemQty } =
+    const { name, category, description, searchTag, size, color, price, discount, itemQty } =
       req.body;
 
     if (
@@ -22,7 +22,8 @@ const createProduct = async (req, res) => {
       color !== "" &&
       price !== "" &&
       discount !== "" &&
-      itemQty !== ""
+      itemQty !== ""&&
+      description !==""
     ) {
       const image = req.file.path;
 
@@ -41,6 +42,7 @@ const createProduct = async (req, res) => {
         price,
         discount,
         itemQty,
+        description,
         imageUrl
       });
       const save = await product.save();

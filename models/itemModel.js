@@ -11,6 +11,7 @@ const Product = mongoose.model("Product" , {
     price : Number,
     discount : Number,
     itemQty : Number,
+    description : String,
     imageUrl : String,
     
    
