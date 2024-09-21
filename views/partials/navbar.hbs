@@ -1,18 +1,31 @@
-
 <link rel="stylesheet" href="/css/navbar.css" />
 
 <header>
   <div class="header-container">
+
     <div class="logo">
+      
+        <img
+          src="/assets/hamburger.svg"
+          alt="Style House Logo"
+          class="hamburger"
+          id="hamburger"
+        />
+    
+
       <a href="/">
         <img src="/assets/logo.png" alt="Style House Logo" class="logo-img" />
       </a>
+
+     
+        <img src="/assets/close.svg" alt="Style House Logo" class="close" />
+     
     </div>
 
-    <div>
+    <div id="target_div">
 
       <div class="main-menu">
-        <ul>
+        <ul class="menu">
 
           <li><a href="/men">Men</a></li>
           <li><a href="/women">Women </a></li>
@@ -25,7 +38,12 @@
         </ul>
 
         <form method="post" action="/search">
-          <input type="text" placeholder="Search items..." />
+          <input
+            type="text"
+            placeholder="Search items..."
+            name="search_query"
+            required
+          />
           <button type="submit" class="search-btn">Search</button>
         </form>
 
@@ -52,8 +70,8 @@
               <img src="/assets/cart.svg" alt="cart icon" />
             </a>
             {{#if username}}
-               <span style="color: aliceblue;">{{cart.length}}</span> 
-              {{/if}}
+              <span style="color: aliceblue;">{{cart.length}}</span>
+            {{/if}}
           </li>
 
         </ul>
@@ -66,12 +84,12 @@
           Free Shipping over 80$
         </span>
 
-         <span>
+        <span>
           Next Day Click & Collect
         </span>
 
-         <span>
-         30 days Hassle Free Return
+        <span>
+          30 days Hassle Free Return
         </span>
 
         {{#if username}}
@@ -100,3 +118,12 @@
     </div>
   </div>
 </header>
+
+<script>
+  const target = document.getElementById("target_div");
+  const hamburger = document.getElementById("hamburger");
+
+  hamburger.addEventListener("click", () => {
+    target.classList.toggle("display-none"); // Toggles the display-none class on each click
+  });
+</script>

@@ -6,7 +6,10 @@ const createOrder = async (req, res) => {
   try {
     const userId = req.userId;
     const productId = req.params.productId;
-    const { quantity } = req.body;
+    const { quantity , size , color} = req.body;
+
+
+    
 
     const user = await User.findById(userId);
     if (!user) {
@@ -27,6 +30,8 @@ const createOrder = async (req, res) => {
           productId: productId,
           quantity: quantity,
           price: product.price,
+          size : size ,
+          color :color
         },
       ],
       totalAmount: totalAmount,
@@ -50,7 +55,7 @@ const addToCart = async (req, res) => {
   try {
     const userId = req.userId;
     const productId = req.params.productId;
-    const { quantity } = req.body;
+    const { quantity ,size, color  } = req.body;
 
     const user = await User.findById(userId);
     if (!user) {
@@ -75,6 +80,8 @@ const addToCart = async (req, res) => {
         productId: product._id,
         quantity: parseInt(quantity),
         price: product.price,
+        color :color,
+        size : size
       });
     }
 
@@ -169,7 +176,7 @@ const createCartOrder = async (req, res) => {
   try {
     const userId = req.userId;
 
-    const user = await User.findById(userId).populate("cart.productId");
+    const user = await User.findById(userId)
 
     if (!user || user.cart.length === 0) {
       return res.render("cart", { message: "Your cart is empty !" });
@@ -187,14 +194,16 @@ const createCartOrder = async (req, res) => {
         });
       }
 
-      const itemTotal = product.price * cartItem.quantity;
+      const itemTotal = cartItem.price * cartItem.quantity;
 
       totalAmount += itemTotal;
 
       productsInCart.push({
         productId: product._id,
         quantity: cartItem.quantity,
-        price: product.price,
+        price: cartItem.price,
+        color : cartItem.color,
+        size : cartItem.size
       });
     }
 

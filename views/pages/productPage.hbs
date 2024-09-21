@@ -29,41 +29,71 @@
 
         </div>
 
-        <form method="post" class="product-actions" action="/cart/add/{{this._id}}">
+
+        <form method="post" class="product-actions" action="/cart/add/{{this._id}}" id="productForm">
           <div class="inputs">
             <div>
-              <label for="quantity"> Qty:</label>
+              <label for="quantity">Qty:</label>
               <input
                 type="number"
                 name="quantity"
                 min="1"
                 value="1"
                 class="quantity-input"
+                required
               />
             </div>
             <div>
-              <label for="size"> Size:</label>
-              <input
-                type="text"
-                name="size"
-                class="quantity-input"
-              />
+              <label for="size">Size:</label>
+              <input type="text" name="size" class="quantity-input" required />
             </div>
-
             <div>
-              <label for="color"> Color:</label>
-              <input
-                type="text"
-                name="color"
-                class="quantity-input"
-              />
+              <label for="color">Color:</label>
+              <input type="text" name="color" class="quantity-input" required />
             </div>
           </div>
 
-          <button class="add-to-cart-btn">Add to Cart</button>
+          <div style="display: flex; width:100%">
+            <button
+              type="submit"
+              name="action"
+              value="add-to-cart"
+              class="add-to-cart-btn"
+            >
+              Add to Cart
+            </button>
+            {{!-- <button
+              type="submit"
+              name="action"
+              value="buy-now"
+              class="buy-now-btn"
+            >
+              Buy Now
+            </button> --}}
+          </div>
         </form>
+
       </div>
 
     </div>
   {{/each}}
 </div>
+
+
+
+{{!-- <script>
+  const form = document.getElementById('productForm');
+  const product = document.querySelector('.product-card')
+  const  _id = product.id
+  const addToCartBtn = document.querySelector('.add-to-cart-btn');
+  const buyNowBtn = document.querySelector('.buy-now-btn');
+  
+
+  addToCartBtn.addEventListener('click', function (e) {
+    form.action = `/cart/add/${_id}`;  // Add to cart action
+  });
+
+  buyNowBtn.addEventListener('click', function (e) {
+    form.action = `/place/order/${_id}`;  // Buy now action
+  });
+</script> --}}

@@ -15,7 +15,7 @@
         <div class="empty-cart-message">
           <h2>{{message}}</h2>
 
-          <a class="btn-remove" href="/user/cart">Go back </a>
+          <a class="btn" href="/user/cart">Go back </a>
         </div>
       {{else}}
         <div class="cart-container">
@@ -36,7 +36,7 @@
               {{#each user.cart}}
                 <tr class="cart-item">
                   <td><img width="100px" src={{this.productId.imageUrl}} /></td>
-                  <td>{{this.productId.name}}</td>
+                  <td>{{this.productId.name}} <br> {{this.color}} , {{this.size}}</td>
                   <td>
                     <input
                       type="number"
