@@ -150,9 +150,9 @@ const emptyCart = async (req, res) => {
       });
     }
 
-    // Clear the cart
+  
     user.cart = [];
-    user.cartValue = 0; // Reset cart value
+    user.cartValue = 0; 
 
     await user.save();
 

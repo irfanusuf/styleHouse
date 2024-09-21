@@ -1,4 +1,4 @@
-let slideIndex = 1;
+let slideIndex = 2;
 showSlides(slideIndex);
 
 // Function to show the slides
