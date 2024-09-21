@@ -142,12 +142,13 @@ app.get("/accessories", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Ac
 // rendering Subcategory
 app.get("/sarees", dataHelper , (req,res)=>{renderProductPage(req,res,"Sarees")});
 app.get("/lehengas", dataHelper , (req,res)=>{renderProductPage(req,res,"Lehengas")});
-app.get("/sherwani", dataHelper , (req,res)=>{renderProductPage(req,res,"Sherwani")});
+app.get("/sherwanis", dataHelper , (req,res)=>{renderProductPage(req,res,"Sherwani")});
 app.get("/kurtis", dataHelper , (req,res)=>{renderProductPage(req,res,"Kurtis")});
 app.get("/anarkali-dresses", dataHelper , (req,res)=>{renderProductPage(req,res,"Anarkali-dresses")});
 app.get("/kids-ethnic", dataHelper , (req,res)=>{renderProductPage(req,res,"Kids-ethnic")});
 app.get("/baby-girl-frocks", dataHelper , (req,res)=>{renderProductPage(req,res,"Baby-girl-frocks")});
 app.get("/baby-rompers", dataHelper , (req,res)=>{renderProductPage(req,res,"Baby-rompers")});
+app.get("/baby-kurta-pyjamas", dataHelper , (req,res)=>{renderProductPage(req,res,"Baby-rompers")});
 app.get("/bangles", dataHelper , (req,res)=>{renderProductPage(req,res,"Bangles")});
 app.get("/jumkas", dataHelper , (req,res)=>{renderProductPage(req,res,"Jumkas")});
 app.get("/handbags", dataHelper , (req,res)=>{renderProductPage(req,res,"Handbags")});
@@ -156,7 +157,7 @@ app.get("/shawls", dataHelper , (req,res)=>{renderProductPage(req,res,"Shawls")}
 app.get("/necklaces", dataHelper , (req,res)=>{renderProductPage(req,res,"Necklaces")});
 app.get("/jhutis", dataHelper , (req,res)=>{renderProductPage(req,res,"Jhutis")});
 app.get("/kolapuris", dataHelper , (req,res)=>{renderProductPage(req,res,"Kolapuris")});
-app.get("/kid-juties", dataHelper , (req,res)=>{renderProductPage(req,res,"Kid-juties")});
+app.get("/kid-juttis", dataHelper , (req,res)=>{renderProductPage(req,res,"Kid-juties")});
 app.get("/baby-booties", dataHelper , (req,res)=>{renderProductPage(req,res,"Baby-booties")});
 
 

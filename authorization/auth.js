@@ -13,7 +13,7 @@ const isAuthenticated = async (req, res, next) => {
       await jwt.verify(token, "thgiismysecretkey", async (reject, resolve) => {
         if (reject) {
           res.status(403).render("login", {
-            message: "Server Error! Plz login again after sometime! ",
+            message: "Bad authentication!",
           });
         } else {
           req.userId = resolve.userId;
@@ -28,6 +28,9 @@ const isAuthenticated = async (req, res, next) => {
     }
   } catch (err) {
     console.log(err);
+    res.status(500).render("login", {
+      message: "Server Error! .Please try again later.",
+    });
   }
 };
 
@@ -45,34 +48,46 @@ const isAdmin = async (req, res, next) => {
     console.log(err);
   }
 };
-
 const dataHelper = async (req, res, next) => {
   try {
     const { token } = req.cookies;
+
+    
+    req.user = {
+      _id: "",
+      username: "",
+      cart: [],
+    };
 
     if (token) {
       await jwt.verify(token, "thgiismysecretkey", async (reject, resolve) => {
         if (reject) {
           res.status(403).render("login", {
-            message: "Server Error! Plz login again after sometime! ",
+            message: "Bad authentication!",
           });
         } else {
           req.userId = resolve.userId;
 
           const findUser = await User.findById(resolve.userId);
 
-          req.user = findUser;
-        
+          
+          if (findUser) {
+            req.user = findUser;
+          }
 
           return next();
         }
       });
     } else {
-      next();
+      return next(); 
     }
   } catch (err) {
     console.log(err);
+    res.status(500).render("login", {
+      message: "Server Error! .Please try again later.",
+    });
   }
 };
+
 
 module.exports = { isAuthenticated, isAdmin, dataHelper };
