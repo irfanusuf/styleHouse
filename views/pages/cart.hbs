@@ -1,50 +1,78 @@
-<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{pageTitle}}</title>
-    <link rel="stylesheet" href="/css/cart.css">
-    <script defer src="/js/cart.js"></script> <!-- Link to JavaScript file -->
-</head>
-<body>
+    <link rel="stylesheet" href="/css/cart.css" />
 
+  </head>
+  <body>
 
     <!-- Shopping Cart Section -->
     <section class="cart-section">
+
+      {{#if message}}
+        <div class="empty-cart-message">
+          <h2>{{message}}</h2>
+
+          <a class="btn-remove" href="/user/cart">Go back </a>
+        </div>
+      {{else}}
         <div class="cart-container">
-            <h2>Shopping Cart</h2>
-            <table class="cart-table">
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Total</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Sample Cart Item -->
-                    <tr class="cart-item">
-                        <td>Stylish T-Shirt</td>
-                        <td><input type="number" class="item-quantity" value="1" min="1"></td>
-                        <td class="item-price">$20.00</td>
-                        <td class="item-total">$20.00</td>
-                        <td><button class="btn-remove">Remove</button></td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="cart-total">
-                <h3>Cart Total: $20.00</h3>
-                <a href="checkout.html" class="btn-checkout">Proceed to Checkout</a>
+          <h2>Shopping Cart</h2>
+          <table class="cart-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              {{#each user.cart}}
+                <tr class="cart-item">
+                  <td><img width="100px" src={{this.productId.imageUrl}} /></td>
+                  <td>{{this.productId.name}}</td>
+                  <td>
+                    <input
+                      type="number"
+                      class="item-quantity"
+                      value="{{this.quantity}}"
+                      min="1"
+                      readonly
+                    />
+                  </td>
+                  <td class="item-price"> {{this.productId.price}} $</td>
+                  <td class="item-total"> {{this.total}} $</td>
+                  <td>
+                    <a
+                      href="/cart/removeItem/{{this.productId._id}}"
+                      class="btn-remove"
+                    >Remove</a></td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+
+          <div class="cart-total">
+            <div style="display: flex;">
+              <h2>Total: </h2>
+              <h2 style="color: antiquewhite; margin-left : 10px">
+                {{user.cartValue}}
+                $</h2>
             </div>
+            <a href="/place/order" class="btn-checkout">Proceed to
+              Checkout</a>
+          </div>
         </div>
-        <div class="empty-cart-message" style="display:none;">
-            <h2>Your cart is empty.</h2>
-        </div>
+
+      {{/if}}
+
     </section>
 
-   
-</body>
+  </body>
 </html>

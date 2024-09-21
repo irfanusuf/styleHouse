@@ -18,7 +18,6 @@ const {
   createProduct,
   editProduct,
   deleteProduct,
-  productPayment,
 } = require("./controllers/productController");
 
 const multMid = require("./middlewares/multMid");
@@ -28,7 +27,7 @@ const {
   getUserDash,
   getCart,
 } = require("./controllers/getController");
-const { createOrder, addToCart } = require("./controllers/orderController");
+const { addToCart, removeFromCart, createCartOrder, checkout ,productPayment} = require("./controllers/orderController");
 
 const port = 4000;
 const app = express();
@@ -155,16 +154,10 @@ app.get("/handbags", dataHelper , (req,res)=>{renderProductPage(req,res,"Handbag
 app.get("/clutches", dataHelper , (req,res)=>{renderProductPage(req,res,"Clutches")});
 app.get("/shawls", dataHelper , (req,res)=>{renderProductPage(req,res,"Shawls")});
 app.get("/necklaces", dataHelper , (req,res)=>{renderProductPage(req,res,"Necklaces")});
-app.get("/jhutis", dataHelper , (req,res)=>{renderProductPage(req,res,"Jhutis")});
+app.get("/jhuttis", dataHelper , (req,res)=>{renderProductPage(req,res,"Jhutis")});
 app.get("/kolapuris", dataHelper , (req,res)=>{renderProductPage(req,res,"Kolapuris")});
 app.get("/kid-juttis", dataHelper , (req,res)=>{renderProductPage(req,res,"Kid-juties")});
 app.get("/baby-booties", dataHelper , (req,res)=>{renderProductPage(req,res,"Baby-booties")});
-
-
-
-//payment Route
-app.get("/product/payment/:productId/:userId", productPayment);
-
 
 
 //user post and del routes
@@ -179,12 +172,13 @@ app.get("/product/delete/:id", deleteProduct);
 
 
 
-app.post("/order/add/:productId" ,createOrder)
+app.get("/place/order" ,isAuthenticated ,createCartOrder)
 
 
 app.post("/cart/add/:productId" ,isAuthenticated , addToCart)
-
-
+app.get("/cart/removeItem/:productId" ,isAuthenticated , removeFromCart)
+app.get("/cart/checkout" ,isAuthenticated ,checkout)
+app.get("/cart/payment" , productPayment);
 
 
 app.listen(port, () => {

@@ -121,13 +121,4 @@ const deleteProduct = async (req, res) => {
 
 
 
-
-
-const productPayment = async (req, res) => {
-  try {
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-module.exports = { createProduct, editProduct, deleteProduct, productPayment };
+module.exports = { createProduct, editProduct, deleteProduct};

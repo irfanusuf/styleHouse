@@ -71,14 +71,22 @@ const getUserDash = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-  }
+  } 
 };
 
 const getCart = async (req, res) => {
   try {
     const userId = req.userId;
 
-    const user = await User.findById(userId).lean();
+    const user = await User.findById(userId).populate(
+    { path : "cart.productId"}
+    ).lean();
+
+    user.cart.forEach(item => {
+      item.total = item.quantity * item.productId.price;
+    });
+
+
     res.render("cart", {
       userId: req.user._id,
       username: req.user.username,

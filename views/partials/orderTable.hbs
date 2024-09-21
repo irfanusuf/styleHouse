@@ -22,8 +22,10 @@
         <tr>
           <td>{{this.user.email}}</td>
           <td>
+
+               {{#each this.products}}
             <ul>
-              {{#each this.products}}
+           
                 <li>
                   Name:
                   {{this.productId.name}}
@@ -38,9 +40,10 @@
                   {{this.price}}$
                   </li>
                  
-              
-              {{/each}}
+             
             </ul>
+
+             {{/each}}
           </td>
           <td>{{this.totalAmount}}</td>
           <td>{{this.orderDate}}</td>
