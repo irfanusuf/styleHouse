@@ -13,29 +13,26 @@ header {
   margin: 0 auto;
 }
 
-.logo{
+.logo {
+  .logo-img {
+    height: 100px;
+    width: 200px;
+  }
 
-.logo-img {
-  height: 100px; 
-  width: 200px;
+  > .hamburger {
+    display: none;
+  }
+
+  > .close {
+    display: none;
+  }
 }
-
->.hamburger {
-  display: none;
-}
-
->.close{
-  display: none;
-}
-
-}
-
 
 .main-menu {
   display: flex;
   align-items: center;
 
-  >.menu {
+  > .menu {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -64,7 +61,7 @@ header {
 
   form {
     margin: 0;
-    
+
     input[type="text"] {
       padding: 8px 12px;
       border: none;
@@ -111,7 +108,7 @@ header {
         }
       }
 
-      >span{
+      > span {
         font-weight: 900;
         background-color: #bd4444;
         padding: 6px 10px 4px 10px;
@@ -134,7 +131,7 @@ header {
     padding: 10px 30px;
     border-radius: 20px;
     font-size: 18px;
-   color: #e97676;
+    color: #e97676;
   }
 
   p {
@@ -199,71 +196,69 @@ header {
 
 /* Media Queries for Responsiveness */
 @media only screen and (max-width: 900px) {
-
-
   .header-container {
     flex-direction: column;
   }
 
-  .logo{
+  .logo {
     width: 100%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  
-  
-  .logo-img {
-    height: 100px; 
-    width: 200px;
-  }
-  
-  >.hamburger {
-    display: inline;
-    width: 30px;
-    height: 30px;
-  }
-  
-  >.close{
-    display: inline;
-    width: 30px;
-    height: 30px;
-  }
-  
-  }
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 
+    .logo-img {
+      height: 100px;
+      width: 200px;
+    }
 
+    > .hamburger {
+      display: inline;
+      width: 30px;
+      height: 30px;
+    }
 
-
-
-  .main-menu {
-
-    flex-direction: column;
-
-  >.menu{
-    flex-direction: column;
-    margin-top: 30px;
-    
-
-    li {
-      margin-right: 0;
-      margin-bottom: 10px;
+    > .close {
+      display: inline;
+      width: 30px;
+      height: 30px;
     }
   }
 
-  >form{
-      margin-top: 20px ;
+
+  .target_div{
+    display: none;
   }
-  >.icons{
-    display: flex;
-    margin-top: 20px;
+
+  
+
+
+  .main-menu {
+    flex-direction: column;
+
+    > .menu {
+      flex-direction: column;
+      margin-top: 30px;
+
+      li {
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+    }
+
+    > form {
+      margin-top: 20px;
+    }
+    > .icons {
+      display: flex;
+      margin-top: 20px;
+    }
   }
-}
 
   .lower-menu {
     flex-direction: column;
     align-items: flex-start;
 
-    >span{
+    > span {
       margin-bottom: 10px;
     }
 
@@ -272,4 +267,3 @@ header {
     }
   }
 }
-

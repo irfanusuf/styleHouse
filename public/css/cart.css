@@ -24,7 +24,7 @@
         margin-bottom: 20px;
   
         th, td {
-          padding: 12px 10px;
+          padding: 12px 5px;
           color: #f5f5f5;
         }
   
@@ -35,10 +35,15 @@
         td {
           background-color: #2a2a2a;
           min-width: 60px;
+          text-align: center;
+          >img{
+            width: 150px;
+            height: 230px;
+          }
         }
   
         .item-price, .item-total {
-         min-width: 60px;
+         min-width: 100px;
         }
   
         input[type="number"] {
@@ -60,6 +65,7 @@
         border-radius: 4px;
         cursor: pointer;
         transition: background-color 0.3s ease;
+        text-decoration: none;
   
         &:hover {
           background-color: #ff3b3b;
@@ -93,22 +99,24 @@
   }
   
 
-  @media only screen and  (max-width: 600px) {
+  @media only screen and  (max-width: 720px) {
     .cart-container {
       padding: 15px;
-      max-width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
   
       .cart-table {
-        display: block;
+       display: flex;
+       justify-content: center;
+       align-items: center;
         margin-bottom: 0;
         border: none;
-        width: 100%;
+       
   
         .btn-remove{
-
-
-            color: #2a2a2a;
-            margin-bottom: 40px;
+            margin-block-end: 50px;
         }
         th{
             display: none;
@@ -116,18 +124,22 @@
 
       
         td{
-          display: block;
-          width: 405px;
-          text-align: center;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 350px;
           padding: 10px 5px;
+          /* background-color: antiquewhite; */
+
+          >img{
+            width: 200px;
+            height: 300px;
+          }
 
         }
   
       
-        .item-price, .item-total {
-          width: 405px;
-          text-align: center;
-        }
+      
   
         input[type="number"] {
           width: 100%;
@@ -135,14 +147,17 @@
       }
   
       .cart-total {
+        display: flex;
+        flex-direction: column;
         text-align: center;
         margin-top: 30px;
       }
   
       .btn-checkout {
-        /* display: block; */
-        width: 100%;
+        
+        width: 335px;
         padding: 12px 0;
+        text-align: center;
       }
     }
   }

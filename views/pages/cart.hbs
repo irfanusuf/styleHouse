@@ -35,7 +35,7 @@
 
               {{#each user.cart}}
                 <tr class="cart-item">
-                  <td><img width="100px" src={{this.productId.imageUrl}} /></td>
+                  <td><img  src={{this.productId.imageUrl}} /></td>
                   <td>{{this.productId.name}} <br> {{this.color}} , {{this.size}}</td>
                   <td>
                     <input
@@ -46,8 +46,8 @@
                       readonly
                     />
                   </td>
-                  <td class="item-price"> {{this.productId.price}} $</td>
-                  <td class="item-total"> {{this.total}} $</td>
+                  <td class="item-price"> <span>Price : </span> {{this.productId.price}} $</td>
+                  <td class="item-total"> <span>Total : </span> {{this.total}} $</td>
                   <td>
                     <a
                       href="/cart/removeItem/{{this.productId._id}}"

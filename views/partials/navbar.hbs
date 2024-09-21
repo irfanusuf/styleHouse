@@ -18,13 +18,13 @@
       </a>
 
      
-        <img src="/assets/close.svg" alt="Style House Logo" class="close" />
+        <img src="/assets/close.svg" alt="Style House Logo" class="close" id="close" />
      
     </div>
 
-    <div id="target_div">
+    <div id="target_div" class="target_div">
 
-      <div class="main-menu">
+      <div class="main-menu ">
         <ul class="menu">
 
           <li><a href="/men">Men</a></li>
@@ -122,8 +122,13 @@
 <script>
   const target = document.getElementById("target_div");
   const hamburger = document.getElementById("hamburger");
+  const close = document.getElementById("close");
 
   hamburger.addEventListener("click", () => {
-    target.classList.toggle("display-none"); // Toggles the display-none class on each click
+    target.style.display = "block"
   });
+   close.addEventListener("click", () => {
+    target.style.display = "none"
+  });
+
 </script>
