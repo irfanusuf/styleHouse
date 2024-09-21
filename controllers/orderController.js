@@ -38,7 +38,7 @@ const createOrder = async (req, res) => {
     user.orders.push(savedOrder._id);
     await user.save();
 
-    res.redirect("/cart/checkout")
+    res.redirect("/order/checkout")
     
   } catch (error) {
     console.error("Error creating order:", error);
@@ -141,7 +141,7 @@ const removeFromCart = async (req, res) => {
 
 const emptyCart = async (req, res) => {
   try {
-    const userId = req.session.userId;
+    const userId = req.userId;
 
     const user = await User.findById(userId);
     if (!user) {
@@ -159,7 +159,7 @@ const emptyCart = async (req, res) => {
     return res.redirect("/user/cart");
   } catch (error) {
     console.error(error);
-    res.render("cartPage", {
+    res.render("cart", {
       message: "An error occurred while emptying the cart.",
     });
   }
@@ -213,7 +213,7 @@ const createCartOrder = async (req, res) => {
 
     await user.save();
 
-    res.redirect("/cart/checkout");
+    res.redirect("/order/checkout");
   } catch (error) {
     console.error("Error creating order:", error);
     res.render("cart", { message: "An error occurred during checkout." });
@@ -222,18 +222,9 @@ const createCartOrder = async (req, res) => {
 
 const checkout = async (req, res) => {
   try {
-    const userId = req.userId;
+    // const userId = req.userId;
 
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.render("cart", {
-        message: "User not found, please log in.",
-      });
-    }
-
-    if (user.cart.length === 0) {
-      return res.render("cart", { message: "Your cart is empty." });
-    }
+    // const user = await User.findById(userId);
 
     return res.render("payment", {
       userId: req.user._id,

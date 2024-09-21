@@ -12,6 +12,7 @@ const orderSchema = new mongoose.Schema({
     totalAmount: { type: Number, required: true }, 
     orderDate: { type: Date, default: Date.now },  
     shippingTime: { type: Date, default: () => new Date(new Date().setDate(new Date().getDate() + 7)) },
+    emailVerified : Boolean,
     status: { type: String, default: 'pending' } , 
   });
   

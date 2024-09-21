@@ -59,14 +59,19 @@
           </table>
 
           <div class="cart-total">
-            <div style="display: flex;">
-              <h2>Total: </h2>
-              <h2 style="color: antiquewhite; margin-left : 10px">
-                {{user.cartValue}}
-                $</h2>
+
+            <div style="display: flex ; justify-content :space-between; align-items :center ;margin-bottom : 20px">
+              <a class="btn-remove" href="/cart/empty">Empty Cart</a>
+              <div style="display: flex;">
+                <h2>Total: </h2>
+                <h2 style="color: antiquewhite; margin-left : 10px">
+                  {{user.cartValue}}
+                  $</h2>
+              </div>
             </div>
-            <a href="/place/order" class="btn-checkout">Proceed to
-              Checkout</a>
+
+
+            <a href="/cart/order" class="btn-checkout">Proceed to Checkout</a>
           </div>
         </div>
 

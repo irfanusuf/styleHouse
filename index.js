@@ -27,7 +27,7 @@ const {
   getUserDash,
   getCart,
 } = require("./controllers/getController");
-const { addToCart, removeFromCart, createCartOrder, checkout ,productPayment} = require("./controllers/orderController");
+const { addToCart, removeFromCart, createCartOrder, checkout ,productPayment, createOrder, emptyCart} = require("./controllers/orderController");
 
 const port = 4000;
 const app = express();
@@ -172,13 +172,19 @@ app.get("/product/delete/:id", deleteProduct);
 
 
 
-app.get("/place/order" ,isAuthenticated ,createCartOrder)
+
 
 
 app.post("/cart/add/:productId" ,isAuthenticated , addToCart)
 app.get("/cart/removeItem/:productId" ,isAuthenticated , removeFromCart)
-app.get("/cart/checkout" ,isAuthenticated ,checkout)
-app.get("/cart/payment" , productPayment);
+app.get("/cart/empty" ,isAuthenticated , emptyCart)
+app.get("/cart/order" ,isAuthenticated ,createCartOrder)
+app.get("/place/order" ,isAuthenticated ,createOrder)
+
+app.get("/order/checkout" ,isAuthenticated ,checkout)
+app.get("/order/payment" , isAuthenticated , productPayment);
+
+
 
 
 app.listen(port, () => {
