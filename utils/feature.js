@@ -42,7 +42,16 @@ const renderCategoryPage = async (req, res, category) => {
 
 const renderSubCategoryPage = async (req, res, subCategory) => {
   try {
-    const products = await Product.find({ subCategory: subCategory }).lean();
+   
+
+    const products = await Product.find({
+      $or: [
+        { subCategory: { $regex: subCategory, $options: "i" } }, 
+      ],
+    }).lean();
+
+
+
 
     if (products.length === 0) {
       return res.render("productPage", {

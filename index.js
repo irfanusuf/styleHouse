@@ -57,23 +57,12 @@ app.use(cookie());
 
 // rendering is on server side      SSR
 
-
-
 // admin Routes
-
 app.get("/admin/dashboard", isAuthenticated, isAdmin, getAdminPage);
-
-
-
 // authicated user Routes 
-
 app.get("/user/dashboard",isAuthenticated, getUserDash);
 app.get("/user/cart" , isAuthenticated , getCart)
-
-
-
 // guest Routes
-
 app.get("/user/register",dataHelper, (req, res) => {
   res.render("signup", {
     userId: req.user._id,
@@ -135,11 +124,17 @@ app.get("/", dataHelper ,getIndexPage);
 
 //rendering Search
 app.post("/search", dataHelper , renderPageSearchProducts);
+
+
+
 // rendering category
 app.get("/men", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Men")});
 app.get("/women", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Women")});
 app.get("/kids", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Kids")});
 app.get("/accessories", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Accessories & Shoes")});
+
+
+
 // rendering Subcategory
 app.get("/sarees", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Sarees")});
 app.get("/lehengas", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Lehengas")});
@@ -156,9 +151,9 @@ app.get("/handbags", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Han
 app.get("/clutches", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Clutches")});
 app.get("/shawls", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Shawls")});
 app.get("/necklaces", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Necklaces")});
-app.get("/jhuttis", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Jhutis")});
+app.get("/jhuttis", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Jhuttis")});
 app.get("/kolapuris", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Kolapuris")});
-app.get("/kid-juttis", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Kid-juties")});
+app.get("/kid-jhuttis", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Kid-jhuttis")});
 app.get("/baby-booties", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Baby-booties")});
 
 
