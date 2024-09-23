@@ -27,8 +27,9 @@ const {
   getUserDash,
   getCart,
 } = require("./controllers/getController");
-const { addToCart, removeFromCart, createCartOrder, checkout ,productPayment, createOrder, emptyCart} = require("./controllers/orderController");
-
+const { addToCart, removeFromCart,   emptyCart} = require("./controllers/cartController");
+const {createOrder , createCartOrder, deleteorder, dispatchOrder} = require("./controllers/orderController")
+const {checkout , productPayment } = require("./controllers/paymentController")
 const port = 4000;
 const app = express();
   
@@ -124,17 +125,11 @@ app.get("/", dataHelper ,getIndexPage);
 
 //rendering Search
 app.post("/search", dataHelper , renderPageSearchProducts);
-
-
-
 // rendering category
 app.get("/men", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Men")});
 app.get("/women", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Women")});
 app.get("/kids", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Kids")});
 app.get("/accessories", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Accessories & Shoes")});
-
-
-
 // rendering Subcategory
 app.get("/sarees", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Sarees")});
 app.get("/lehengas", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Lehengas")});
@@ -168,13 +163,15 @@ app.post("/product/edit/:id", multMid, editProduct);
 app.get("/product/delete/:id", deleteProduct);
 
 
-
-
 app.post("/cart/add/:productId" ,isAuthenticated , addToCart)
-app.post("/place/order/:productId" ,isAuthenticated ,createOrder)
 app.get("/cart/removeItem/:productId" ,isAuthenticated , removeFromCart)
 app.get("/cart/empty" ,isAuthenticated , emptyCart)
-app.get("/cart/order" ,isAuthenticated ,createCartOrder)
+
+
+app.post("/order/create/:productId" ,isAuthenticated ,createOrder)
+app.get("/order/create" ,isAuthenticated ,createCartOrder)
+app.get("/order/delete/:orderId" , isAuthenticated ,deleteorder )
+app.get("/order/dispatch/:orderId" , isAuthenticated ,dispatchOrder )
 
 
 app.get("/order/checkout" ,isAuthenticated ,checkout)

@@ -87,6 +87,7 @@ const renderPageSearchProducts = async (req, res) => {
         { name: { $regex: search_query, $options: "i" } }, 
         { category: { $regex: search_query, $options: "i" } }, 
         { subCategory: { $regex: search_query, $options: "i" } }, 
+        { searchTag: { $regex: search_query, $options: "i" } }, 
       ],
     }).lean();
 

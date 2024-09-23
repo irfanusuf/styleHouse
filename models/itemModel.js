@@ -7,7 +7,7 @@ const Product = mongoose.model("Product" , {
     category : String,
     subCategory : String,
     searchTag: String,
-    size :[{    }],
+    size : String,
     color : String,
     price : Number,
     discount : Number,

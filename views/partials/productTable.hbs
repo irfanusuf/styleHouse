@@ -5,7 +5,7 @@
   <div class="h1">Currently Available Products </div>
 
   <button
-    type="button"
+    type="button" 
     class="btn btn-success"
     data-bs-toggle="modal"
     data-bs-target="#addBookModal"
@@ -20,11 +20,13 @@
 
 
 
+  <div class="table-responsive mt-5">
 
-  <table class="table table-striped table-hover mt-5">
+
+  <table  class="table table-striped table-bordered table-hover  table-responsive-sm">
 
     <thead>
-      <tr>
+      <tr  class="table-primary">
 
         <th> Produtc Name </th>
         <th> Category</th>
@@ -69,11 +71,11 @@
           <td> {{this.itemQty}} no.s </td>
           
           <td> <img width="50px" src={{this.imageUrl}} alt="no-image" /> </td>
-          <td>
+          <td class="d-flex">
 
             <button
               type="button"
-              class="btn btn-success"
+              class="btn btn-success me-3"
               data-bs-toggle="modal"
               data-bs-target="#editModal-{{this._id}}"
             >
@@ -98,5 +100,7 @@
     </tbody>
 
   </table>
+
+  </div>
 
 </div>
