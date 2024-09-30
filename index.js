@@ -13,11 +13,12 @@ const bodyParser = require("body-parser");
 const { isAuthenticated, isAdmin, dataHelper } = require("./authorization/auth");
 const {renderSubCategoryPage, renderCategoryPage, renderPageSearchProducts} =require("./utils/feature")
 
-// crud operation on Book Model
+
 const {
   createProduct,
   editProduct,
   deleteProduct,
+  getProduct,
 } = require("./controllers/productController");
 
 const multMid = require("./middlewares/multMid");
@@ -60,10 +61,12 @@ app.use(cookie());
 
 // admin Routes
 app.get("/admin/dashboard", isAuthenticated, isAdmin, getAdminPage);
-// authicated user Routes 
-app.get("/user/dashboard",isAuthenticated, getUserDash);
-app.get("/user/cart" , isAuthenticated , getCart)
+
+
+
 // guest Routes
+
+app.get("/", dataHelper ,getIndexPage);
 app.get("/user/register",dataHelper, (req, res) => {
   res.render("signup", {
     userId: req.user._id,
@@ -105,23 +108,10 @@ app.get("/locator", dataHelper,(req, res) => {
     pageTitle: "Style House | Store location",
   });
 });
-app.get('/user/logout', (req, res) => {
-  try {
-    const { token } = req.cookies;
-    if(token){
-      res.clearCookie("token")
-      res.redirect('/');
-    }
-    
-  } catch (error) {
-    console.log(error)
-  }
- 
-});
 
 
-// 
-app.get("/", dataHelper ,getIndexPage);
+
+
 
 //rendering Search
 app.post("/search", dataHelper , renderPageSearchProducts);
@@ -155,15 +145,31 @@ app.get("/kid-jhuttis", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"
 app.get("/baby-booties", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Baby-booties")});
 
 
-//user post and del routes
+//user routes
 app.post("/user/register", registerhandler);
 app.post("/user/login", loginhandler);
 app.post("/user/delete/:userId" ,deleteHandler)
+app.get("/user/dashboard",isAuthenticated, getUserDash);
+app.get("/user/cart" , isAuthenticated , getCart)
+app.get('/user/logout', (req, res) => {
+  try {
+    const { token } = req.cookies;
+    if(token){
+      res.clearCookie("token")
+      res.redirect('/');
+    }
+    
+  } catch (error) {
+    console.log(error)
+  }
+ 
+});
 
-// Book routes
+// product routes
 app.post("/product/add", multMid, createProduct);
 app.post("/product/edit/:id", multMid, editProduct);
 app.get("/product/delete/:id", deleteProduct);
+app.get("/product/:productId" ,isAuthenticated , getProduct)
 
 
 app.post("/cart/add/:productId" ,isAuthenticated , addToCart)

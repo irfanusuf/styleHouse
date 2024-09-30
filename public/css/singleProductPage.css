@@ -1,0 +1,246 @@
+.single-product-card {
+  background-color: #333;
+  width: 1200px;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+
+
+  .product-image {
+    width: 40%;
+    padding-right: 20px;
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  .product-details {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    color: antiquewhite;
+
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: #d65656;
+    }
+
+    p {
+      margin: 8px 0;
+      color: antiquewhite;
+    }
+
+
+    .description {
+      margin-bottom: 15px;
+      min-height: 100px;
+
+      p {
+        font-size: 1rem;
+        color: antiquewhite;
+      }
+    }
+
+    .review {
+      padding-bottom: 20px;
+      a {
+        text-decoration: none;
+        color: #e2e2e2;
+        margin-right: 10px;
+
+        &:hover {
+          color: #5afae5;
+          cursor: pointer;
+        }
+      }
+
+      img {
+        width: 20px;
+        height: auto;
+      }
+
+      span {
+        font-size: 0.9rem;
+      }
+    }
+
+    .product-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 60px;
+
+      .inputs {
+        display: flex;
+        gap: 40px;
+
+        label {
+          font-size: 0.9rem;
+          color: #f0f0f0;
+        }
+
+        .quantity-input,
+        .size-input,
+        .color-input {
+          width: 150px;
+          padding: 5px;
+          border: 1px solid #555;
+          border-radius: 4px;
+          background-color: #f1f1f1;
+          color: #141414;
+        }
+
+        .quantity-input {
+          width:  50px
+        }
+      }
+
+      .add-to-cart-btn {
+        width: 100%;
+        padding: 8px;
+        margin: 5px 0;
+        background-color: #bd4444;
+        border: none;
+        color: #fff;
+        font-size: 14px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        position: absolute;
+        bottom: 10px;
+
+        &:hover {
+          background-color: #ff3b3b;
+        }
+      }
+    }
+  }
+}
+
+
+
+.add-review {
+  background-color: #333;
+  color: antiquewhite;
+  width: 1200px;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  > form {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 20px;
+
+    > input {
+        width: 60%;
+        padding: 5px;
+        border: 1px solid #555;
+        border-radius: 5px;
+        background-color: #f1f1f1;
+        color: #141414;
+    }
+
+    >.select{
+        width : 15%;
+        border-radius: 5px;
+    }
+
+    > button {
+      width: 20%;
+      padding: 10px;
+      background-color: #bd4444;
+      border: none;
+      color: #fff;
+      font-size: 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-align: center;
+      text-decoration: none;
+
+      &:hover {
+        background-color: #ff2c2c;
+      }
+    }
+  }
+
+  > .current-reviews {
+    min-height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .single-product-card {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-right: 0;
+    padding: 0px;
+
+    .product-image {
+      width: 50%;
+      padding-right: 20px;
+      padding-top: 20px;
+
+      img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+    }
+
+
+    .product-details {
+        width: 90%;
+
+
+        
+    }
+  }
+
+
+  .add-review {
+ 
+    width: 100%;
+    padding: 0;
+   
+  
+    > form {
+      width: 95%;
+      > input {
+       
+      }
+  
+      > button {
+        
+      }
+    }
+  
+    > .current-reviews {
+      min-height: 300px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  
+}

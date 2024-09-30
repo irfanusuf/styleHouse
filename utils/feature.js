@@ -63,13 +63,22 @@ const renderSubCategoryPage = async (req, res, subCategory) => {
 
 
 
+    const productsWithSizes = products.map(product => {
+      return {
+        ...product,
+        sizesArray: typeof product.size === 'string' ? product.size.split(',').map(size => size.trim()) : [],
+        colorsArray: typeof product.color === 'string' ? product.color.split(',').map(color => color.trim()) : [],
+      };
+    });
+ 
+
+
     if (products.length === 0) {
       return res.render("productPage", {
         userId: req.user._id,
         username: req.user.username,
         cart: req.user.cart,
         pageTitle: `Style House | ${subCategory}`,
-        products,
         message: "No products Found!",
       });
     }
@@ -79,7 +88,7 @@ const renderSubCategoryPage = async (req, res, subCategory) => {
       username: req.user.username,
       cart: req.user.cart,
       pageTitle: `Style House | ${subCategory}`,
-      products,
+      products : productsWithSizes,
     });
   } catch (error) {
     console.log(error);
@@ -101,13 +110,20 @@ const renderPageSearchProducts = async (req, res) => {
       ],
     }).lean();
 
+    const productsWithSizes = products.map(product => {
+      return {
+        ...product,
+        sizesArray: typeof product.size === 'string' ? product.size.split(',').map(size => size.trim()) : [],
+        colorsArray: typeof product.color === 'string' ? product.color.split(',').map(color => color.trim()) : [],
+      };
+    });
+
     if (products.length === 0) {
       return res.render("productPage", {
         userId: req.user._id,
         username: req.user.username,
         cart: req.user.cart,
         pageTitle: `Style House | Search`,
-        products,
         message: "No products Found!",
       });
     }
@@ -117,7 +133,7 @@ const renderPageSearchProducts = async (req, res) => {
       username: req.user.username,
       cart: req.user.cart,
       pageTitle: `Style House | Search`,
-      products,
+      products : productsWithSizes,
     });
   } catch (error) {
     console.log(error);

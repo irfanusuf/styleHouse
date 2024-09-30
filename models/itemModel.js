@@ -14,6 +14,13 @@ const Product = mongoose.model("Product" , {
     itemQty : Number,
     description : String,
     imageUrl : String,
+    reviews : [
+        {
+            user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+            review : {type : String},
+            star : {type : Number}
+        }
+    ]
     
    
     

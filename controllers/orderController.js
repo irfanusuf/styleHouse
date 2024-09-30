@@ -54,53 +54,53 @@ const createOrder = async (req, res) => {
 
 const createCartOrder = async (req, res) => {
     try {
-      const userId = req.userId;
+      // const userId = req.userId;
   
-      const user = await User.findById(userId)
+      // const user = await User.findById(userId)
   
-      if (!user || user.cart.length === 0) {
-        return res.render("cart", { message: "Your cart is empty !" });
-      }
+      // if (!user || user.cart.length === 0) {
+      //   return res.render("cart", { message: "Your cart is empty !" });
+      // }
   
-      let totalAmount = 0;
-      const productsInCart = [];
+      // let totalAmount = 0;
+      // const productsInCart = [];
   
-      for (const cartItem of user.cart) {
-        const product = cartItem.productId;
+      // for (const cartItem of user.cart) {
+      //   const product = cartItem.productId;
   
-        if (!product) {
-          return res.render("cart", {
-            message: `Product with ID ${cartItem.productId} is unavailable!`,
-          });
-        }
+      //   if (!product) {
+      //     return res.render("cart", {
+      //       message: `Product with ID ${cartItem.productId} is unavailable!`,
+      //     });
+      //   }
   
-        const itemTotal = cartItem.price * cartItem.quantity;
+      //   const itemTotal = cartItem.price * cartItem.quantity;
   
-        totalAmount += itemTotal;
+      //   totalAmount += itemTotal;
   
-        productsInCart.push({
-          productId: product._id,
-          quantity: cartItem.quantity,
-          price: cartItem.price,
-          color : cartItem.color,
-          size : cartItem.size
-        });
-      }
+      //   productsInCart.push({
+      //     productId: product._id,
+      //     quantity: cartItem.quantity,
+      //     price: cartItem.price,
+      //     color : cartItem.color,
+      //     size : cartItem.size
+      //   });
+      // }
   
-      const newOrder = new Order({
-        user: userId,
-        products: productsInCart,
-        totalAmount: totalAmount,
-        status: "pending",
-      });
+      // const newOrder = new Order({
+      //   user: userId,
+      //   products: productsInCart,
+      //   totalAmount: totalAmount,
+      //   status: "pending",
+      // });
   
-      const savedOrder = await newOrder.save();
+      // const savedOrder = await newOrder.save();
   
-      user.orders.push(savedOrder._id);
+      // user.orders.push(savedOrder._id);
   
-      // user.cart = [];
+      // // user.cart = [];
   
-      await user.save();
+      // await user.save();
   
       res.redirect("/order/checkout");
     } catch (error) {

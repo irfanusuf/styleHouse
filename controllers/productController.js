@@ -120,5 +120,66 @@ const deleteProduct = async (req, res) => {
 };
 
 
+const getProduct = async (req,res) =>{
+  
 
-module.exports = { createProduct, editProduct, deleteProduct};
+  try {
+    const {productId} =  req.params
+    const product = await Product.findById(productId).lean()
+    const search_query = product.category
+    const products = await Product.find({
+      $or: [
+        { name: { $regex: search_query, $options: "i" } }, 
+        { category: { $regex: search_query, $options: "i" } }, 
+        { subCategory: { $regex: search_query, $options: "i" } }, 
+        { searchTag: { $regex: search_query, $options: "i" } }, 
+      ],
+    }).lean();
+
+  
+
+
+    if (products.length === 0) {
+      return res.render("singleproductPage", {
+        userId: req.user._id,
+        username: req.user.username,
+        cart: req.user.cart,
+        pageTitle: `Style House | ${search_query}`,
+        message: "No products Found!",
+      });
+    }
+
+
+    const productsWithSizes = products.map(product => {
+      return {
+        ...product,
+        sizesArray: typeof product.size === 'string' ? product.size.split(',').map(size => size.trim()) : [],
+        colorsArray: typeof product.color === 'string' ? product.color.split(',').map(color => color.trim()) : [],
+      };
+    });
+
+    const productWithSizes = {
+      ...product,
+      sizesArray: typeof product.size === 'string' ? product.size.split(',').map(size => size.trim()) : [],
+      colorsArray: typeof product.color === 'string' ? product.color.split(',').map(color => color.trim()) : [],
+    };
+    
+ 
+    res.render("singleproductPage", {
+      userId: req.user._id,
+      username: req.user.username,
+      cart: req.user.cart,
+      pageTitle: `Style House | ${search_query}`,
+      products : productsWithSizes ,
+      product :productWithSizes
+    });
+ 
+    
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
+
+module.exports = { createProduct, editProduct, deleteProduct ,getProduct};
