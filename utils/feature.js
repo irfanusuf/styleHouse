@@ -16,23 +16,33 @@ const renderCategoryPage = async (req, res, category) => {
   try {
     const products = await Product.find({ category: category }).lean();
 
+   
+
     if (products.length === 0) {
       return res.render("productPage", {
         userId: req.user._id,
         username: req.user.username,
         cart: req.user.cart,
-        pageTitle: `Style House |${category}`,
-        products,
+        pageTitle: `Style House | ${category}`,
         message: "No products Found!",
       });
     }
 
+
+    const productsWithSizes = products.map(product => {
+      return {
+        ...product,
+        sizesArray: typeof product.size === 'string' ? product.size.split(',').map(size => size.trim()) : [],
+        colorsArray: typeof product.color === 'string' ? product.color.split(',').map(color => color.trim()) : [],
+      };
+    });
+ 
     res.render("productPage", {
       userId: req.user._id,
       username: req.user.username,
       cart: req.user.cart,
-      pageTitle: `Style House |${category}`,
-      products,
+      pageTitle: `Style House | ${category}`,
+      products : productsWithSizes 
     });
   } catch (error) {
     console.log(error);

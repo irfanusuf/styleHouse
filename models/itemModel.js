@@ -10,7 +10,7 @@ const Product = mongoose.model("Product" , {
     size : String,
     color : String,
     price : Number,
-    discount : Number,
+    discount : Number,  
     itemQty : Number,
     description : String,
     imageUrl : String,

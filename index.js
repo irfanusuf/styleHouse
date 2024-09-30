@@ -125,11 +125,14 @@ app.get("/", dataHelper ,getIndexPage);
 
 //rendering Search
 app.post("/search", dataHelper , renderPageSearchProducts);
+
+
 // rendering category
 app.get("/men", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Men")});
 app.get("/women", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Women")});
 app.get("/kids", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Kids")});
 app.get("/accessories", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Accessories & Shoes")});
+
 // rendering Subcategory
 app.get("/sarees", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Sarees")});
 app.get("/lehengas", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Lehengas")});
@@ -172,7 +175,7 @@ app.post("/order/create/:productId" ,isAuthenticated ,createOrder)
 app.get("/order/create" ,isAuthenticated ,createCartOrder)
 app.get("/order/delete/:orderId" , isAuthenticated ,deleteorder )
 app.get("/order/dispatch/:orderId" , isAuthenticated ,dispatchOrder )
-
+  
 
 app.get("/order/checkout" ,isAuthenticated ,checkout)
 app.get("/order/payment" , isAuthenticated , productPayment);

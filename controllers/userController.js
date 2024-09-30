@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const { transporter } = require("../utils/nodemailer");
 
 const registerhandler = async (req, res) => {
   const { email, username, password } = req.body;
@@ -15,6 +16,24 @@ const registerhandler = async (req, res) => {
         username,
         password: encryptpass,
       });
+
+      let mailOptions = {
+        from: "services@stylehouse.world", // Sender address
+        to: `${newUser.email}`, // List of receivers
+        subject: "Welcome To style House", // Subject line
+        text: "We are happay that u registered with stay tuned for exciting offers",
+        // html: "<b>This is a test email sent from a Node.js server</b>",
+      };
+
+      // Send mail
+      
+      await transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return console.log(error);
+        }
+        console.log("Message sent: %s", info.messageId);
+      });
+
       await newUser.save();
 
       // res.render("register" , {successMessage : "User Sign Up Succesfull!"});
@@ -51,14 +70,12 @@ const deleteHandler = async (req, res) => {
 
 const loginhandler = async (req, res) => {
   const { email, password } = req.body;
-   
 
   if (email !== "" && password !== "") {
     const isExistingUser = await User.findOne({ email });
     if (isExistingUser) {
       const verifyPss = await bcrypt.compare(password, isExistingUser.password);
       if (verifyPss) {
-
         const generateToken = await jwt.sign(
           { userId: isExistingUser._id },
           "thgiismysecretkey"
@@ -70,9 +87,7 @@ const loginhandler = async (req, res) => {
           httpOnly: true,
         });
 
-     
-       return res.redirect(`/user/dashboard`);
-      
+        return res.redirect(`/user/dashboard`);
       } else {
         res.render("login", { message: "Password incorrect!" });
       }
@@ -83,7 +98,5 @@ const loginhandler = async (req, res) => {
     res.render("login", { message: "All credentials Required!" });
   }
 };
-
-
 
 module.exports = { registerhandler, loginhandler, deleteHandler };

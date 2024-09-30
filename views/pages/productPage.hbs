@@ -29,8 +29,12 @@
 
         </div>
 
-
-        <form method="post" class="product-actions" action="/cart/add/{{this._id}}" id="productForm">
+        <form
+          method="post"
+          class="product-actions"
+          action="/cart/add/{{this._id}}"
+          id="productForm"
+        >
           <div class="inputs">
             <div>
               <label for="quantity">Qty:</label>
@@ -43,14 +47,30 @@
                 required
               />
             </div>
+
             <div>
+
               <label for="size">Size:</label>
-              <input type="text" name="size" class="quantity-input" required />
+              <select type="text" name="size" class="size-input" required>
+                {{#each this.sizesArray}}
+                  <option value="{{this}}"> {{this}}</option>
+                {{/each}}
+              </select>
+
+              {{! <input type="text" name="size" class="quantity-input" required /> }}
             </div>
+
             <div>
               <label for="color">Color:</label>
-              <input type="text" name="color" class="quantity-input" required />
+
+              <select type="text" name="color" class="color-input"  required>
+                {{#each this.colorsArray}}
+                  <option value="{{this}}"> {{this}}</option>
+                {{/each}}
+              </select>
+
             </div>
+
           </div>
 
           <div style="display: flex; width:100%">
@@ -62,14 +82,14 @@
             >
               Add to Cart
             </button>
-            {{!-- <button
+            {{! <button
               type="submit"
               name="action"
               value="buy-now"
               class="buy-now-btn"
             >
               Buy Now
-            </button> --}}
+            </button> }}
           </div>
         </form>
 
@@ -79,9 +99,7 @@
   {{/each}}
 </div>
 
-
-
-{{!-- <script>
+{{! <script>
   const form = document.getElementById('productForm');
   const product = document.querySelector('.product-card')
   const  _id = product.id
@@ -96,4 +114,4 @@
   buyNowBtn.addEventListener('click', function (e) {
     form.action = `/place/order/${_id}`;  // Buy now action
   });
-</script> --}}
+</script> }}

@@ -13,16 +13,16 @@ const User = mongoose.model("User",{
     isAdmin : Boolean,
     isEmailVerified : Boolean,
     cartValue : {type : Number },
-    cart: [
-        {
-          productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
-          quantity: { type: Number, required: true },
-          price: { type: Number },
-          size :{type:String},
-          color : {type :String}
+      cart: [
+          {
+            productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+            quantity: { type: Number, required: true },
+            price: { type: Number },
+            size :{type:String},
+            color : {type :String}
 
-        }
-      ],
+          }
+        ],
       orders: [
         { 
           type: mongoose.Schema.Types.ObjectId, ref: 'Order'  // Reference to Order model

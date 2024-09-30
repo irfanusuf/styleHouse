@@ -91,7 +91,7 @@
 
   .quantity-input {
     width: 50px;
-    padding: 5px;
+    padding: 6px;
     margin-top: 5px;
     margin-bottom: 5px;
     background-color: #f9f9f9;
@@ -101,11 +101,40 @@
     border-radius: 4px;
   }
 
+
+.size-input{
+  width: 50px;
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  color: #333;
+  text-align: center;
+  border-radius: 4px;
+
+}
+
+
+.color-input{
+  width: 120px;
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  color: #333;
+  text-align: center;
+  border-radius: 4px;
+
+}
+
+
   .add-to-cart-btn {
     width: 100%;
     padding: 8px;
     margin: 5px 0;
-    margin-right: 10px;
+    /* margin-right: 10px; */
     background-color: #bd4444;
     border: none;
     color: #fff;
