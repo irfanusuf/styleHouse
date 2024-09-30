@@ -183,7 +183,7 @@ app.get("/order/delete/:orderId" , isAuthenticated ,deleteorder )
 app.get("/order/dispatch/:orderId" , isAuthenticated ,dispatchOrder )
   
 
-app.get("/order/checkout" ,isAuthenticated ,checkout)
+app.get("/order/checkout/:orderId" ,isAuthenticated ,checkout)
 app.get("/order/payment" , isAuthenticated , productPayment);
 
 
