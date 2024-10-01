@@ -131,7 +131,9 @@
             cursor: pointer;
             margin-top: 20px;
             margin-right: 10px;
-    
+            &:disabled{
+                cursor :not-allowed;
+            }
             &:hover {
               background-color: #d63c5b;
             }
