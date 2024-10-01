@@ -15,6 +15,8 @@ const checkout = async (req, res) => {
 
 
 
+      // console.log(user)
+      // console.log(order)
 
 
 

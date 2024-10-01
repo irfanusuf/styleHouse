@@ -10,13 +10,15 @@
         <th>Order For</th>
         <th>Total Amount</th>
         <th>Order Date</th>
-        <th>Shipping Time</th>
+        {{!-- <th>Shipping Time</th> --}}
+        <th>Email verified</th>
+        <th>Payment Done</th>
         <th>Status</th>
         <th>Action</th>
       </tr>
     </thead>
 
-    <tbody>
+    <tbody> 
 
       {{#each orders}}
         <tr>
@@ -27,7 +29,6 @@
             <ul>
            
                 <li>
-                  Name:
                   {{this.productId.name}}, {{this.color}} , {{this.size}}
                  </li>
                 <li>
@@ -47,7 +48,9 @@
           </td>
           <td>{{this.totalAmount}}$</td>
           <td>{{this.orderDate}}</td>
-          <td>{{this.shippingTime}}</td>
+          {{!-- <td>{{this.shippingTime}}</td> --}}
+          <td>{{this.emailVerified}}</td>
+          <td>{{this.isPaymentDone}}</td>
           <td>{{this.status}}</td>
 
           <td>

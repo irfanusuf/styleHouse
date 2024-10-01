@@ -1,9 +1,215 @@
+<link rel="stylesheet" href="/css/checkout.css" />
+
 {{#if message}}
+  <div class="message">
+    <h2 style="text-align: center;"> {{message}}</h2>
+  </div>
 
-<h2 style="text-align: center;"> {{message}}</h2>
 {{/if}}
+<h1 style="text-align: center;"> Proceed To checkout </h1>
+<div class="checkout-page">
+
+  <div class="section">
+
+    <div class="address-section">
+
+      <h2>Shipping Address</h2>
+
+      <form method="post">
+        <div>
+          <label for="name">Full Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            value="{{user.username}}"
+          />
+        </div>
+
+        <div class="form-group">
+          <div>
+            <label for="street">Street</label>
+            <input
+              type="text"
+              id="street"
+              name="street"
+              required
+              value="{{user.street}}"
+            />
+          </div>
+
+          <div>
+
+            <label for="city">City</label>
+            <input
+              type="text"
+              id="city"
+              name="city"
+              required
+              value="{{user.city}}"
+            />
+          </div>
+
+          <div>
+
+            <label for="state">State</label>
+            <input
+              type="text"
+              id="state"
+              name="state"
+              required
+              value="{{user.state}}"
+            />
+          </div>
+
+        </div>
+
+        <div class="form-group">
+
+          <div>
+
+            <label for="contact">Contact</label>
+            <input
+              type="text"
+              id="contact"
+              name="contact"
+              required
+              value="{{user.contact}}"
+            />
+          </div>
+
+          <div>
+
+            <label for="postalCode">Postal Code</label>
+            <input
+              type="text"
+              id="postalCode"
+              name="postalCode"
+              required
+              value="{{user.postalCode}}"
+            />
+
+          </div>
+
+        </div>
+
+        <div class="form-group">
+
+          <div>
+
+            <label for="landmark">Landmark</label>
+            <input
+              type="text"
+              id="landmark"
+              name="landmark"
+              required
+              value="{{user.landmark}}"
+            />
+          </div>
+
+          <div>
+
+            <label for="country">Country</label>
+            <input
+              type="text"
+              id="country"
+              name="country"
+              required
+              value="{{user.country}}"
+            />
+          </div>
+        </div>
+
+        <button type="button" class="add-address-btn">Add Address</button>
+      </form>
+    </div>
+
+    <div class="add-card">
+      <h2>Add Card </h2>
+
+      {{!-- <span> We accept </span> --}}
+
+      <form method="post">
+
+        <div class="form-group">
+         <div>
+                
+          <label for="cardholder-name">Cardholder Name</label>
+          <input
+            type="text"
+            id="cardholder-name"
+            name="cardholder-name"
+            placeholder="Your name on card"
+            required
+          />
+           </div>
+
+            <span> We Accept</span>
 
 
+        </div>
+
+        <div class="form-group">
+
+          <div>
+
+            <label for="expiry-date">Expiry Date</label>
+            <input
+              type="text"
+              id="expiry-date"
+              name="expiry-date"
+              placeholder="MM/YY"
+              required
+            />
+          </div>
+
+          <div>
+
+            <label for="cvv">CVV</label>
+            <input
+              type="text"
+              id="cvv"
+              name="cvv"
+              placeholder="Enter your cvv"
+              required
+            />
+
+          </div>
+        </div>
+
+        <button type="submit" class="payment-method-btn">Add Payment Method</button>
+      </form>
+    </div>
+
+  </div>
+
+  <div class="summary">
+    <div class="cart-summary">
+      <h2>Order Summary</h2>
 
 
-<a href="/"> Add payment Method</a>
+      <p><strong>Total Cart Value:</strong> <span>${{order.totalAmount}}</span></p>
+
+      <p><strong>Discount: </strong> <span>-$10</span></p>
+
+      <p><strong>Amount Payable</strong> <span>$90</span></p>
+
+      <p> Note : 1. Kindly Go to your Email after pressing verify Email button and verify the order by click on the link in the mail 
+        
+        <br> 2. Payment options will be unavailable till u verify the link in email 
+        
+          </p>
+
+
+        <div class="action-btns">
+
+            <button type="submit" class="pay-btn" >Verify Email</button>
+            <button type="submit" class="pay-btn" disabled="{{order.emailVerified}}">Pay Now</button>
+            
+        </div> 
+     
+    </div>
+  </div>
+
+</div>
