@@ -1,133 +1,249 @@
 const Order = require("../models/oderModel");
 const Product = require("../models/itemModel");
 const User = require("../models/userModel");
+const { transporter } = require("../utils/nodemailer");
 
 const createOrder = async (req, res) => {
-    try {
-      const userId = req.userId;
-      const productId = req.params.productId;
-      const { quantity , size , color} = req.body;
-  
-  
-      
-  
-      const user = await User.findById(userId);
-      if (!user) {
-        return res.render("checkout", { message: "Some Error, Kindly Login again!" });
-      }
-  
-      const product = await Product.findById(productId);
-      if (!product) {
-        return res.render("checkout", { message: "Product unavailable! " });
-      }
-  
-      const totalAmount = product.price * quantity;
-  
-      const newOrder = new Order({
-        user: userId,
-        products: [
-          {
-            productId: productId,
-            quantity: quantity,
-            price: product.price,
-            size : size ,
-            color :color
-          },
-        ],
-        totalAmount: totalAmount,
-        status: "pending",
-      });
-  
-      const savedOrder = await newOrder.save();
-  
-      user.orders.push(savedOrder._id);
-      await user.save();
-  
-      res.redirect("/order/checkout")
-      
-    } catch (error) {
-      console.error("Error creating order:", error);
-      res.render("cart", { message: "An error occurred during checkout." });
-    }
-  };
+  try {
+    const userId = req.userId;
+    const productId = req.params.productId;
+    const { quantity, size, color } = req.body;
 
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.render("checkout", {
+        message: "Some Error, Kindly Login again!",
+      });
+    }
+
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.render("checkout", { message: "Product unavailable! " });
+    }
+
+    const totalAmount = product.price * quantity;
+
+    const newOrder = new Order({
+      user: userId,
+      products: [
+        {
+          productId: productId,
+          quantity: quantity,
+          price: product.price,
+          size: size,
+          color: color,
+        },
+      ],
+      totalAmount: totalAmount,
+      status: "pending",
+    });
+
+    const savedOrder = await newOrder.save();
+
+    user.orders.push(savedOrder._id);
+    await user.save();
+
+    res.redirect("/order/checkout");
+  } catch (error) {
+    console.error("Error creating order:", error);
+    res.render("cart", { message: "An error occurred during checkout." });
+  }
+};
 
 const createCartOrder = async (req, res) => {
-    try {
-      const userId = req.userId;
-  
-      const user = await User.findById(userId)
-  
-      if (!user || user.cart.length === 0) {
-        return res.render("cart", { message: "Your cart is empty !" });
-      }
-  
-      let totalAmount = 0;
-      const productsInCart = [];
-  
-      for (const cartItem of user.cart) {
-        const product = cartItem.productId;
-  
-        if (!product) {
-          return res.render("cart", {
-            message: `Product with ID ${cartItem.productId} is unavailable!`,
-          });
-        }
-  
-        const itemTotal = cartItem.price * cartItem.quantity;
-  
-        totalAmount += itemTotal;
-  
-        productsInCart.push({
-          productId: product._id,
-          quantity: cartItem.quantity,
-          price: cartItem.price,
-          color : cartItem.color,
-          size : cartItem.size
+  try {
+    const userId = req.userId;
+
+    const user = await User.findById(userId);
+
+    if (!user || user.cart.length === 0) {
+      return res.render("cart", { message: "Your cart is empty !" });
+    }
+
+    let totalAmount = 0;
+    const productsInCart = [];
+
+    for (const cartItem of user.cart) {
+      const product = cartItem.productId;
+
+      if (!product) {
+        return res.render("cart", {
+          message: `Product with ID ${cartItem.productId} is unavailable!`,
         });
       }
-  
-      const newOrder = new Order({
-        user: userId,
-        products: productsInCart,
-        totalAmount: totalAmount,
-        status: "pending",
+
+      const itemTotal = cartItem.price * cartItem.quantity;
+
+      totalAmount += itemTotal;
+
+      productsInCart.push({
+        productId: product._id,
+        quantity: cartItem.quantity,
+        price: cartItem.price,
+        color: cartItem.color,
+        size: cartItem.size,
       });
-  
-      const savedOrder = await newOrder.save();
-  
-      user.orders.push(savedOrder._id);
-  
-      // user.cart = [];
-  
-      await user.save();
-  
-      res.redirect(`/order/checkout/${newOrder._id}`);
-    } catch (error) {
-      console.error("Error creating order:", error);
-      res.render("cart", { message: "An error occurred during checkout." });
     }
+
+    const newOrder = new Order({
+      user: userId,
+      products: productsInCart,
+      totalAmount: totalAmount,
+      status: "pending",
+    });
+
+    const savedOrder = await newOrder.save();
+
+    user.orders.push(savedOrder._id);
+
+    // user.cart = [];
+
+    await user.save();
+
+    res.redirect(`/order/checkout/${newOrder._id}`);
+  } catch (error) {
+    console.error("Error creating order:", error);
+    res.render("cart", { message: "An error occurred during checkout." });
+  }
 };
-  
 
+const deleteorder = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const userId = req.userId
 
-const deleteorder = async(req,res) =>{
-    try{
-      const id = req.params.orderId
-      const delOrder = await Order.findByIdAndDelete(id)
-      if(delOrder) {
-        res.redirect("/admin/dashboard")
+    const delOrder = await Order.findByIdAndDelete(orderId);
+
+    if (delOrder) {
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { $pull: { orders: orderId } },
+        { new: true }
+      );
+
+      if (updatedUser) {
+        return res.redirect("/admin/dashboard");
       }
     }
-    catch(error){
-      console.log(error)
+  } catch (error) {
+    console.log(error);
+    res.render("admin" , { message: "Error canceling the order" });
+  }
+};
+
+const cancelOrder = async (req, res) => {
+  try {
+    const {orderId } = req.params;
+    const userId = req.userId
+
+    if(userId === "" || orderId ===""){
+     return res.render("cart" , { message: "Error canceling the order" });
     }
-}
+
+    const delOrder = await Order.findByIdAndDelete(orderId);
+    const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { $pull: { orders: orderId } },
+        { new: true }
+      );
+
+      if (delOrder && updatedUser) {
+        return res.redirect("/user/cart");
+      }
+    
+  } catch (error) {
+    console.log(error);
+    res.render("cart" , { message: "Error canceling the order" });
+  }
+};
 
 
-const dispatchOrder = async(req,res) =>{
-  console.log("dipatch call")
-}
+const verifyOrder = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+
+    
+    const order = await Order.findById(orderId).populate('user').populate('products.productId');
+
+    if (!order) {
+      return res.status(404).render("cart" , {message : "Some Error With the Order Id"})
+    }
+
+    const verificationLink = `${req.protocol}://${req.get('host')}/order/update/${orderId}`;
+
+    // Nodemailer options
+    const mailOptions = {
+      from: '"Style house" <services@stylehouse.world>', 
+      to: order.user.email, 
+      subject: 'Verify Your Order',
+      text: "Below are the Details of your order, Kindly verify the order",
+      bcc: 'services@stylehouse.world' ,
+      html: `
+        <h1>Order Verification</h1>
+        <p>Hello ${order.user.username},</p>
+        <p>Thank you for your order! Please verify your email to confirm the order.</p>
+        <p><strong>Order Details:</strong></p>
+        <ul>
+          ${order.products.map(product => `
+            <li>Product: ${product.productId.name}, Quantity: ${product.quantity}, Price: ${product.price}</li>
+          `).join('')}
+        </ul>
+        <p>Total Amount: ${order.totalAmount}</p>
+        <a href="${verificationLink}" style="padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none;">Verify Order</a>
+      `
+    };
 
 
-module.exports = {createOrder , createCartOrder ,deleteorder ,dispatchOrder} 
+    await transporter.sendMail(mailOptions);
+
+    res.status(200)
+
+    // res.render("paymentCheckout" , {
+    //   userId: req.user._id,
+    //   username: req.user.username,
+    //   cart: req.user.cart,
+    //   pageTitle: `Style House | payment`,
+    //   message:"Email has been sent to your mail Id kindly check and verify the Order "
+
+    // })
+  } catch (error) {
+    console.log(error);
+    res.render("cart" , {message : "Server Error"})
+  }
+};
+
+
+const updateOrderEmailVerification = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+
+    const order = await Order.findByIdAndUpdate(orderId, { emailVerified: true }, { new: true });
+    // if (!order) {
+    //   return res.render('cart', { message: 'Order not found' }); 
+    // }
+
+    
+    return res.redirect(`/order/payment/${orderId}`)
+  } catch (error) {
+    console.log(error);
+    
+    return res.render('cart', { message: 'Error verifying email' }); 
+  }
+};
+
+
+
+
+const dispatchOrder = async (req, res) => {
+  console.log("dipatch call");
+};
+
+module.exports = {
+  createOrder,
+  createCartOrder,
+  deleteorder,
+  dispatchOrder,
+  cancelOrder,
+  verifyOrder,
+  updateOrderEmailVerification
+};

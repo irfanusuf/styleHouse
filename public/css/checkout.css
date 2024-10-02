@@ -13,8 +13,8 @@
     flex-direction: column;
     width: 50%;
 
-    .address-section,
-    .add-card {
+    .address-section
+    {
       background-color: #fff;
       color: #333;
       padding: 15px;
@@ -61,8 +61,7 @@
         }
       }
 
-      .add-address-btn,
-      .payment-method-btn {
+      .add-address-btn{
         width: 100%;
         padding: 8px;
         background-color: #ee4567;
@@ -86,16 +85,17 @@
 
   .summary {
     width: 45%;
+
     .cart-summary {
       background-color: #fff;
       padding: 15px;
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
       h2 {
         color: #333;
         font-size: 1.2rem;
         margin-bottom: 15px;
+        text-align: center;
       }
 
       p {
@@ -120,7 +120,9 @@
 
         display: flex;
         
-        >.pay-btn {
+        >.verify-btn,.cancel-btn {
+            display: flex;
+            justify-content: center;
             width: 100%;
             padding: 8px;
             background-color: #ee4567;
@@ -131,6 +133,7 @@
             cursor: pointer;
             margin-top: 20px;
             margin-right: 10px;
+            text-decoration: none;
             &:disabled{
                 cursor :not-allowed;
             }
@@ -138,8 +141,49 @@
               background-color: #d63c5b;
             }
           }
+
+          >.cancel-btn{
+            background-color: #ec101b;
+            display: flex;
+            justify-content: center;
+            &:hover {
+              background-color: #da322d;
+            }
+         
+          }
+          
       }
      
     }
+
+    .address-details ,.product-details{
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 10px;
+      color: #333;
+      height: 130px;
+      overflow-y: auto;
+
+      >h2{
+        text-align: center;
+        color: #333;
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        margin-top: 5px;
+      }
+      >p{
+        font-weight: 600;
+        margin: 0;
+        display: flex;
+        justify-content: space-between;
+        >span{
+          font-weight: 400;
+          margin-right: 10px;
+        }
+      }
+    }
+
   }
 }

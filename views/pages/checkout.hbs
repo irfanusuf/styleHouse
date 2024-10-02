@@ -15,15 +15,15 @@
 
       <h2>Shipping Address</h2>
 
-      <form method="post">
+      <form method="post" action="/user/address/{{user._id}}/{{order._id}}">
         <div>
-          <label for="name">Full Name</label>
+          <label for="fullname">Full Name</label>
           <input
             type="text"
-            id="name"
-            name="name"
+            id="fullname"
+            name="fullname"
             required
-            value="{{user.username}}"
+            value="{{address.fullname}}"
           />
         </div>
 
@@ -35,7 +35,7 @@
               id="street"
               name="street"
               required
-              value="{{user.street}}"
+              value="{{address.street}}"
             />
           </div>
 
@@ -47,7 +47,7 @@
               id="city"
               name="city"
               required
-              value="{{user.city}}"
+              value="{{address.city}}"
             />
           </div>
 
@@ -59,7 +59,7 @@
               id="state"
               name="state"
               required
-              value="{{user.state}}"
+              value="{{address.state}}"
             />
           </div>
 
@@ -75,7 +75,7 @@
               id="contact"
               name="contact"
               required
-              value="{{user.contact}}"
+              value="{{address.contact}}"
             />
           </div>
 
@@ -87,7 +87,7 @@
               id="postalCode"
               name="postalCode"
               required
-              value="{{user.postalCode}}"
+              value="{{address.postalCode}}"
             />
 
           </div>
@@ -101,10 +101,10 @@
             <label for="landmark">Landmark</label>
             <input
               type="text"
-              id="landmark"
-              name="landmark"
+              id="landMark"
+              name="landMark"
               required
-              value="{{user.landmark}}"
+              value="{{address.landMark}}"
             />
           </div>
 
@@ -116,37 +116,37 @@
               id="country"
               name="country"
               required
-              value="{{user.country}}"
+              value="{{address.country}}"
             />
           </div>
         </div>
 
-        <button type="button" class="add-address-btn">Add Address</button>
-      </form>
-    </div>
-
-    <div class="add-card">
-      <h2>Add Card </h2>
-
-      {{!-- <span> We accept </span> --}}
-
-      <form method="post">
-
+        <h2>Add Card </h2>
         <div class="form-group">
-         <div>
-                
-          <label for="cardholder-name">Cardholder Name</label>
-          <input
-            type="text"
-            id="cardholder-name"
-            name="cardholder-name"
-            placeholder="Your name on card"
-            required
-          />
-           </div>
+          <div>
 
-            <span> We Accept</span>
+            <label for="holderName">Cardholder Name</label>
+            <input
+              type="text"
+              id="holderName"
+              name="holderName"
+              placeholder="Your name on card"
+              value="{{card.holderName}}"
+              required
+            />
+          </div>
 
+          <div>
+            <label for="cardNumber">Card Number</label>
+            <input
+              type="text"
+              id="cardNumber"
+              name="cardNumber"
+              placeholder="Card Number"
+              value="{{card.cardNumber}}"
+              required
+            />
+          </div>
 
         </div>
 
@@ -157,9 +157,10 @@
             <label for="expiry-date">Expiry Date</label>
             <input
               type="text"
-              id="expiry-date"
-              name="expiry-date"
+              id="expiry"
+              name="expiry"
               placeholder="MM/YY"
+              value="{{card.expiry}}"
               required
             />
           </div>
@@ -178,38 +179,72 @@
           </div>
         </div>
 
-        <button type="submit" class="payment-method-btn">Add Payment Method</button>
+        <button type="submit" class="add-address-btn">Add Address and Card
+          Details</button>
       </form>
     </div>
 
   </div>
 
   <div class="summary">
+
+    <div class="address-details">
+      <h2> Shipping Details</h2>
+      <p>{{address.fullname}}</p>
+      <p>
+        <span>
+          {{address.street}},
+          {{address.city}},
+          {{address.state}},
+          {{address.postalCode}},
+          {{address.country}}
+        </span>
+
+      </p>
+
+      <p><span>{{address.contact}}</span></p>
+      <p><span>{{address.landMark}}</span></p>
+
+    </div>
+
+    <div class="product-details">
+      <h2> Product Details</h2>
+      {{#each order.products}}
+        <p><span>{{this.productId.name}}| {{this.color}} | {{this.size}}</span>
+          <span>QTY : {{this.quantity}}</span>
+        </p>
+
+      {{/each}}
+
+    </div>
+
     <div class="cart-summary">
       <h2>Order Summary</h2>
 
+      <p><strong>Total Cart Value:</strong>
+        <span>${{order.totalAmount}}</span></p>
 
-      <p><strong>Total Cart Value:</strong> <span>${{order.totalAmount}}</span></p>
+      <p><strong>Discount: </strong> <span>-$ 0</span></p>
 
-      <p><strong>Discount: </strong> <span>-$10</span></p>
+      <p><strong>Amount Payable</strong> <span>${{order.totalAmount}}</span></p>
 
-      <p><strong>Amount Payable</strong> <span>$90</span></p>
+      <p>
+        Note : 1. Kindly Go to your Email after pressing verify Email button and
+        verify the order by click on the link in the mail
 
-      <p> Note : 1. Kindly Go to your Email after pressing verify Email button and verify the order by click on the link in the mail 
-        
-        <br> 2. Payment options will be unavailable till u verify the link in email 
-        
-          </p>
+        <br />
+        2. Payment options will be unavailable till u verify the link in email
 
+      </p>
 
-        <div class="action-btns">
+      <div class="action-btns">
 
-            <button type="submit" class="pay-btn" >Verify Email</button>
-            <button type="submit" class="pay-btn" disabled="{{order.emailVerified}}">Pay Now</button>
-            
-        </div> 
-     
+        <a href="/order/cancel/{{order._id}}" class="cancel-btn">Cancel Order</a>
+       <a href="/order/verify/{{order._id}}" class="verify-btn">Verify Email</a>
+      </div>
+
     </div>
+
   </div>
 
 </div>

@@ -7,6 +7,7 @@ const {
   registerhandler,
   loginhandler,
   deleteHandler,
+  addressHandler,
 } = require("./controllers/userController");
 
 const bodyParser = require("body-parser");
@@ -29,7 +30,7 @@ const {
   getCart,
 } = require("./controllers/getController");
 const { addToCart, removeFromCart,   emptyCart} = require("./controllers/cartController");
-const {createOrder , createCartOrder, deleteorder, dispatchOrder} = require("./controllers/orderController")
+const {createOrder , createCartOrder, deleteorder, dispatchOrder, cancelOrder, verifyOrder, updateOrderEmailVerification} = require("./controllers/orderController")
 const {checkout , productPayment } = require("./controllers/paymentController")
 const port = 4000;
 const app = express();
@@ -149,6 +150,7 @@ app.get("/baby-booties", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,
 app.post("/user/register", registerhandler);
 app.post("/user/login", loginhandler);
 app.post("/user/delete/:userId" ,deleteHandler)
+app.post("/user/address/:userId/:orderId" , addressHandler)
 app.get("/user/dashboard",isAuthenticated, getUserDash);
 app.get("/user/cart" , isAuthenticated , getCart)
 app.get('/user/logout', (req, res) => {
@@ -179,12 +181,18 @@ app.get("/cart/empty" ,isAuthenticated , emptyCart)
 
 app.post("/order/create/:productId" ,isAuthenticated ,createOrder)
 app.get("/order/create" ,isAuthenticated ,createCartOrder)
-app.get("/order/delete/:orderId" , isAuthenticated ,deleteorder )
-app.get("/order/dispatch/:orderId" , isAuthenticated ,dispatchOrder )
-  
-
 app.get("/order/checkout/:orderId" ,isAuthenticated ,checkout)
-app.get("/order/payment" , isAuthenticated , productPayment);
+app.get("/order/delete/:orderId" , isAuthenticated ,deleteorder )
+app.get("/order/cancel/:orderId" , isAuthenticated ,cancelOrder )
+app.get("/order/verify/:orderId" , isAuthenticated ,verifyOrder )   // here we send the email to the user 
+app.get("/order/update/:orderId" ,isAuthenticated, updateOrderEmailVerification)
+app.get("/order/payment/:orderid" , isAuthenticated , productPayment);
+app.get("/order/dispatch/:orderId" , isAuthenticated ,dispatchOrder )
+
+
+
+
+
 
 
 

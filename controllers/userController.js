@@ -26,7 +26,7 @@ const registerhandler = async (req, res) => {
       };
 
       // Send mail
-      
+
       await transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
           return console.log(error);
@@ -99,4 +99,46 @@ const loginhandler = async (req, res) => {
   }
 };
 
-module.exports = { registerhandler, loginhandler, deleteHandler };
+const addressHandler = async (req, res) => {
+  const { userId, orderId } = req.params;
+  const {
+    fullname, street, city, state, contact, postalCode, landMark, country, 
+    holdername, cardNumber, expiry 
+  } = req.body;
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        $push: {
+          addresses: {
+            fullname,
+            street,
+            city,
+            state,
+            contact,
+            postalCode,
+            landMark,
+            country,
+          },
+          cards: {
+            holdername,
+            cardNumber,
+            expiry,
+          },
+        },
+      },
+      { new: true } // Return the updated user document
+    );
+
+    if (!updatedUser) {
+      return res.render("cart", { message: "Some Error" });
+    }
+    res.redirect(`/order/checkout/${orderId}`);
+  } catch (error) {
+    console.log(error);
+    res.render("cart", { message: "Some Error " });
+  }
+};
+
+module.exports = { registerhandler, loginhandler, deleteHandler ,addressHandler};
