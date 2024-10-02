@@ -153,6 +153,7 @@ app.post("/user/delete/:userId" ,deleteHandler)
 app.post("/user/address/:userId/:orderId" , addressHandler)
 app.get("/user/dashboard",isAuthenticated, getUserDash);
 app.get("/user/cart" , isAuthenticated , getCart)
+app.get("/user/order" ,isAuthenticated , getCart)
 app.get('/user/logout', (req, res) => {
   try {
     const { token } = req.cookies;
@@ -185,7 +186,7 @@ app.get("/order/checkout/:orderId" ,isAuthenticated ,checkout)
 app.get("/order/delete/:orderId" , isAuthenticated ,deleteorder )
 app.get("/order/cancel/:orderId" , isAuthenticated ,cancelOrder )
 app.get("/order/verify/:orderId" , isAuthenticated ,verifyOrder )   // here we send the email to the user 
-app.get("/order/update/:orderId" ,isAuthenticated, updateOrderEmailVerification)
+app.get("/order/update/:orderId" ,isAuthenticated, updateOrderEmailVerification) // when email link is clicked
 app.get("/order/payment/:orderid" , isAuthenticated , productPayment);
 app.get("/order/dispatch/:orderId" , isAuthenticated ,dispatchOrder )
 

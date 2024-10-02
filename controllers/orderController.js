@@ -218,10 +218,9 @@ const updateOrderEmailVerification = async (req, res) => {
     const { orderId } = req.params;
 
     const order = await Order.findByIdAndUpdate(orderId, { emailVerified: true }, { new: true });
-    // if (!order) {
-    //   return res.render('cart', { message: 'Order not found' }); 
-    // }
-
+    if (!order) {
+      return res.render('cart', { message: 'Order not found' }); 
+    }
     
     return res.redirect(`/order/payment/${orderId}`)
   } catch (error) {

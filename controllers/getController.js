@@ -101,9 +101,36 @@ const getCart = async (req, res) => {
 };
 
 
+const getOrder = async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    const user = await User.findById(userId).populate(
+    { path : "cart.productId"}
+    ).lean();
+
+    user.cart.forEach(item => {
+      item.total = item.quantity * item.productId.price;
+    });
+
+
+    res.render("order", {
+      userId: req.user._id,
+      username: req.user.username,
+      cart: req.user.cart,
+      pageTitle: "Style House | order",
+      user: user,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
 module.exports = {
   getAdminPage,
   getIndexPage,
   getUserDash,
   getCart,
+  getOrder
 };
