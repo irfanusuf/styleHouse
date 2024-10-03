@@ -78,7 +78,6 @@ const getUserDash = async (req, res) => {
 const getCart = async (req, res) => {
   try {
     const userId = req.userId;
-
     const user = await User.findById(userId).populate(
     { path : "cart.productId"}
     ).lean();
@@ -105,26 +104,38 @@ const getOrder = async (req, res) => {
   try {
     const userId = req.userId;
 
-    const user = await User.findById(userId).populate(
-    { path : "cart.productId"}
-    ).lean();
-
-    user.cart.forEach(item => {
-      item.total = item.quantity * item.productId.price;
-    });
+    const orders =await Order.find({user : userId}).populate(
+      {
+        path : "products.productId"
+      }
+    ).lean()
 
 
-    res.render("order", {
+     console.log(orders)
+      let message = ""
+
+      if(orders.length === 0){
+        message = "No Orders Found !"
+      }
+
+    // user.cart.forEach(item => {
+    //   item.total = item.quantity * item.productId.price;
+    // });
+
+    res.render("orders", {
       userId: req.user._id,
       username: req.user.username,
       cart: req.user.cart,
-      pageTitle: "Style House | order",
-      user: user,
+      pageTitle: "Style House | orders",
+      orders: orders,
+      message : message,
     });
   } catch (error) {
     console.log(error);
   }
 };
+
+
 
 
 module.exports = {

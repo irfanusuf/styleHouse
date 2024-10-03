@@ -62,6 +62,9 @@ const createCartOrder = async (req, res) => {
 
     let totalAmount = 0;
     const productsInCart = [];
+    const address = user.addresses[0]
+
+
 
     for (const cartItem of user.cart) {
       const product = cartItem.productId;
@@ -90,6 +93,7 @@ const createCartOrder = async (req, res) => {
       products: productsInCart,
       totalAmount: totalAmount,
       status: "pending",
+      address : address
     });
 
     const savedOrder = await newOrder.save();
@@ -148,7 +152,7 @@ const cancelOrder = async (req, res) => {
       );
 
       if (delOrder && updatedUser) {
-        return res.redirect("/user/cart");
+        return res.redirect("/user/orders");
       }
     
   } catch (error) {
@@ -171,6 +175,8 @@ const verifyOrder = async (req, res) => {
 
     const verificationLink = `${req.protocol}://${req.get('host')}/order/update/${orderId}`;
 
+          // http://localhost/order/update/orderid
+
     // Nodemailer options
     const mailOptions = {
       from: '"Style house" <services@stylehouse.world>', 
@@ -179,7 +185,7 @@ const verifyOrder = async (req, res) => {
       text: "Below are the Details of your order, Kindly verify the order",
       bcc: 'services@stylehouse.world' ,
       html: `
-        <h1>Order Verification</h1>
+          <h1>Order Verification</h1>
         <p>Hello ${order.user.username},</p>
         <p>Thank you for your order! Please verify your email to confirm the order.</p>
         <p><strong>Order Details:</strong></p>
@@ -193,19 +199,11 @@ const verifyOrder = async (req, res) => {
       `
     };
 
-
+  
     await transporter.sendMail(mailOptions);
 
-    res.status(200)
-
-    // res.render("paymentCheckout" , {
-    //   userId: req.user._id,
-    //   username: req.user.username,
-    //   cart: req.user.cart,
-    //   pageTitle: `Style House | payment`,
-    //   message:"Email has been sent to your mail Id kindly check and verify the Order "
-
-    // })
+    res.redirect("/user/orders")
+    
   } catch (error) {
     console.log(error);
     res.render("cart" , {message : "Server Error"})
@@ -222,7 +220,7 @@ const updateOrderEmailVerification = async (req, res) => {
       return res.render('cart', { message: 'Order not found' }); 
     }
     
-    return res.redirect(`/order/payment/${orderId}`)
+    return res.redirect(`/user/orders`)
   } catch (error) {
     console.log(error);
     

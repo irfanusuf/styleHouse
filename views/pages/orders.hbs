@@ -1,0 +1,95 @@
+<link rel="stylesheet" href="/css/orders.css" />
+
+<div class="container">
+  {{#if message}}
+    <div class="message">{{message}}</div>
+  {{else}}
+    <h1>Your Orders</h1>
+    {{#each orders}}
+      <div class="order-container">
+
+        <div class="order-header">Order ID: {{this._id}}</div>
+
+        <div class="details">
+
+          <div class="order-details">
+            <h2>Order Details</h2>
+            <p><strong>Total Amount:</strong> ${{this.totalAmount}}</p>
+            <p><strong>Status:</strong> {{this.status}}</p>
+            <p><strong>Order Date:</strong> {{this.orderDate}}</p>
+            <p><strong>Payment Done:</strong> {{this.isPaymentDone}}</p>
+            <p><strong>Order Verified Through Email:</strong>
+              {{this.emailVerified}}</p>
+          </div>
+
+          <div class="address-details">
+            <h2>Address Details</h2>
+            {{#each this.address}}
+              <p>{{this.fullname}}</p>
+              <p>
+                <span>
+                  {{this.street}},
+                  {{this.city}},
+                  {{this.state}},
+                  {{this.postalCode}},
+                  {{this.country}}
+                </span>
+
+              </p>
+
+              <p><span>{{this.contact}}</span></p>
+              <p><span>{{this.landMark}}</span></p>
+            {{/each}}
+          </div>
+
+        </div>
+
+        <div class="product-details">
+
+          <h2>Product Details</h2>
+
+          <ul>
+            {{#each this.products}}
+              <li>
+                <strong>Product ID:</strong>
+                {{this.productId.name}}<br />
+                <strong>Quantity:</strong>
+                {{this.quantity}}<br />
+                <strong>Price:</strong>
+                ${{this.price}}<br />
+                <strong>Size:</strong>
+                {{this.size}}<br />
+                <strong>Color:</strong>
+                {{this.color}}<br />
+                <strong>Description:</strong>
+                {{this.productId.description}}<br />
+              </li>
+
+              <img
+                src="{{this.productId.imageUrl}}"
+                alt="{{this.productId.name}}"
+              />
+            {{/each}}
+
+          </ul>
+        </div>
+
+        <div class="track-order">
+
+          <h2>Track Your Order</h2>
+
+          <div class="tracking">
+            <h3> No Tracking available! </h3>
+          </div>
+
+        </div>
+
+        <a href="/order/cancel/{{this._id}}" class="btn">Cancel Order</a>
+        <a href="/order/verify/{{this._id}}" class="btn">Verify Through Email
+        </a>
+        <a href="/order/payment/{{this._id}}" class="btn"> Payment</a>
+
+      </div>
+    {{/each}}
+  {{/if}}
+</div>

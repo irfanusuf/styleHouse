@@ -43,6 +43,14 @@ const checkout = async (req, res) => {
 
 
 
+
+
+
+
+
+
+
+
 const productPayment = async (req, res) => {
     try {
       res.render("paymentCheckout" , {
@@ -50,7 +58,7 @@ const productPayment = async (req, res) => {
         username: req.user.username,
         cart: req.user.cart,
         pageTitle: `Style House | payment`,
-        message : "your Email is Verified"
+        message : "your Email is Verified , proceed for payment"
       })
     } catch (error) {
       console.log(error);
