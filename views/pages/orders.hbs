@@ -48,9 +48,10 @@
 
           <h2>Product Details</h2>
 
-          <ul>
+          <div class="product-cards">
             {{#each this.products}}
-              <li>
+              <div class="card">
+              <p>
                 <strong>Product ID:</strong>
                 {{this.productId.name}}<br />
                 <strong>Quantity:</strong>
@@ -63,15 +64,16 @@
                 {{this.color}}<br />
                 <strong>Description:</strong>
                 {{this.productId.description}}<br />
-              </li>
+              </p>
 
               <img
                 src="{{this.productId.imageUrl}}"
                 alt="{{this.productId.name}}"
               />
+              </div>
             {{/each}}
 
-          </ul>
+          </div>
         </div>
 
         <div class="track-order">

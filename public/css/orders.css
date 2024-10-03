@@ -33,12 +33,13 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     color: #333;
     margin-bottom: 20px;
-    >.order-header {
+
+    > .order-header {
       padding: 20px;
       font-size: 1.5em;
       font-weight: bold;
       margin-bottom: 10px;
-      background-color:antiquewhite;
+      background-color: antiquewhite;
       border-radius: 10px;
     }
 
@@ -85,29 +86,35 @@
       border-radius: 10px;
       margin-top: 10px;
 
-      >h2{
+      > h2 {
         color: rgb(231, 66, 99);
       }
 
-      ul {
-        list-style: none;
-        padding: 0;
+      .product-cards {
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-between;
-        gap: 20px;
+        gap: 10px;
 
-        > li {
+        > .card {
+          width: 600px;
+          display: flex;
+          justify-content: space-between;
+          gap: 10px;
           margin-bottom: 10px;
-          line-height: 25px;
-        }
-        > img {
-          width: 200px;
+          > p {
+            margin-bottom: 10px;
+            line-height: 25px;
+          }
+          > img {
+            width: 200px;
+            border-radius: 10px ;
+          }
         }
       }
     }
 
-
-    .track-order{
+    .track-order {
       background-color: antiquewhite;
       height: 300px;
       padding: 20px;
@@ -115,21 +122,18 @@
       margin-top: 10px;
       margin-bottom: 20px;
 
-      >h2{
+      > h2 {
         color: rgb(204, 66, 94);
         text-align: center;
       }
 
-      >.tracking{
+      > .tracking {
         height: 200px;
         display: flex;
         justify-content: center;
         align-items: center;
       }
-
-      
     }
-
 
     .btn {
       background-color: crimson;
@@ -137,7 +141,7 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      color: #ccc;
+      color: #e6dada;
       text-decoration: none;
       margin-right: 10px;
       transition: all 0.3s linear;
@@ -145,8 +149,8 @@
       &:hover {
         background-color: darkred;
       }
-      &:disabled{
-        cursor:not-allowed;
+      &:disabled {
+        cursor: not-allowed;
         background-color: rgba(202, 86, 86, 0.836);
         color: black;
       }
