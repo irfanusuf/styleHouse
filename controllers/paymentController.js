@@ -1,70 +1,95 @@
 const Order = require("../models/oderModel");
 const User = require("../models/userModel");
+const Stripe = require("stripe");
 
+const stripe = new Stripe(
+  "sk_test_51POyEoD61yegK70G79EW5QgG3HXdR2qz3s9RiMpUa3d6mebjPqWIS0QG4kW8a3fyRRnpdcx3PUn3YaR5f9GOwX2e00AZRdQDIk"
+);
 
 const checkout = async (req, res) => {
-    try {
-      const userId = req.userId;
-      const {orderId} =req.params
-  
-      const user = await User.findById(userId).lean();
+  try {
+    const userId = req.userId;
+    const { orderId } = req.params;
 
-      const order = await Order.findById(orderId).populate({
+    const user = await User.findById(userId).lean();
+
+    const order = await Order.findById(orderId)
+      .populate({
         path: "products.productId",
-      }).lean();
+      })
+      .lean();
 
+    let address = {};
+    let card = {};
 
-      let address = {}
-      let card = {}
-
-      if(user.addresses){
-         address = user.addresses[0]
-      }
-   
-      if(user.cards){
-         card =  user.cards[0]
-      }
-
-      return res.render("checkout", {
-        userId: req.user._id,
-        username: req.user.username,
-        cart: req.user.cart,
-        pageTitle: `Style House | checkout`,
-        order,
-        user,
-        address,
-        card
-      });
-    } catch (error) {
-      console.error(error);
-      res.render("cart", { message: "An error occurred during checkout." });
+    if (user.addresses) {
+      address = user.addresses[0];
     }
-  };
 
+    if (user.cards) {
+      card = user.cards[0];
+    }
 
-
-
-
-
-
-
-
-
+    return res.render("checkout", {
+      userId: req.user._id,
+      username: req.user.username,
+      cart: req.user.cart,
+      pageTitle: `Style House | checkout`,
+      order,
+      user,
+      address,
+      card,
+    });
+  } catch (error) {
+    console.error(error);
+    res.render("cart", { message: "An error occurred during checkout." });
+  }
+};
 
 const productPayment = async (req, res) => {
-    try {
-      res.render("paymentCheckout" , {
-        userId: req.user._id,
-        username: req.user.username,
-        cart: req.user.cart,
-        pageTitle: `Style House | payment`,
-        message : "your Email is Verified , proceed for payment"
-      })
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
+const {orderId}  =req.params
 
+  const order = await Order.findById(orderId).populate({
+    path : "products.productId"
+  }).populate({
+    path : "user"
+  }).lean()
 
-  module.exports ={checkout , productPayment}
+  const name = order.address[0].fullname
+
+  try {
+    res.render("paymentCheckout", {
+      userId: req.user._id,
+      username: req.user.username,
+      cart: req.user.cart,
+      pageTitle: `Style House | payment`,
+      order : order,
+      name : name 
+      // message : "your Email is Verified , proceed for payment"
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const createIntent = async (req, res) => {
+  try {
+    const { amount, currency } = req.body;
+
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: amount,// Stripe accepts the amount in cents
+      currency,
+      automatic_payment_methods: { enabled: true },
+    });
+
+    res.json({
+      clientSecret: paymentIntent.client_secret,
+    });
+  } catch (error) {
+    console.error("Error creating payment intent:", error);
+    res.status(500).json({ error: "Failed to create payment intent" });
+  }
+};
+
+module.exports = { checkout, productPayment, createIntent };

@@ -81,15 +81,15 @@
           <h2>Track Your Order</h2>
 
           <div class="tracking">
-            <h3> No Tracking available! </h3>
+            <h3> Tracking status will be available when a succesful order is placed ! </h3>
           </div>
 
         </div>
 
-        <a href="/order/cancel/{{this._id}}" class="btn">Cancel Order</a>
-        <a href="/order/verify/{{this._id}}" class="btn">Verify Through Email
+        <a href="/order/cancel/{{this._id}}" class="btn btn-cancel">Cancel Order</a>
+        <a href="/order/verify/{{this._id}}" class="btn btn-verify">Verify Through Email
         </a>
-        <a href="/order/payment/{{this._id}}" class="btn"> Payment</a>
+        <a href="/order/payment/{{this._id}}" class="btn btn-payment"> Payment</a>
 
       </div>
     {{/each}}

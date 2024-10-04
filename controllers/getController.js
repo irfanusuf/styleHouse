@@ -111,7 +111,7 @@ const getOrder = async (req, res) => {
     ).lean()
 
 
-     console.log(orders)
+    //  console.log(orders)
       let message = ""
 
       if(orders.length === 0){

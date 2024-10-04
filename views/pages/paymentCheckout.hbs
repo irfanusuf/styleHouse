@@ -1,4 +1,5 @@
-<link rel="stylesheet" href="/css/checkout.css" />
+<link rel="stylesheet" href="/css/paymentCheckout.css" />
+ <script src="https://js.stripe.com/v3/"></script>
 
 {{#if message}}
   <div class="message">
@@ -6,3 +7,129 @@
   </div>
 
 {{/if}}
+
+
+ 
+
+
+
+  <h1>Complete Your Payment</h1>
+
+  <div class="payment-container">
+
+ 
+
+  <div class="summary">
+    <h2>Order Summary</h2>
+
+    {{#each order.products}}
+    <p>
+    <span>{{this.productId.name}}</span>,
+    <span>{{this.size}}</span>,
+    <span>{{this.color}}</span>,
+    <span> <strong>Price : </strong>{{this.price}} $</span>
+    </p>
+
+    {{/each}}
+    <p><strong> Total Amount : </strong>{{order.totalAmount}} $</p>
+  </div>
+
+
+  <form id="payment-form">
+  
+    <div id="payment-request-button"></div>
+
+    <label for="name"> Name on Card</label>
+    <input type="text" id="name" placeholder="Name" value="{{name}}" />
+    <label for="email"> Your Email Address</label>
+    <input type="email" id="email" placeholder="Email" value="{{order.user.email}}" required />
+    <label> Total Order Amount </label>
+    <input type="number" id="amount" value="{{order.totalAmount}}" readonly required />
+  
+  
+    <div id="card-element"></div>
+
+    <div id="card-errors" role="alert"></div>
+
+   
+    <button type="submit" id="submit-button">Pay</button>
+  </form>
+
+   </div>
+
+  <script>
+   
+    const stripe = Stripe('pk_test_51POyEoD61yegK70G1cIBWLUdiLDTocDmcj2tqGPrrDEQpgeutRc6tkV3EqvHx1zm5HSIAA2LBKhlCJwCGtKrV2rI006Z5gyM0j'); 
+
+
+    const elements = stripe.elements();
+    const amount = Math.round(document.getElementById("amount").value * 100);
+
+    const paymentRequest = stripe.paymentRequest({
+      country: 'US',
+      currency: 'usd',
+      total: {
+        label: 'Total',
+        amount: amount, 
+      },
+      requestPayerName: true,
+      requestPayerEmail: true,
+    });
+
+   
+    const prButton = elements.create('paymentRequestButton', {
+      paymentRequest: paymentRequest,
+    });
+
+    // Check availability of Payment Request API
+    paymentRequest.canMakePayment().then(function(result) {
+      if (result) {
+        prButton.mount('#payment-request-button');
+      } else {
+        document.getElementById('payment-request-button').style.display = 'none';
+      }
+    });
+
+    
+    const cardElement = elements.create('card');
+    cardElement.mount('#card-element');
+
+   
+    const form = document.getElementById('payment-form');
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+    
+      const cardHolderName = document.getElementById('name').value;
+      const cardHolderEmail = document.getElementById('email').value;
+      
+     
+      
+
+
+      const { clientSecret } = await fetch('/order/paymentIntent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: amount, currency: 'usd' }) // $10.00 in USD
+      }).then(res => res.json());
+
+     
+      const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: cardElement,
+          billing_details: {
+            name: cardHolderName,
+            email: cardHolderEmail,
+          }
+        }
+      });
+
+      if (error) {
+        document.getElementById('card-errors').textContent = error.message;
+      } else if (paymentIntent.status === 'succeeded') {
+        alert('Payment successful!');
+      }
+    });
+  </script>
+
+
