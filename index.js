@@ -32,7 +32,7 @@ const {
   getOrder,
 } = require("./controllers/getController");
 const { addToCart, removeFromCart,   emptyCart} = require("./controllers/cartController");
-const {createOrder , createCartOrder, deleteorder, dispatchOrder, cancelOrder, verifyOrder, updateOrderEmailVerification, cancelOrderRequest} = require("./controllers/orderController")
+const {createOrder , createCartOrder, deleteorder, dispatchOrder, cancelOrder, verifyOrder, updateOrderEmailVerification, cancelOrderRequest, orderAddAddress} = require("./controllers/orderController")
 const {checkout , productPayment, createIntent, paymentSuccess } = require("./controllers/paymentController")
 const port = 4000;
 const app = express();
@@ -185,6 +185,7 @@ app.get("/order/create" ,isAuthenticated ,createCartOrder)
 app.get("/order/checkout/:orderId" ,isAuthenticated ,checkout)
 app.get("/order/delete/:orderId" , isAuthenticated ,deleteorder )
 app.get("/order/cancel/:orderId" , isAuthenticated ,cancelOrder )
+app.get("/order/addAddress/:orderId" , isAuthenticated ,orderAddAddress )
 app.get("/order/verify/:orderId" , isAuthenticated ,verifyOrder )   // here we send the email to the user 
 app.get("/order/update/:orderId" , isAuthenticated, updateOrderEmailVerification) // when email link is clicked
 app.get("/order/payment/:orderId" , isAuthenticated , productPayment);

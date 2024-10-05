@@ -64,6 +64,8 @@ const createCartOrder = async (req, res) => {
     const productsInCart = [];
     const address = user.addresses[0];
 
+
+
     for (const cartItem of user.cart) {
       const product = cartItem.productId;
 
@@ -132,6 +134,12 @@ const deleteorder = async (req, res) => {
     res.render("admin", { message: "Error canceling the order" });
   }
 };
+
+const orderAddAddress = async (req,res) =>{
+
+
+}
+
 
 const cancelOrder = async (req, res) => {
   try {
@@ -288,6 +296,7 @@ module.exports = {
   createOrder,
   createCartOrder,
   deleteorder,
+  orderAddAddress,
   dispatchOrder,
   cancelOrder,
   verifyOrder,
