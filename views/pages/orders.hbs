@@ -2,96 +2,137 @@
 
 <div class="container">
   {{#if message}}
-    <div class="message">{{message}}</div>
+  <div class="message">{{message}}</div>
+  <a class="btn btn-track" href="/user/orders"> Track Order </a>
   {{else}}
-    <h1>Your Orders</h1>
-    {{#each orders}}
-      <div class="order-container">
+  <h1>Your Orders</h1>
+  {{#each orders}}
+  <div class="order-container">
 
-        <div class="order-header">Order ID: {{this._id}}</div>
+    <div class="order-header">Order ID: {{this._id}}</div>
 
-        <div class="details">
+    <div class="details">
 
-          <div class="order-details">
-            <h2>Order Details</h2>
-            <p><strong>Total Amount:</strong> ${{this.totalAmount}}</p>
-            <p><strong>Status:</strong> {{this.status}}</p>
-            <p><strong>Order Date:</strong> {{this.orderDate}}</p>
-            <p><strong>Payment Done:</strong> {{this.isPaymentDone}}</p>
-            <p><strong>Order Verified Through Email:</strong>
-              {{this.emailVerified}}</p>
-          </div>
+      <div class="order-details">
+        <h2>Order Details</h2>
+        <p><strong>Total Amount:</strong> ${{this.totalAmount}}</p>
+        <p><strong>Status:</strong> {{this.status}}</p>
+        <p><strong>Order Date:</strong> {{this.orderDate}}</p>
+        <p><strong>Payment Done:</strong> {{#if this.isPaymentDone}} Payment successful using Card! {{else}} Payment
+          pending! {{/if}}</p>
+        <p><strong>Order Verified Through Email:</strong>
+          {{#if this.emailVerified}} Order Email Verified {{else}} <a href="/order/verify/{{this._id}}"
+            class="btn btn-verify btn-small">Verify
+          </a> {{/if}}</p>
+        <p><strong>Order Status :</strong>
+          {{#if this.isPaymentDone}} Awaiting Dispatch !{{else}} Payment pending! {{/if}}</p>
+      </div>
 
-          <div class="address-details">
-            <h2>Address Details</h2>
-            {{#each this.address}}
-              <p>{{this.fullname}}</p>
-              <p>
-                <span>
-                  {{this.street}},
-                  {{this.city}},
-                  {{this.state}},
-                  {{this.postalCode}},
-                  {{this.country}}
-                </span>
+      <div class="address-details">
+        <h2>Address Details</h2>
+        {{#each this.address}}
+        <p>{{this.fullname}}</p>
+        <p>
+          <span>
+            {{this.street}},
+            {{this.city}},
+            {{this.state}},
+            {{this.postalCode}},
+            {{this.country}}
+          </span>
 
-              </p>
+        </p>
 
-              <p><span>{{this.contact}}</span></p>
-              <p><span>{{this.landMark}}</span></p>
-            {{/each}}
-          </div>
+        <p><span>{{this.contact}}</span></p>
+        <p><span>{{this.landMark}}</span></p>
+        {{/each}}
+      </div>
 
+    </div>
+
+    <div class="product-details">
+
+      <h2>Product Details</h2>
+
+      <div class="product-cards">
+        {{#each this.products}}
+        <div class="card">
+          <p>
+            <strong>Product ID:</strong>
+            {{this.productId.name}}<br />
+            <strong>Quantity:</strong>
+            {{this.quantity}}<br />
+            <strong>Price:</strong>
+            ${{this.price}}<br />
+            <strong>Size:</strong>
+            {{this.size}}<br />
+            <strong>Color:</strong>
+            {{this.color}}<br />
+            <strong>Description:</strong>
+            {{this.productId.description}}<br />
+          </p>
+
+          <img src="{{this.productId.imageUrl}}" alt="{{this.productId.name}}" />
         </div>
-
-        <div class="product-details">
-
-          <h2>Product Details</h2>
-
-          <div class="product-cards">
-            {{#each this.products}}
-              <div class="card">
-              <p>
-                <strong>Product ID:</strong>
-                {{this.productId.name}}<br />
-                <strong>Quantity:</strong>
-                {{this.quantity}}<br />
-                <strong>Price:</strong>
-                ${{this.price}}<br />
-                <strong>Size:</strong>
-                {{this.size}}<br />
-                <strong>Color:</strong>
-                {{this.color}}<br />
-                <strong>Description:</strong>
-                {{this.productId.description}}<br />
-              </p>
-
-              <img
-                src="{{this.productId.imageUrl}}"
-                alt="{{this.productId.name}}"
-              />
-              </div>
-            {{/each}}
-
-          </div>
-        </div>
-
-        <div class="track-order">
-
-          <h2>Track Your Order</h2>
-
-          <div class="tracking">
-            <h3> Tracking status will be available when a succesful order is placed ! </h3>
-          </div>
-
-        </div>
-
-        <a href="/order/cancel/{{this._id}}" class="btn btn-cancel">Cancel Order</a>
-        <a href="/order/verify/{{this._id}}" class="btn btn-verify">Verify Through Email
-        </a>
-        <a href="/order/payment/{{this._id}}" class="btn btn-payment"> Payment</a>
+        {{/each}}
 
       </div>
-    {{/each}}
+    </div>
+
+    <div class="track-order">
+
+      <h2>Track Your Order</h2>
+
+      <div class="tracking">
+
+        {{#if this.isPaymentDone}}
+        <h3>
+          Your order will be dispatched soon and u will be notified thorugh email!
+        </h3>
+
+        {{else}}
+        <h3>
+          Tracking status will be available when a succesful order is placed!
+        </h3>
+        {{/if}}
+
+      </div>
+
+    </div>
+
+
+
+    {{#if this.isPaymentDone}}
+
+    <a href="/order/cancel/mail/{{this._id}}" class="btn btn-cancel">Request Cancel </a>
+
+    {{else}}
+    <a href="/order/cancel/{{this._id}}" class="btn btn-cancel">Cancel Order</a>
+    {{/if}}
+
+
+
+
+    {{#if this.emailVerified}}
+
+    {{#if this.isPaymentDone}}
+
+    {{else}}
+    <a href="/order/payment/{{this._id}}" class="btn btn-payment">
+      Payment</a>
+
+    {{/if}}
+
+
+    {{else}}
+
+    <a href="/order/verify/{{this._id}}" class="btn btn-verify">Verify
+      Through Email
+    </a>
+
+    {{/if}}
+
+  </div>
+  {{/each}}
   {{/if}}
 </div>

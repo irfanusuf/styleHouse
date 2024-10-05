@@ -229,6 +229,13 @@ const updateOrderEmailVerification = async (req, res) => {
 };
 
 
+const cancelOrderRequest = async (req,res) =>{
+
+
+
+}
+
+
 
 
 const dispatchOrder = async (req, res) => {
@@ -242,5 +249,6 @@ module.exports = {
   dispatchOrder,
   cancelOrder,
   verifyOrder,
-  updateOrderEmailVerification
+  updateOrderEmailVerification,
+  cancelOrderRequest
 };

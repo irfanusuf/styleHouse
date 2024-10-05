@@ -9,9 +9,6 @@
 {{/if}}
 
 
- 
-
-
 
   <h1>Complete Your Payment</h1>
 
@@ -21,7 +18,7 @@
 
   <div class="summary">
     <h2>Order Summary</h2>
-
+    <h3>Order Id : <span id="orderId">{{order._id}}</span> </h3> 
     {{#each order.products}}
     <p>
     <span>{{this.productId.name}}</span>,
@@ -52,7 +49,7 @@
     <div id="card-errors" role="alert"></div>
 
    
-    <button type="submit" id="submit-button">Pay</button>
+    <button type="submit" id="submit-button">Pay <div id="spinner" style="display: none;"></div></button>
   </form>
 
    </div>
@@ -64,7 +61,8 @@
 
     const elements = stripe.elements();
     const amount = Math.round(document.getElementById("amount").value * 100);
-
+    const orderId = document.getElementById("orderId").textContent.trim() 
+ 
     const paymentRequest = stripe.paymentRequest({
       country: 'US',
       currency: 'usd',
@@ -96,21 +94,25 @@
 
    
     const form = document.getElementById('payment-form');
+    const submitButton = document.getElementById('submit-button');
+    const spinner = document.getElementById('spinner');
+
+
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
 
+      submitButton.disabled = true;
+      spinner.style.display = 'inline-block';
     
       const cardHolderName = document.getElementById('name').value;
       const cardHolderEmail = document.getElementById('email').value;
       
      
-      
-
-
+    
       const { clientSecret } = await fetch('/order/paymentIntent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: amount, currency: 'usd' }) // $10.00 in USD
+        body: JSON.stringify({ amount: amount, currency: 'usd' }) 
       }).then(res => res.json());
 
      
@@ -124,11 +126,16 @@
         }
       });
 
-      if (error) {
+     if (error) {
         document.getElementById('card-errors').textContent = error.message;
+           // Re-enable the button and hide the spinner
+        submitButton.disabled = false;
+        spinner.style.display = 'none';
       } else if (paymentIntent.status === 'succeeded') {
-        alert('Payment successful!');
+        
+       window.location.href = `/order/payment/success/${orderId}`;
       }
+
     });
   </script>
 

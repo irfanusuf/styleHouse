@@ -31,8 +31,8 @@ const {
   getOrder,
 } = require("./controllers/getController");
 const { addToCart, removeFromCart,   emptyCart} = require("./controllers/cartController");
-const {createOrder , createCartOrder, deleteorder, dispatchOrder, cancelOrder, verifyOrder, updateOrderEmailVerification} = require("./controllers/orderController")
-const {checkout , productPayment, createIntent } = require("./controllers/paymentController")
+const {createOrder , createCartOrder, deleteorder, dispatchOrder, cancelOrder, verifyOrder, updateOrderEmailVerification, cancelOrderRequest} = require("./controllers/orderController")
+const {checkout , productPayment, createIntent, paymentSuccess } = require("./controllers/paymentController")
 const port = 4000;
 const app = express();
   
@@ -113,11 +113,8 @@ app.get("/locator", dataHelper,(req, res) => {
 
 
 
-
-
 //rendering Search
 app.post("/search", dataHelper , renderPageSearchProducts);
-
 
 // rendering category
 app.get("/men", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Men")});
@@ -189,7 +186,9 @@ app.get("/order/cancel/:orderId" , isAuthenticated ,cancelOrder )
 app.get("/order/verify/:orderId" , isAuthenticated ,verifyOrder )   // here we send the email to the user 
 app.get("/order/update/:orderId" , isAuthenticated, updateOrderEmailVerification) // when email link is clicked
 app.get("/order/payment/:orderId" , isAuthenticated , productPayment);
-app.post("/order/paymentIntent" , isAuthenticated , createIntent)
+app.post("/order/paymentIntent" , isAuthenticated , createIntent)    //api for payment intent
+app.get("/order/payment/success/:orderId" , isAuthenticated , paymentSuccess)
+app.get("/order/cancel/mail/:orderId" , isAuthenticated , cancelOrderRequest)
 app.get("/order/dispatch/:orderId" , isAuthenticated ,dispatchOrder )
 
 

@@ -15,19 +15,16 @@ const getAdminPage = async (req, res) => {
       })
       .lean();
 
-
     const orders = await Order.find()
       .populate({
         path: "user",
-        select : "email"
+        select: "email",
       })
       .populate({
         path: "products.productId",
-        select : "name"
+        select: "name",
       })
       .lean();
-
- 
 
     res.render("admin", {
       userId: req.user._id,
@@ -72,20 +69,19 @@ const getUserDash = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-  } 
+  }
 };
 
 const getCart = async (req, res) => {
   try {
     const userId = req.userId;
-    const user = await User.findById(userId).populate(
-    { path : "cart.productId"}
-    ).lean();
+    const user = await User.findById(userId)
+      .populate({ path: "cart.productId" })
+      .lean();
 
-    user.cart.forEach(item => {
+    user.cart.forEach((item) => {
       item.total = item.quantity * item.productId.price;
     });
-
 
     res.render("cart", {
       userId: req.user._id,
@@ -99,28 +95,25 @@ const getCart = async (req, res) => {
   }
 };
 
-
 const getOrder = async (req, res) => {
   try {
     const userId = req.userId;
 
-    const orders =await Order.find({user : userId}).populate(
-      {
-        path : "products.productId"
-      }
-    ).lean()
+    const orders = await Order.find({ user: userId })
+      .populate({
+        path: "products.productId",
+      })
+      .lean();
 
 
-    //  console.log(orders)
-      let message = ""
+    let message = "";
+    let dipatch = false
 
-      if(orders.length === 0){
-        message = "No Orders Found !"
-      }
+    if (orders.length === 0) {
+      message = "No Orders Found !";
+    }
 
-    // user.cart.forEach(item => {
-    //   item.total = item.quantity * item.productId.price;
-    // });
+    
 
     res.render("orders", {
       userId: req.user._id,
@@ -128,20 +121,17 @@ const getOrder = async (req, res) => {
       cart: req.user.cart,
       pageTitle: "Style House | orders",
       orders: orders,
-      message : message,
+      message: message,
     });
   } catch (error) {
     console.log(error);
   }
 };
 
-
-
-
 module.exports = {
   getAdminPage,
   getIndexPage,
   getUserDash,
   getCart,
-  getOrder
+  getOrder,
 };

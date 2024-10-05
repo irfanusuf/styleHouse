@@ -47,16 +47,18 @@ const checkout = async (req, res) => {
 };
 
 const productPayment = async (req, res) => {
+  const { orderId } = req.params;
 
-const {orderId}  =req.params
+  const order = await Order.findById(orderId)
+    .populate({
+      path: "products.productId",
+    })
+    .populate({
+      path: "user",
+    })
+    .lean();
 
-  const order = await Order.findById(orderId).populate({
-    path : "products.productId"
-  }).populate({
-    path : "user"
-  }).lean()
-
-  const name = order.address[0].fullname
+  const name = order.address[0].fullname;
 
   try {
     res.render("paymentCheckout", {
@@ -64,8 +66,8 @@ const {orderId}  =req.params
       username: req.user.username,
       cart: req.user.cart,
       pageTitle: `Style House | payment`,
-      order : order,
-      name : name 
+      order: order,
+      name: name,
       // message : "your Email is Verified , proceed for payment"
     });
   } catch (error) {
@@ -78,7 +80,7 @@ const createIntent = async (req, res) => {
     const { amount, currency } = req.body;
 
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: amount,// Stripe accepts the amount in cents
+      amount: amount, // Stripe accepts the amount in cents
       currency,
       automatic_payment_methods: { enabled: true },
     });
@@ -92,4 +94,31 @@ const createIntent = async (req, res) => {
   }
 };
 
-module.exports = { checkout, productPayment, createIntent };
+const paymentSuccess = async (req, res) => {
+  const { orderId } = req.params;
+
+  try {
+    const updatedOrder = await Order.findByIdAndUpdate(
+      orderId,
+      { isPaymentDone: true },
+      { new: true }
+    );
+
+    if (updatedOrder) {
+      return res.render("orders", {
+        userId: req.user._id,
+        username: req.user.username,
+        cart: req.user.cart,
+        pageTitle: "Style House | payment Sucesss",
+        message: "Payment successful! Your order has been placed.",
+      });
+    }
+  } catch (error) {
+    console.error("Error updating payment status:", error);
+    res.render("orders", {
+      message: "An error occurred while processing your payment",
+    });
+  }
+};
+
+module.exports = { checkout, productPayment, createIntent, paymentSuccess };
