@@ -25,10 +25,11 @@ const User = mongoose.model("User", {
     }
   ],
 
-  isAdmin: Boolean,
-  isEmailVerified: Boolean,
+  isAdmin : {type : Boolean , default : false},
+  isStorekeeper : {type : Boolean , default : false},
+  isEmailVerified:{type : Boolean , default : false},
   cartValue: { type: Number },
-  cart: [
+  cart: [ 
     {
       productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
       quantity: { type: Number, required: true },

@@ -17,12 +17,34 @@ const registerhandler = async (req, res) => {
         password: encryptpass,
       });
 
+      const verificationLink = `${req.protocol}://${req.get(
+        "host"
+      )}/user/verify/${newUser._id}`;
+
       let mailOptions = {
         from: "services@stylehouse.world", // Sender address
         to: `${newUser.email}`, // List of receivers
-        subject: "Welcome To style House", // Subject line
-        text: "We are happay that u registered with stay tuned for exciting offers",
-        // html: "<b>This is a test email sent from a Node.js server</b>",
+        subject: "Welcome to Style House!", // Subject line
+        html: `
+        <html>
+        <body style="font-family: Arial, sans-serif; line-height: 1.6;">
+            <div style="max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
+                <h2 style="color: #333;">Welcome to Style House, ${newUser.username}!</h2>
+                <p>We're thrilled to have you on board.</p>
+                <p>Thank you for registering with us. As a valued member of our community, you'll be the first to know about our upcoming offers and exclusive promotions designed just for you.</p>
+                <p>To ensure you receive all the latest news, please verify your email address by clicking the button below:</p>
+                <p style="text-align: center;">
+                    <a href="${verificationLink}" style="display: inline-block; background-color: #6772e5; color: white; padding: 12px 20px; border-radius: 5px; text-decoration: none; font-weight: bold;">
+                        Verify your email
+                    </a>
+                </p>
+                <p>Stay tuned for exciting offers and updates!</p>
+                <p>Best regards,<br>The Style House Team</p>
+                <p style="font-size: 0.8em; color: grey;">Note: If you did not register for this account, please ignore this email.</p>
+            </div>
+        </body>
+        </html>
+        `,
       };
 
       // Send mail
@@ -36,13 +58,44 @@ const registerhandler = async (req, res) => {
 
       await newUser.save();
 
-      // res.render("register" , {successMessage : "User Sign Up Succesfull!"});
-      res.redirect("/user/login");
+      res.render("signup", {
+        pageTitle: "Style House | Signup",
+        message:
+          "Signup Successfull! ,We have sent u mail, kindly verfiy your mail id ",
+      });
     } else {
       res.render("signup", { message: "User already Exists!" });
     }
   } else {
     res.render("signup", { message: "All Credentials Required !" });
+  }
+};
+
+const verifyUserEmail = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { isEmailVerified: true },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).render("error", { message: "User not found" });
+    }
+
+    res.render("login", {
+      pageTitle: "Style House | Signup",
+      message: "Your email has been successfully verified!",
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .render("error", {
+        message: "An error occurred while verifying your email.",
+      });
   }
 };
 
@@ -89,43 +142,65 @@ const loginhandler = async (req, res) => {
 
         return res.redirect(`/user/dashboard`);
       } else {
-        res.render("login", { message: "Password incorrect!" });
+        res.render("login", {
+          pageTitle: "Style House | login",
+          message: "Password incorrect!",
+        });
       }
     } else {
-      res.render("login", { message: "User Not Found!" });
+      res.render("login", {
+        pageTitle: "Style House | login",
+        message: "User Not Found!",
+      });
     }
   } else {
-    res.render("login", { message: "All credentials Required!" });
+    res.render("login", {
+      pageTitle: "Style House | login",
+      message: "All credentials Required!",
+    });
   }
 };
 
 const addressHandler = async (req, res) => {
   const { userId, orderId } = req.params;
   const {
-    fullname, street, city, state, contact, postalCode, landMark, country, 
-    holdername, cardNumber, expiry 
+    fullname,
+    street,
+    city,
+    state,
+    contact,
+    postalCode,
+    landMark,
+    country,
+    holderName,
+    cardNumber,
+    expiry,
   } = req.body;
 
   try {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       {
-        $push: {
-          addresses: {
-            fullname,
-            street,
-            city,
-            state,
-            contact,
-            postalCode,
-            landMark,
-            country,
-          },
-          cards: {
-            holdername,
-            cardNumber,
-            expiry,
-          },
+        $set: {
+          addresses: [
+            {
+              fullname,
+              street,
+              city,
+              state,
+              contact,
+              postalCode,
+              landMark,
+              country,
+            },
+          ],
+          cards: [
+            {
+              holderName,
+              cardNumber,
+              expiry,
+            },
+          ],
         },
       },
       { new: true } // Return the updated user document
@@ -141,4 +216,10 @@ const addressHandler = async (req, res) => {
   }
 };
 
-module.exports = { registerhandler, loginhandler, deleteHandler ,addressHandler};
+module.exports = {
+  registerhandler,
+  loginhandler,
+  deleteHandler,
+  addressHandler,
+  verifyUserEmail,
+};

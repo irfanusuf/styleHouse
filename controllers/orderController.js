@@ -62,9 +62,7 @@ const createCartOrder = async (req, res) => {
 
     let totalAmount = 0;
     const productsInCart = [];
-    const address = user.addresses[0]
-
-
+    const address = user.addresses[0];
 
     for (const cartItem of user.cart) {
       const product = cartItem.productId;
@@ -93,7 +91,7 @@ const createCartOrder = async (req, res) => {
       products: productsInCart,
       totalAmount: totalAmount,
       status: "pending",
-      address : address
+      address: address,
     });
 
     const savedOrder = await newOrder.save();
@@ -114,7 +112,7 @@ const createCartOrder = async (req, res) => {
 const deleteorder = async (req, res) => {
   try {
     const { orderId } = req.params;
-    const userId = req.userId
+    const userId = req.userId;
 
     const delOrder = await Order.findByIdAndDelete(orderId);
 
@@ -131,112 +129,156 @@ const deleteorder = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.render("admin" , { message: "Error canceling the order" });
+    res.render("admin", { message: "Error canceling the order" });
   }
 };
 
 const cancelOrder = async (req, res) => {
   try {
-    const {orderId } = req.params;
-    const userId = req.userId
+    const { orderId } = req.params;
+    const userId = req.userId;
 
-    if(userId === "" || orderId ===""){
-     return res.render("cart" , { message: "Error canceling the order" });
+    if (userId === "" || orderId === "") {
+      return res.render("cart", { message: "Error canceling the order" });
     }
 
     const delOrder = await Order.findByIdAndDelete(orderId);
     const updatedUser = await User.findByIdAndUpdate(
-        userId,
-        { $pull: { orders: orderId } },
-        { new: true }
-      );
+      userId,
+      { $pull: { orders: orderId } },
+      { new: true }
+    );
 
-      if (delOrder && updatedUser) {
-        return res.redirect("/user/orders");
-      }
-    
+    if (delOrder && updatedUser) {
+      return res.redirect("/user/orders");
+    }
   } catch (error) {
     console.log(error);
-    res.render("cart" , { message: "Error canceling the order" });
+    res.render("cart", { message: "Error canceling the order" });
   }
 };
-
 
 const verifyOrder = async (req, res) => {
   try {
     const { orderId } = req.params;
 
-    
-    const order = await Order.findById(orderId).populate('user').populate('products.productId');
+    const order = await Order.findById(orderId)
+      .populate("user")
+      .populate("products.productId");
 
     if (!order) {
-      return res.status(404).render("cart" , {message : "Some Error With the Order Id"})
+      return res
+        .status(404)
+        .render("cart", { message: "Some Error With the Order Id" });
     }
 
-    const verificationLink = `${req.protocol}://${req.get('host')}/order/update/${orderId}`;
+    const verificationLink = `${req.protocol}://${req.get(
+      "host"
+    )}/order/update/${orderId}`;
 
-          // http://localhost/order/update/orderid
+    // http://localhost/order/update/orderid
 
     // Nodemailer options
     const mailOptions = {
-      from: '"Style house" <services@stylehouse.world>', 
-      to: order.user.email, 
-      subject: 'Verify Your Order',
+      from: '"Style house" <services@stylehouse.world>',
+      to: order.user.email,
+      subject: "Verify Your Order",
       text: "Below are the Details of your order, Kindly verify the order",
-      bcc: 'services@stylehouse.world' ,
+      bcc: "services@stylehouse.world",
       html: `
           <h1>Order Verification</h1>
         <p>Hello ${order.user.username},</p>
         <p>Thank you for your order! Please verify your email to confirm the order.</p>
         <p><strong>Order Details:</strong></p>
         <ul>
-          ${order.products.map(product => `
+          ${order.products
+            .map(
+              (product) => `
             <li>Product: ${product.productId.name}, Quantity: ${product.quantity}, Price: ${product.price}</li>
-          `).join('')}
+          `
+            )
+            .join("")}
         </ul>
         <p>Total Amount: ${order.totalAmount}</p>
         <a href="${verificationLink}" style="padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none;">Verify Order</a>
-      `
+      `,
     };
 
-  
     await transporter.sendMail(mailOptions);
 
-    res.redirect("/user/orders")
-    
+    res.redirect("/user/orders");
   } catch (error) {
     console.log(error);
-    res.render("cart" , {message : "Server Error"})
+    res.render("cart", { message: "Server Error" });
   }
 };
-
 
 const updateOrderEmailVerification = async (req, res) => {
   try {
     const { orderId } = req.params;
 
-    const order = await Order.findByIdAndUpdate(orderId, { emailVerified: true }, { new: true });
+    const order = await Order.findByIdAndUpdate(
+      orderId,
+      { emailVerified: true },
+      { new: true }
+    );
     if (!order) {
-      return res.render('cart', { message: 'Order not found' }); 
+      return res.render("cart", { message: "Order not found" });
     }
-    
-    return res.redirect(`/user/orders`)
+
+    return res.redirect(`/user/orders`);
   } catch (error) {
     console.log(error);
-    
-    return res.render('cart', { message: 'Error verifying email' }); 
+
+    return res.render("cart", { message: "Error verifying email" });
   }
 };
 
+const cancelOrderRequest = async (req, res) => {
+  try {
+    const { orderId } = req.params;
 
-const cancelOrderRequest = async (req,res) =>{
+    const order = await Order.findByIdAndUpdate(orderId, { cancelRequest: true }, { new: true }).populate({ path: "user" })
+    .lean();
+
+    if (!order) {
+      return res.status(404).render('orders', {
+      userId: req.user._id,
+      username: req.user.username,
+      cart: req.user.cart,
+      pageTitle: "Style House | Order cancel",
+      message: 'Order not found !.' });
+    }
+
+    const userEmail = order.user.email;
+
+    if (order) {
+      let mailOptions = {
+        from: '"Style house | Cancel Order" <services@stylehouse.world>',
+        to: "services@stylehouse.world",
+        subject: `Order Cancellation Request for Order ID: ${orderId}`,
+        text: `Dear Admin, User with email: ${userEmail} has requested to cancel the order with ID: ${orderId}. \nPlease take the necessary action.\n\nThank you.`,
+      };
 
 
+      await transporter.sendMail(mailOptions);
 
-}
-
-
-
+      res.render("orders", {
+      userId: req.user._id,
+      username: req.user.username,
+      cart: req.user.cart,
+      pageTitle: "Style House  | Order cancel",
+        message:
+          "Cancellation request sent successfully! , You refund will be intiated between 24 hours to seven days max. ",
+      });
+    }
+  } catch (error) {
+    console.error("Error sending email:", error);
+    res.render("orders", {
+      message: "Failed to send cancellation request. Please try again.",
+    });
+  }
+};
 
 const dispatchOrder = async (req, res) => {
   console.log("dipatch call");
@@ -250,5 +292,5 @@ module.exports = {
   cancelOrder,
   verifyOrder,
   updateOrderEmailVerification,
-  cancelOrderRequest
+  cancelOrderRequest,
 };

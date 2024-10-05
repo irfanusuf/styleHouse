@@ -8,6 +8,7 @@ const {
   loginhandler,
   deleteHandler,
   addressHandler,
+  verifyUserEmail,
 } = require("./controllers/userController");
 
 const bodyParser = require("body-parser");
@@ -146,6 +147,7 @@ app.get("/baby-booties", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,
 
 //user routes
 app.post("/user/register", registerhandler);
+app.get("/user/verify/:userId" , verifyUserEmail)
 app.post("/user/login", loginhandler);
 app.post("/user/delete/:userId" ,deleteHandler)
 app.post("/user/address/:userId/:orderId" , addressHandler)

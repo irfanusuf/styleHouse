@@ -1,5 +1,9 @@
 <link rel="stylesheet" href="/css/orders.css" />
 
+
+
+
+
 <div class="container">
   {{#if message}}
   <div class="message">{{message}}</div>
@@ -18,14 +22,36 @@
         <p><strong>Total Amount:</strong> ${{this.totalAmount}}</p>
         <p><strong>Status:</strong> {{this.status}}</p>
         <p><strong>Order Date:</strong> {{this.orderDate}}</p>
-        <p><strong>Payment Done:</strong> {{#if this.isPaymentDone}} Payment successful using Card! {{else}} Payment
+
+        <p><strong>Payment Done:</strong>
+          {{#if this.isPaymentDone}} Payment successful using Card! {{else}} Payment
           pending! {{/if}}</p>
+
+
+
         <p><strong>Order Verified Through Email:</strong>
-          {{#if this.emailVerified}} Order Email Verified {{else}} <a href="/order/verify/{{this._id}}"
-            class="btn btn-verify btn-small">Verify
-          </a> {{/if}}</p>
+
+          {{#if this.emailVerified}} Order Email Verified {{else}}
+          <a href="/order/verify/{{this._id}}" class="btn btn-verify btn-small">Verify
+          </a>
+          {{/if}}
+
+        </p>
+
         <p><strong>Order Status :</strong>
-          {{#if this.isPaymentDone}} Awaiting Dispatch !{{else}} Payment pending! {{/if}}</p>
+          {{#if this.isPaymentDone}}
+
+          {{#if this.cancelRequest}}
+
+          Cancelled ...
+          {{else}}
+          Awaiting Dispatch !
+
+          {{/if}}
+
+          {{else}}
+          Payment pending!
+          {{/if}}</p>
       </div>
 
       <div class="address-details">
@@ -86,9 +112,23 @@
       <div class="tracking">
 
         {{#if this.isPaymentDone}}
+
+        {{#if this.cancelRequest}}
+
+        <h3>
+          your order has been cancelled!
+        </h3>
+
+
+        {{else}}
         <h3>
           Your order will be dispatched soon and u will be notified thorugh email!
         </h3>
+
+        {{/if}}
+
+
+
 
         {{else}}
         <h3>
@@ -104,10 +144,20 @@
 
     {{#if this.isPaymentDone}}
 
-    <a href="/order/cancel/mail/{{this._id}}" class="btn btn-cancel">Request Cancel </a>
+    {{#if this.cancelRequest}}
+
 
     {{else}}
+
+    <a href="/order/cancel/mail/{{this._id}}" class="btn btn-cancel">Request Cancel </a>
+
+    {{/if}}
+
+
+    {{else}}
+
     <a href="/order/cancel/{{this._id}}" class="btn btn-cancel">Cancel Order</a>
+
     {{/if}}
 
 

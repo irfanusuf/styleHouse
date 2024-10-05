@@ -28,6 +28,8 @@ const orderSchema = new mongoose.Schema({
     shippingTime: { type: Date, default: () => new Date(new Date().setDate(new Date().getDate() + 7)) },
     emailVerified : {type : Boolean , default : false},
     isPaymentDone : {type : Boolean , default : false},
+    cancelRequest : {type : Boolean , default : false},
+    refunded : {type : Boolean , default : false},
     status: { type: String, default: 'pending' } , 
   });
   

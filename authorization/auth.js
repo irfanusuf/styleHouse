@@ -21,6 +21,8 @@ const isAuthenticated = async (req, res, next) => {
           const findUser = await User.findById(resolve.userId);
 
           req.user = findUser
+          req.admin = findUser.isAdmin
+          req.storekeeper = findUser.isStorekeeper
 
           return next();
         }
@@ -36,10 +38,11 @@ const isAuthenticated = async (req, res, next) => {
 
 const isAdmin = async (req, res, next) => {
   try {
-    const userId = req.userId;
+    
+    const admin = req.admin
+    const storekeeper = req.storekeeper
 
-    // seeding id of admin
-    if (userId !== "66ebcb44f24e5d1286bdc20d") {
+    if (!admin || !storekeeper) {
       res.status(401).render("login", { message: "UnAuthorized to access!" });
     } else {
       return next();
@@ -48,6 +51,8 @@ const isAdmin = async (req, res, next) => {
     console.log(err);
   }
 };
+
+
 const dataHelper = async (req, res, next) => {
   try {
     const { token } = req.cookies;
