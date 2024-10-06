@@ -95,16 +95,23 @@ const createIntent = async (req, res) => {
 };
 
 const paymentSuccess = async (req, res) => {
-  const { orderId } = req.params;
 
   try {
-    const updatedOrder = await Order.findByIdAndUpdate(
+
+    const userId = req.user
+    const { orderId } = req.params;
+  
+  
+    const user = await User.findById(userId)
+    user.cart =[]
+    const updateUser = await user.save()
+    const updateOrder = await Order.findByIdAndUpdate(
       orderId,
       { isPaymentDone: true },
       { new: true }
     );
 
-    if (updatedOrder) {
+    if (updateOrder && updateUser) {
       return res.render("orders", {
         userId: req.user._id,
         username: req.user.username,

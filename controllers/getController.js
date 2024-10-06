@@ -106,6 +106,8 @@ const getOrder = async (req, res) => {
       .lean();
 
 
+    const inverseOrder = orders.reverse()
+
     let message = "";
     let dipatch = false
 
@@ -120,7 +122,7 @@ const getOrder = async (req, res) => {
       username: req.user.username,
       cart: req.user.cart,
       pageTitle: "Style House | orders",
-      orders: orders,
+      orders: inverseOrder,
       message: message,
     });
   } catch (error) {

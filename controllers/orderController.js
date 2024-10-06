@@ -64,8 +64,6 @@ const createCartOrder = async (req, res) => {
     const productsInCart = [];
     const address = user.addresses[0];
 
-
-
     for (const cartItem of user.cart) {
       const product = cartItem.productId;
 
@@ -111,6 +109,8 @@ const createCartOrder = async (req, res) => {
   }
 };
 
+// admin controller 
+
 const deleteorder = async (req, res) => {
   try {
     const { orderId } = req.params;
@@ -134,11 +134,6 @@ const deleteorder = async (req, res) => {
     res.render("admin", { message: "Error canceling the order" });
   }
 };
-
-const orderAddAddress = async (req,res) =>{
-
-
-}
 
 
 const cancelOrder = async (req, res) => {
@@ -166,6 +161,39 @@ const cancelOrder = async (req, res) => {
   }
 };
 
+const orderAddAddress = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const userId = req.user;
+    const user = await User.findById(userId);
+
+    const address = user.addresses[0];
+
+    if (!address) {
+      return res.render("checkout", {
+        message: "kindly Add Address!",
+      });
+    }
+
+    const updateOrder = await Order.findByIdAndUpdate(orderId, {
+      $set: { address: [address] },
+    });
+
+    if (updateOrder) {
+      return res.redirect("/user/orders");
+    } else {
+      return res.render("error", {
+        message: "Can't place order, Try after sometime ! ",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.render("error", { message: "Server Error" });
+  }
+};
+
+
+//send mail to the user for verification 
 const verifyOrder = async (req, res) => {
   try {
     const { orderId } = req.params;
@@ -188,29 +216,79 @@ const verifyOrder = async (req, res) => {
 
     // Nodemailer options
     const mailOptions = {
-      from: '"Style house" <services@stylehouse.world>',
+      from: '"Style House" <services@stylehouse.world>',
       to: order.user.email,
       subject: "Verify Your Order",
-      text: "Below are the Details of your order, Kindly verify the order",
       bcc: "services@stylehouse.world",
+      text: `Hello ${order.user.username},
+    
+    Thank you for your order! Below are the details of your order:
+    
+    Order Details:
+    ${order.products.map(
+      (product) => `Product: ${product.productId.name}, Quantity: ${product.quantity}, Price: ${product.price}`
+    ).join("\n")}
+    
+    Total Amount: ${order.totalAmount}
+    
+    Please click the link below to verify your email and confirm the order:
+    ${verificationLink}
+    `,
+    
       html: `
-          <h1>Order Verification</h1>
-        <p>Hello ${order.user.username},</p>
-        <p>Thank you for your order! Please verify your email to confirm the order.</p>
-        <p><strong>Order Details:</strong></p>
-        <ul>
-          ${order.products
-            .map(
-              (product) => `
-            <li>Product: ${product.productId.name}, Quantity: ${product.quantity}, Price: ${product.price}</li>
-          `
-            )
-            .join("")}
-        </ul>
-        <p>Total Amount: ${order.totalAmount}</p>
-        <a href="${verificationLink}" style="padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none;">Verify Order</a>
+        <div style="font-family: Arial, sans-serif; color: #333;">
+          <table width="100%" style="max-width: 600px; margin: 0 auto; border-collapse: collapse; background-color: #f8f9fa; border: 1px solid #ddd; padding: 20px;">
+            <thead>
+              <tr>
+                <th colspan="2" style="background-color: #007bff; color: white; text-align: center; padding: 20px 0;">
+                  <h1 style="margin: 0;">Order Verification</h1>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="2" style="padding: 20px;">
+                  <p>Hello <strong>${order.user.username}</strong>,</p>
+                  <p>Thank you for your order! Please verify your email to confirm the order.</p>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" style="padding: 10px 0; background-color: #fff; border: 1px solid #ddd;">
+                  <h3 style="text-align: center;">Order Details</h3>
+                  <ul style="list-style-type: none; padding: 0; margin: 0;">
+                    ${order.products
+                      .map(
+                        (product) => `
+                        <li style="border-bottom: 1px solid #ddd; padding: 10px;">
+                          <strong>Product:</strong> ${product.productId.name}<br />
+                          <strong>Quantity:</strong> ${product.quantity}<br />
+                          <strong>Price:</strong> $${product.price.toFixed(2)}
+                        </li>
+                      `
+                      )
+                      .join('')}
+                  </ul>
+                  <p style="padding: 10px; font-size: 18px; text-align: right;">
+                    <strong>Total Amount: </strong> $${order.totalAmount.toFixed(2)}
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" style="text-align: center; padding: 20px;">
+                  <a href="${verificationLink}" style="padding: 12px 20px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; font-size: 16px;">Verify Order</a>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" style="padding: 10px; text-align: center; font-size: 12px; color: #999;">
+                  If you did not place this order, please ignore this email.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       `,
     };
+    
 
     await transporter.sendMail(mailOptions);
 
@@ -220,6 +298,7 @@ const verifyOrder = async (req, res) => {
     res.render("cart", { message: "Server Error" });
   }
 };
+
 
 const updateOrderEmailVerification = async (req, res) => {
   try {
@@ -246,36 +325,84 @@ const cancelOrderRequest = async (req, res) => {
   try {
     const { orderId } = req.params;
 
-    const order = await Order.findByIdAndUpdate(orderId, { cancelRequest: true }, { new: true }).populate({ path: "user" })
-    .lean();
+    const order = await Order.findByIdAndUpdate(
+      orderId,
+      { cancelRequest: true },
+      { new: true }
+    )
+      .populate({ path: "user" })
+      .lean();
 
     if (!order) {
-      return res.status(404).render('orders', {
-      userId: req.user._id,
-      username: req.user.username,
-      cart: req.user.cart,
-      pageTitle: "Style House | Order cancel",
-      message: 'Order not found !.' });
+      return res.status(404).render("orders", {
+        userId: req.user._id,
+        username: req.user.username,
+        cart: req.user.cart,
+        pageTitle: "Style House | Order cancel",
+        message: "Order not found !.",
+      });
     }
 
     const userEmail = order.user.email;
 
     if (order) {
       let mailOptions = {
-        from: '"Style house | Cancel Order" <services@stylehouse.world>',
-        to: "services@stylehouse.world",
+        from: '"Style House | Cancel Order" <services@stylehouse.world>',
+        to: userEmail,
+        bcc: "services@stylehouse.world",
         subject: `Order Cancellation Request for Order ID: ${orderId}`,
-        text: `Dear Admin, User with email: ${userEmail} has requested to cancel the order with ID: ${orderId}. \nPlease take the necessary action.\n\nThank you.`,
+        text: `Dear ${req.user.username},
+      
+      You have requested to cancel the order with ID: ${orderId}. 
+      
+      Our team will process your request shortly. If you did not request this cancellation, please contact our support team immediately.
+      
+      Thank you,
+      Style House Support
+      `,
+      
+        html: `
+          <div style="font-family: Arial, sans-serif; color: #333;">
+            <table width="100%" style="max-width: 600px; margin: 0 auto; border-collapse: collapse; background-color: #f8f9fa; border: 1px solid #ddd; padding: 20px;">
+              <thead>
+                <tr>
+                  <th colspan="2" style="background-color: #dc3545; color: white; text-align: center; padding: 20px 0;">
+                    <h1 style="margin: 0;">Order Cancellation Request</h1>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="2" style="padding: 20px;">
+                    <p>Dear <strong>${req.user.username}</strong>,</p>
+                    <p>You have requested to cancel the order with <strong>Order ID: ${orderId}</strong>.</p>
+                    <p>Our team will process your request shortly. If you did not request this cancellation, please contact our support team immediately.</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" style="text-align: center; padding: 20px;">
+                    <a href="mailto:services@stylehouse.world" style="padding: 12px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-size: 16px;">Contact Support</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" style="padding: 10px; text-align: center; font-size: 12px; color: #999;">
+                    If you did not make this request, please ignore this email.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `,
       };
-
+      
 
       await transporter.sendMail(mailOptions);
 
       res.render("orders", {
-      userId: req.user._id,
-      username: req.user.username,
-      cart: req.user.cart,
-      pageTitle: "Style House  | Order cancel",
+        userId: req.user._id,
+        username: req.user.username,
+        cart: req.user.cart,
+        pageTitle: "Style House  | Order cancel",
         message:
           "Cancellation request sent successfully! , You refund will be intiated between 24 hours to seven days max. ",
       });
