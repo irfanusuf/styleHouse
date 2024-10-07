@@ -1,113 +1,129 @@
-
-
 <style>
+    .payment-methods-container {
+        max-width: 1000px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #2a2a2a;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        text-align: center;
+    }
 
+    h1 {
+        font-size: 2.5em;
+        color: #d44c4c;
+        margin-bottom: 20px;
+    }
 
+    .payment-methods {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
 
-.payment-methods-container {
-    max-width: 1000px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #2a2a2a;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-    text-align: center;
-}
+    .payment-method {
+        width: 200px;
+        padding: 20px;
+        margin: 20px;
+        background-color: #4a4a4a;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
 
-h1 {
-    font-size: 2.5em;
-    color: #d44c4c;
-    margin-bottom: 20px;
-}
+    .payment-method:hover {
+        transform: scale(1.05);
+    }
 
-.payment-methods {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    margin-top: 20px;
-}
+    .payment-icon img {
+        width: 80px;
+        height: 80px;
+    }
 
-.payment-method {
-    width: 200px;
-    padding: 20px;
-    margin: 20px;
-    background-color: #4a4a4a;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    text-align: center;
-    transition: transform 0.3s ease;
-}
+    .payment-description h2 {
+        margin-top: 15px;
+        font-size: 1.5em;
+        color: #f5f5f5;
+    }
 
-.payment-method:hover {
-    transform: scale(1.05);
-}
-
-.payment-icon img {
-    width: 80px;
-    height: 80px;
-}
-
-.payment-description h2 {
-    margin-top: 15px;
-    font-size: 1.5em;
-    color: #f5f5f5;
-}
-
-.payment-description p {
-    font-size: 1em;
-    color: #cfcfcf;
-    margin-top: 10px;
-}
-
-
-
+    .payment-description p {
+        font-size: 1em;
+        color: #cfcfcf;
+        margin-top: 10px;
+    }
 </style>
 
 
-    <div class="payment-methods-container">
-        <h1>Supported Payment Methods</h1>
-        <p>At [Your Company Name], we offer multiple secure and convenient payment options to ensure a smooth checkout experience.</p>
+<div class="payment-methods-container">
+    <h1>Supported Payment Methods</h1>
+    <p>At Style house, we offer multiple secure and convenient payment options to ensure a smooth checkout
+        experience.</p>
 
-        <div class="payment-methods">
-            <div class="payment-method">
-                <div class="payment-icon">
-                    <img src="/assets/apple.svg" alt="Apple Pay Icon">
-                </div>
-                <div class="payment-description">
-                    <h2>Apple Pay</h2>
-                    <p>Quick and secure payments using your Apple device.</p>
-                </div>
+    <div class="payment-methods">
+        <div class="payment-method">
+            <div class="payment-icon">
+                <img src="/assets/applepay.svg" alt="Apple Pay Icon">
             </div>
-
-            <div class="payment-method">
-                <div class="payment-icon">
-                    <img src="/assets/googlepay.svg" alt="Google Pay Icon">
-                </div>
-                <div class="payment-description">
-                    <h2>Google Pay</h2>
-                    <p>Easy payments directly from your Google account.</p>
-                </div>
-            </div>
-
-            <div class="payment-method">
-                <div class="payment-icon">
-                    <img src="/assets/debitCard.svg" alt="Debit Card Icon">
-                </div>
-                <div class="payment-description">
-                    <h2>Debit Card</h2>
-                    <p>Pay using Visa, Mastercard, and other supported debit cards.</p>
-                </div>
-            </div>
-
-            <div class="payment-method">
-                <div class="payment-icon">
-                    <img src="/assets/upi.svg" alt="UPI Icon">
-                </div>
-                <div class="payment-description">
-                    <h2>UPI</h2>
-                    <p>Unified Payments Interface (UPI) for instant and secure transactions.</p>
-                </div>
+            <div class="payment-description">
+                <h2>Apple Pay</h2>
+                <p>Quick and secure payments using your Apple device.</p>
             </div>
         </div>
-    </div>
 
+        <div class="payment-method">
+            <div class="payment-icon">
+                <img src="/assets/googlepay.svg" alt="Google Pay Icon">
+            </div>
+            <div class="payment-description">
+                <h2>Google Pay</h2>
+                <p>Easy payments directly from your Google account.</p>
+            </div>
+        </div>
+
+        <div class="payment-method">
+            <div class="payment-icon">
+                <img src="/assets/card.svg" alt="Debit Card Icon">
+            </div>
+            <div class="payment-description">
+                <h2>Debit Card / Credit Card</h2>
+                <p>Pay using Visa, Mastercard, and other supported debit cards.</p>
+            </div>
+        </div>
+
+        <div class="payment-method">
+            <div class="payment-icon">
+                <img src="/assets/upi.svg" alt="UPI Icon">
+            </div>
+            <div class="payment-description">
+                <h2>UPI</h2>
+                <p>Unified Payments Interface (UPI) for instant and secure transactions.</p>
+            </div>
+        </div>
+
+
+        <div class="payment-method">
+            <div class="payment-icon">
+                <img src="/assets/paypal.svg" alt="PayPal Icon">
+            </div>
+            <div class="payment-description">
+                <h2>PayPal</h2>
+                <p>PayPal for fast and secure online payments. Use your credit card or bank account without sharing your
+                    financial information.</p>
+            </div>
+        </div>
+
+        <div class="payment-method">
+            <div class="payment-icon">
+                <img src="/assets/bank.svg" alt="Bank Transfer Icon">
+            </div>
+            <div class="payment-description">
+                <h2>Bank Transfer</h2>
+                <p>Direct bank transfers for secure payments directly from your bank account.</p>
+            </div>
+        </div>
+
+
+    </div>
+</div>
