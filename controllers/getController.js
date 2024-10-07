@@ -109,13 +109,10 @@ const getOrder = async (req, res) => {
     const inverseOrder = orders.reverse()
 
     let message = "";
-    let dipatch = false
 
     if (orders.length === 0) {
       message = "No Orders Found !";
     }
-
-    
 
     res.render("orders", {
       userId: req.user._id,
@@ -130,10 +127,30 @@ const getOrder = async (req, res) => {
   }
 };
 
+
+const getQuery = async (req,res) =>{
+try {
+  res.render("query", {
+    userId: req.user._id,
+    username: req.user.username,
+    cart: req.user.cart,
+    pageTitle: "Style House | query",
+  
+  });
+
+  
+} catch (error) {
+  console.log(error)
+  res.render("error" , {message : "Server Error !"})
+}
+
+}
+
 module.exports = {
   getAdminPage,
   getIndexPage,
   getUserDash,
   getCart,
   getOrder,
+  getQuery
 };

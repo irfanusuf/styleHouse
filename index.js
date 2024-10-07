@@ -21,6 +21,7 @@ const {
   editProduct,
   deleteProduct,
   getProduct,
+  addProductReview,
 } = require("./controllers/productController");
 
 const multMid = require("./middlewares/multMid");
@@ -30,6 +31,7 @@ const {
   getUserDash,
   getCart,
   getOrder,
+  getQuery,
 } = require("./controllers/getController");
 const { addToCart, removeFromCart,   emptyCart} = require("./controllers/cartController");
 const {createOrder , createCartOrder, deleteorder, dispatchOrder, cancelOrder, verifyOrder, updateOrderEmailVerification, cancelOrderRequest, orderAddAddress} = require("./controllers/orderController")
@@ -180,7 +182,7 @@ app.post("/search", dataHelper , renderPageSearchProducts);
 app.get("/men", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Men")});
 app.get("/women", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Women")});
 app.get("/kids", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Kids")});
-app.get("/accessories", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Accessories & Shoes")});
+app.get("/accessories", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Accessoriesn")});
 
 // rendering Subcategory
 app.get("/sarees", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Sarees")});
@@ -213,6 +215,9 @@ app.post("/user/address/:userId/:orderId" , addressHandler)
 app.get("/user/dashboard",isAuthenticated, getUserDash);
 app.get("/user/cart" , isAuthenticated , getCart)
 app.get("/user/orders" ,isAuthenticated , getOrder)
+app.get("/user/query" ,isAuthenticated , getQuery)
+
+
 app.get('/user/logout', (req, res) => {
   try {
     const { token } = req.cookies;
@@ -232,6 +237,7 @@ app.post("/product/add", multMid, createProduct);
 app.post("/product/edit/:id", multMid, editProduct);
 app.get("/product/delete/:id", deleteProduct);
 app.get("/product/:productId" ,isAuthenticated , getProduct)
+app.post("/product/review/:productId" , isAuthenticated , addProductReview)
 
 
 app.post("/cart/add/:productId" ,isAuthenticated , addToCart)

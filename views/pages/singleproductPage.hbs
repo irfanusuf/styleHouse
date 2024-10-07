@@ -105,11 +105,11 @@
 
     </div>
 
-    <form method="post" action="/product/review/{{product.id}}">
+    <form method="post" action="/product/review/{{product._id}}">
 
-        <input placeholder="Add Your Product review ">
+        <input placeholder="Add Your Product review " name="review" required>
 
-        <select class="select" name="star">
+        <select class="select" name="star" type="number">
             <option value="1">1 star</option>
             <option value="2">2 star</option>
             <option value="3">3 star</option>
@@ -117,7 +117,7 @@
             <option value="5">5 star</option>
         </select>
 
-        <button> Review </button>
+        <button type="submit"> Review </button>
     </form>
 
 

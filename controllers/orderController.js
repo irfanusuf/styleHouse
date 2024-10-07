@@ -136,6 +136,8 @@ const deleteorder = async (req, res) => {
 };
 
 
+// user cancels the order before payment
+
 const cancelOrder = async (req, res) => {
   try {
     const { orderId } = req.params;
@@ -160,6 +162,9 @@ const cancelOrder = async (req, res) => {
     res.render("cart", { message: "Error canceling the order" });
   }
 };
+
+
+// confirm order  with updated addresss
 
 const orderAddAddress = async (req, res) => {
   try {
@@ -299,6 +304,7 @@ const verifyOrder = async (req, res) => {
   }
 };
 
+// verify link from the email
 
 const updateOrderEmailVerification = async (req, res) => {
   try {
@@ -321,6 +327,9 @@ const updateOrderEmailVerification = async (req, res) => {
   }
 };
 
+
+
+//user sends cancel request after payment is done 
 const cancelOrderRequest = async (req, res) => {
   try {
     const { orderId } = req.params;
