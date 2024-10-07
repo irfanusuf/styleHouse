@@ -104,6 +104,7 @@ const paymentSuccess = async (req, res) => {
   
     const user = await User.findById(userId)
     user.cart =[]
+    user.cartValue = 0
     const updateUser = await user.save()
     const updateOrder = await Order.findByIdAndUpdate(
       orderId,

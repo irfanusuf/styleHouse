@@ -112,6 +112,65 @@ app.get("/locator", dataHelper,(req, res) => {
   });
 });
 
+app.get("/shipping-policy", dataHelper,(req, res) => {
+  res.render("shipping", {
+    userId: req.user._id,
+    username: req.user.username,
+    cart: req.user.cart,
+    pageTitle: "Style House | Shipping policy",
+  });
+});
+
+
+app.get("/return-policy", dataHelper,(req, res) => {
+  res.render("return", {
+    userId: req.user._id,
+    username: req.user.username,
+    cart: req.user.cart,
+    pageTitle: "Style House | Return policy",
+  });
+});
+
+app.get("/privacy-policy", dataHelper,(req, res) => {
+  res.render("privacy", {
+    userId: req.user._id,
+    username: req.user.username,
+    cart: req.user.cart,
+    pageTitle: "Style House | Privacy policy",
+  });
+});
+
+
+app.get("/terms&conditions", dataHelper,(req, res) => {
+  res.render("termsAndConditions", {
+    userId: req.user._id,
+    username: req.user.username,
+    cart: req.user.cart,
+    pageTitle: "Style House | Terms & Conditions",
+  });
+});
+
+app.get("/payment-method", dataHelper,(req, res) => {
+
+  res.render("paymentMethod", {
+    userId: req.user._id,
+    username: req.user.username,
+    cart: req.user.cart,
+    pageTitle: "Style House | Payment Method",
+  });
+});
+
+
+app.get("/complain", dataHelper,(req, res) => {
+
+  res.render("complain", {
+    userId: req.user._id,
+    username: req.user.username,
+    cart: req.user.cart,
+    pageTitle: "Style House | Complain",
+  });
+});
+
 
 
 //rendering Search
