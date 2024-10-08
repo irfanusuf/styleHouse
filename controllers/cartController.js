@@ -1,13 +1,11 @@
 const Product = require("../models/itemModel");
 const User = require("../models/userModel");
 
-
-
 const addToCart = async (req, res) => {
   try {
     const userId = req.userId;
     const productId = req.params.productId;
-    const { quantity ,size, color  } = req.body;
+    const { quantity, color, size } = req.body;
 
     const user = await User.findById(userId);
     if (!user) {
@@ -21,9 +19,13 @@ const addToCart = async (req, res) => {
       return res.render("productPage", { message: "Product Not available" });
     }
 
-    const cartItemIndex = user.cart.findIndex(
-      (item) => item.productId.toString() === productId
-    );
+    const cartItemIndex = user.cart.findIndex((item) => {
+      return (
+        item.productId.toString() === productId &&
+        item.color === color &&
+        item.size === size
+      );
+    });
 
     if (cartItemIndex > -1) {
       user.cart[cartItemIndex].quantity += parseInt(quantity);
@@ -32,24 +34,21 @@ const addToCart = async (req, res) => {
         productId: product._id,
         quantity: parseInt(quantity),
         price: product.price,
-        color :color,
-        size : size
+        color: color,
+        size: size,
       });
     }
-
-    
-    const productIds = user.cart.map((item) => item.productId);
-    const productsInCart = await Product.find({ _id: { $in: productIds } });
-
-    
-    user.cartValue = user.cart.reduce((acc, item) => {
-      const itemProduct = productsInCart.find(
-        (product) => product._id.toString() === item.productId.toString()
-      );
-      return acc + item.quantity * (itemProduct ? itemProduct.price : 0);
-    }, 0);
-
     await user.save();
+
+    // const productIds = user.cart.map((item) => item.productId);
+    // const productsInCart = await Product.find({ _id: { $in: productIds } });
+
+    // user.cartValue = user.cart.reduce((acc, item) => {
+    //   const itemProduct = productsInCart.find(
+    //     (product) => product._id.toString() === item.productId.toString()
+    //   );
+    //   return acc + item.quantity * (itemProduct ? itemProduct.price : 0);
+    // }, 0);
 
     return res.redirect("/user/cart");
   } catch (error) {
@@ -59,36 +58,34 @@ const addToCart = async (req, res) => {
 
 const removeFromCart = async (req, res) => {
   try {
-    const userId = req.user;
-    const productId = req.params.productId;
+    const userId = req.userId;
+
+    const { productId, color, size } = req.params;
 
     const user = await User.findById(userId);
     if (!user) {
       return res.render("cart", { message: "Some error, Kindly Login again." });
     }
 
-    const cartItemIndex = user.cart.findIndex(
-      (item) => item.productId.toString() === productId
-    );
+    const cartItemIndex = user.cart.findIndex((item) => {
+      return (
+        item.productId.toString() === productId &&
+        item.color === color &&
+        item.size === size
+      );
+    });
 
     if (cartItemIndex > -1) {
       user.cart.splice(cartItemIndex, 1);
+      await user.save();
     } else {
-      return res.render("cart", { message: "Product not found in cart." });
+      return res.render("cart", {
+        userId: req.user._id,
+        username: req.user.username,
+        cart: req.user.cart,
+        message: "Product not found in cart.",
+      });
     }
-
-    const productIds = user.cart.map((item) => item.productId);
-    const productsInCart = await Product.find({ _id: { $in: productIds } });
-
-    user.cartValue = user.cart.reduce((acc, item) => {
-      const itemProduct = productsInCart.find(
-        (product) => product._id.toString() === item.productId.toString()
-      );
-      return acc + item.quantity * (itemProduct ? itemProduct.price : 0);
-    }, 0);
-
-    await user.save();
-
     return res.redirect("/user/cart");
   } catch (error) {
     console.error(error);
@@ -109,9 +106,8 @@ const emptyCart = async (req, res) => {
       });
     }
 
-  
     user.cart = [];
-    user.cartValue = 0; 
+    // user.cartValue = 0;
 
     await user.save();
 
@@ -124,15 +120,11 @@ const emptyCart = async (req, res) => {
   }
 };
 
-
-
-
 module.exports = {
   addToCart,
   removeFromCart,
   emptyCart,
 };
-
 
 // const checkout = async (req, res) => {
 //   try {

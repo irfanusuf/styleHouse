@@ -47,7 +47,7 @@
             <td class="item-total"><span>Total:</span> <span class="total-amount">{{calculateTotal this.productId.price
                 this.quantity}}</span> $</td>
             <td>
-              <a href="/cart/removeItem/{{this.productId._id}}" class="btn-remove">Remove</a>
+              <a href="/cart/removeItem/{{this.productId._id}}/{{this.color}}/{{this.size}}" class="btn-remove">Remove</a>
             </td>
           </tr>
           {{/each}}

@@ -51,21 +51,25 @@ const createOrder = async (req, res) => {
 };
 const createCartOrder = async (req, res) => {
   try {
-    const { quantities } = req.body; // 'quantities' should be an object with productId as key and updated quantity as value
+    const { quantities } = req.body;
     const userId = req.userId;
-
 
     const user = await User.findById(userId);
 
     if (!user || user.cart.length === 0) {
-      return res.render("cart", { message: "Your cart is empty!" });
+      return res.render("cart", {
+        userId: req.user._id,
+        username: req.user.username,
+        cart: req.user.cart,
+        pageTitle: "Style House | Cart",
+        message: "Your cart is empty!",
+      });
     }
 
     let totalAmount = 0;
     const productsInCart = [];
     const address = user.addresses[0];
 
-    
     for (const cartItem of user.cart) {
       const product = cartItem.productId;
 
@@ -75,16 +79,12 @@ const createCartOrder = async (req, res) => {
         });
       }
 
-    
       const updatedQuantity = quantities[cartItem.productId];
-
-     
-      const finalQuantity = updatedQuantity ? parseInt(updatedQuantity) : cartItem.quantity;
-
-    
+      const finalQuantity = updatedQuantity
+        ? parseInt(updatedQuantity)
+        : cartItem.quantity;
       cartItem.quantity = finalQuantity;
 
-    
       const itemTotal = cartItem.price * finalQuantity;
       totalAmount += itemTotal;
 
@@ -119,8 +119,7 @@ const createCartOrder = async (req, res) => {
   }
 };
 
-
-// admin controller 
+// admin controller
 
 const deleteorder = async (req, res) => {
   try {
@@ -142,7 +141,6 @@ const deleteorder = async (req, res) => {
     res.render("admin", { message: "Error canceling the order" });
   }
 };
-
 
 // user cancels the order before payment
 
@@ -171,20 +169,22 @@ const cancelOrder = async (req, res) => {
   }
 };
 
-
 // confirm order  with updated addresss
 
 const orderAddAddress = async (req, res) => {
   try {
     const { orderId } = req.params;
-    const userId = req.user;
-    const user = await User.findById(userId);
+    const user = req.user;
 
     const address = user.addresses[0];
 
-    if (!address) {
-      return res.render("checkout", {
-        message: "kindly Add Address!",
+    if (!address || address === undefined) {
+      return res.render("error", {
+        userId: req.user._id,
+        username: req.user.username,
+        cart: req.user.cart,
+        errorMessage: "kindly Add Address!",
+        backToPage: `/order/checkout/${orderId}`,
       });
     }
 
@@ -205,8 +205,7 @@ const orderAddAddress = async (req, res) => {
   }
 };
 
-
-//send mail to the user for verification 
+//send mail to the user for verification
 const verifyOrder = async (req, res) => {
   try {
     const { orderId } = req.params;
@@ -216,9 +215,12 @@ const verifyOrder = async (req, res) => {
       .populate("products.productId");
 
     if (!order) {
-      return res
-        .status(404)
-        .render("cart", { message: "Some Error With the Order Id" });
+      return res.status(404).render("error", {
+        userId: req.user._id,
+        username: req.user.username,
+        cart: req.user.cart,
+        errorMessage: "Some Error With the Order Id",
+      });
     }
 
     const verificationLink = `${req.protocol}://${req.get(
@@ -238,16 +240,19 @@ const verifyOrder = async (req, res) => {
     Thank you for your order! Below are the details of your order:
     
     Order Details:
-    ${order.products.map(
-      (product) => `Product: ${product.productId.name}, Quantity: ${product.quantity}, Price: ${product.price}`
-    ).join("\n")}
+    ${order.products
+      .map(
+        (product) =>
+          `Product: ${product.productId.name}, Quantity: ${product.quantity}, Price: ${product.price}`
+      )
+      .join("\n")}
     
     Total Amount: ${order.totalAmount}
     
     Please click the link below to verify your email and confirm the order:
     ${verificationLink}
     `,
-    
+
       html: `
         <div style="font-family: Arial, sans-serif; color: #333;">
           <table width="100%" style="max-width: 600px; margin: 0 auto; border-collapse: collapse; background-color: #f8f9fa; border: 1px solid #ddd; padding: 20px;">
@@ -273,16 +278,20 @@ const verifyOrder = async (req, res) => {
                       .map(
                         (product) => `
                         <li style="border-bottom: 1px solid #ddd; padding: 10px;">
-                          <strong>Product:</strong> ${product.productId.name}<br />
+                          <strong>Product:</strong> ${
+                            product.productId.name
+                          }<br />
                           <strong>Quantity:</strong> ${product.quantity}<br />
                           <strong>Price:</strong> $${product.price.toFixed(2)}
                         </li>
                       `
                       )
-                      .join('')}
+                      .join("")}
                   </ul>
                   <p style="padding: 10px; font-size: 18px; text-align: right;">
-                    <strong>Total Amount: </strong> $${order.totalAmount.toFixed(2)}
+                    <strong>Total Amount: </strong> $${order.totalAmount.toFixed(
+                      2
+                    )}
                   </p>
                 </td>
               </tr>
@@ -301,7 +310,6 @@ const verifyOrder = async (req, res) => {
         </div>
       `,
     };
-    
 
     await transporter.sendMail(mailOptions);
 
@@ -335,9 +343,7 @@ const updateOrderEmailVerification = async (req, res) => {
   }
 };
 
-
-
-//user sends cancel request after payment is done 
+//user sends cancel request after payment is done
 const cancelOrderRequest = async (req, res) => {
   try {
     const { orderId } = req.params;
@@ -377,7 +383,7 @@ const cancelOrderRequest = async (req, res) => {
       Thank you,
       Style House Support
       `,
-      
+
         html: `
           <div style="font-family: Arial, sans-serif; color: #333;">
             <table width="100%" style="max-width: 600px; margin: 0 auto; border-collapse: collapse; background-color: #f8f9fa; border: 1px solid #ddd; padding: 20px;">
@@ -411,7 +417,6 @@ const cancelOrderRequest = async (req, res) => {
           </div>
         `,
       };
-      
 
       await transporter.sendMail(mailOptions);
 

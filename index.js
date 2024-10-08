@@ -253,7 +253,7 @@ app.get("/product/:productId" ,isAuthenticated , getProduct)
 app.post("/product/review/:productId" , isAuthenticated , addProductReview)
 
 app.post("/cart/add/:productId" ,isAuthenticated , addToCart)
-app.get("/cart/removeItem/:productId" ,isAuthenticated , removeFromCart)
+app.get("/cart/removeItem/:productId/:color/:size" ,isAuthenticated , removeFromCart)
 app.get("/cart/empty" ,isAuthenticated , emptyCart)
 
 app.post("/order/create/:productId" ,isAuthenticated ,createOrder)

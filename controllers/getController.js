@@ -127,7 +127,6 @@ const getOrder = async (req, res) => {
   }
 };
 
-
 const getQuery = async (req,res) =>{
 try {
   res.render("query", {

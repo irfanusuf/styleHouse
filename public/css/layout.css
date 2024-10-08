@@ -30,3 +30,9 @@ body {
       background-color: #ff3b3b;
     }
 }
+
+.error-toast {
+
+    background-color: red;
+    color: aliceblue;
+}

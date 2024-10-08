@@ -1,12 +1,65 @@
+<style>
+    .error-toast {
+        color: #f0d7d9;
+        border-radius: 5px;
+        min-width: 600px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .error-message {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 700px;
+
+        >h2 {
+            color: rgb(247, 38, 38);
+        }
+    }
+
+    .btn-green {
+        background-color: green;
+
+        &:hover {
+            background-color: rgb(21, 88, 21);
+        }
+    }
+</style>
 
 
 
+{{#if errorMessage}}
 
-{{#if message}}
 
+<div class="error-message">
 
-<div> {{message}}  </div>
+    <h2>{{errorMessage}} </h2>
+
+    <a href="{{backToPage}}" class="btn btn-green"> Go Back </a>
+</div>
+
 
 
 
 {{/if}}
+
+
+
+<script>
+    window.onload = function () {
+        const message = "{{errorMessage}}"; // Get the message from the backend
+        if (message && message.trim() !== "") {
+            Toastify({
+                text: message,
+                duration: 5000, // Duration the toast is visible (ms)
+                close: true,    // Adds a close button to the toast
+                gravity: "bottom", // `top` or `bottom`
+                position: "center", // `left`, `center` or `right`
+                backgroundColor: "#d40015", // Error color
+                className: "error-toast",   // Add a custom class for styling
+            }).showToast();
+        }
+    };
+</script>
