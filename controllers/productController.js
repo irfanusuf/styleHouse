@@ -143,7 +143,9 @@ const getProduct = async (req, res) => {
     const product = await Product.findById(productId).populate({
       path : "reviews.user"
     }).lean();
-    const search_query = product.category;
+
+
+    const search_query = product.searchTag;
     const products = await Product.find({
       $or: [
         { name: { $regex: search_query, $options: "i" } },
@@ -153,7 +155,13 @@ const getProduct = async (req, res) => {
       ],
     }).lean();
 
-    if (products.length === 0) {
+
+    let recommendation = ""
+    if(products.length ===0){
+      recommendation = "No Recommended Products!"
+    }
+
+    if (product.length === 0) {
       return res.render("singleproductPage", {
         userId: req.user._id,
         username: req.user.username,
@@ -163,7 +171,7 @@ const getProduct = async (req, res) => {
       });
     }
 
-    const productsWithSizes = products.map((product) => {
+    const productSizeColorArr = products.map((product) => {
       return {
         ...product,
         sizesArray:
@@ -177,7 +185,7 @@ const getProduct = async (req, res) => {
       };
     });
 
-    const productWithSizes = {
+    const productSizeColorObj = {
       ...product,
       sizesArray:
         typeof product.size === "string"
@@ -194,8 +202,9 @@ const getProduct = async (req, res) => {
       username: req.user.username,
       cart: req.user.cart,
       pageTitle: `Style House | ${search_query}`,
-      products: productsWithSizes,
-      product: productWithSizes,
+      products: productSizeColorArr,
+      product: productSizeColorObj,
+      recommend : recommendation
     });
   } catch (error) {
     console.log(error);

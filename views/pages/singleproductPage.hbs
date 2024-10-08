@@ -90,9 +90,6 @@
 
 <div class="add-review">
 
-
-
-
     <div class="current-reviews">
 
         <h1> Reviews</h1>
@@ -150,4 +147,15 @@
 <h1 style="text-align: center;"> You may Also Like ! </h1>
 
 
+
+
+{{#if recommend}}
+
+<div class="recommend">  {{recommend}} </div>
+
+{{else}}
+
 {{> productCards}}
+
+
+{{/if}}
