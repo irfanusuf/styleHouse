@@ -1,4 +1,3 @@
-
 <link rel="stylesheet" href="/css/singleProductPage.css" />
 
 
@@ -28,14 +27,18 @@
             <a href="/product/{{product._id}}">Reviews</a>
 
             {{#if product.reviews.length}}
-            {{#each product.reviews}}
-            <img src="/assets/star.svg" alt="rating" />
-            {{/each}}
+
+            {{#range product.rating}}
+            <img src="/assets/star.svg" alt="star" />
+            {{/range}}
+
             {{else}}
+
             <span style="color: crimson;"> No ratings</span>
-              {{!-- <img src="/assets/star.svg" alt="rating" /> --}}
-            
+
             {{/if}}
+
+
 
         </div>
 
@@ -87,20 +90,38 @@
 
 <div class="add-review">
 
-    <h1> Reviews</h1>
+
 
 
     <div class="current-reviews">
 
+        <h1> Reviews</h1>
+
         {{#if product.reviews.length}}
 
         {{#each product.reviews}}
-        <p> {{this.review}}</p>
+        <div class="review">
+            
+            <div class="profile">
+                <img src="/assets/profile.svg" alt="profile">
+                <span> {{this.user.username}} </span>
+            </div>
+
+            <p> {{this.review}}</p>
+
+            <div class="star">
+                {{#range this.star}}
+                <img src="/assets/star.svg" alt="star" />
+                {{/range}}
+            </div>
+
+        </div>
+
 
         {{/each}}
 
         {{else}}
-        <span style="color: crimson;"> No Review Yet</span>
+        <div class="no-review"><span style="color: crimson;"> No Review Yet</span></div>
         {{/if}}
 
     </div>

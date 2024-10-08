@@ -79,9 +79,9 @@ const getCart = async (req, res) => {
       .populate({ path: "cart.productId" })
       .lean();
 
-    user.cart.forEach((item) => {
-      item.total = item.quantity * item.productId.price;
-    });
+    // user.cart.forEach((item) => {
+    //   item.total = item.quantity * item.productId.price;
+    // });
 
     res.render("cart", {
       userId: req.user._id,

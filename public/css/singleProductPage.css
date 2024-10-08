@@ -6,7 +6,6 @@
   border-radius: 8px;
   display: flex;
 
-
   .product-image {
     width: 40%;
     padding-right: 20px;
@@ -36,7 +35,6 @@
       margin: 8px 0;
       color: antiquewhite;
     }
-
 
     .description {
       margin-bottom: 15px;
@@ -98,12 +96,12 @@
         }
 
         .quantity-input {
-          width:  50px
+          width: 50px;
         }
 
         .size-input {
-            width:  80px
-          }
+          width: 80px;
+        }
       }
 
       .add-to-cart-btn {
@@ -128,8 +126,6 @@
   }
 }
 
-
-
 .add-review {
   background-color: #333;
   color: antiquewhite;
@@ -137,30 +133,77 @@
   margin: 50px auto;
   padding: 20px;
   border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+
+  > .current-reviews {
+    width: 90%;
+    margin: auto;
+    min-height: 300px;
+
+    > .review {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    
+
+      >.profile {
+        display: flex;
+        flex-direction: column;
+
+       > img {
+          border: 1px solid #141414;
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+        }
+  
+        >span {
+          margin-top: 5px;
+          font-style: italic;
+        }
+  
+      }
+    
+      p {
+        width: 400px;
+        margin-left: 40px;
+        padding-right: 40%;
+      }
+
+      >.star{
+        img{
+        width: 20px;
+        height: 20px;
+      }
+    }
+    }
+
+    > .no-review {
+      min-height: 300px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
 
   > form {
     width: 90%;
     margin: auto;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     margin-bottom: 20px;
 
     > input {
-        width: 60%;
-        padding: 5px;
-        border: 1px solid #555;
-        border-radius: 5px;
-        background-color: #f1f1f1;
-        color: #141414;
+      width: 60%;
+      padding: 5px;
+      border: 1px solid #555;
+      border-radius: 5px;
+      background-color: #f1f1f1;
+      color: #141414;
     }
 
-    >.select{
-        width : 15%;
-        border-radius: 5px;
+    > .select {
+      width: 15%;
+      border-radius: 5px;
     }
 
     > button {
@@ -180,13 +223,6 @@
         background-color: #ff2c2c;
       }
     }
-  }
-
-  > .current-reviews {
-    min-height: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 }
 
@@ -212,33 +248,24 @@
       }
     }
 
-
     .product-details {
-        width: 90%;
-
-
-        
+      width: 90%;
     }
   }
 
-
   .add-review {
- 
     width: 100%;
     padding: 0;
-   
-  
+
     > form {
       width: 95%;
       > input {
-       
       }
-  
+
       > button {
-        
       }
     }
-  
+
     > .current-reviews {
       min-height: 300px;
       display: flex;
@@ -246,5 +273,4 @@
       align-items: center;
     }
   }
-  
 }

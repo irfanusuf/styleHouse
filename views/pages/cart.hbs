@@ -1,83 +1,113 @@
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{pageTitle}}</title>
-    <link rel="stylesheet" href="/css/cart.css" />
-
-  </head>
-  <body>
-
-    <!-- Shopping Cart Section -->
-    <section class="cart-section">
-
-      {{#if message}}
-        <div class="empty-cart-message">
-          <h2>{{message}}</h2>
-
-          <a class="btn" href="/user/cart">Go back </a>
-        </div>
-      {{else}}
-        <div class="cart-container">
-          <h2>Shopping Cart</h2>
-          <table class="cart-table">
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Total</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-
-              {{#each user.cart}}
-                <tr class="cart-item">
-                  <td><img  src={{this.productId.imageUrl}} /></td>
-                  <td>{{this.productId.name}} <br> <b>{{this.color}} , {{this.size}}</b></td>
-                  <td>
-                    <input
-                      type="number"
-                      class="item-quantity"
-                      value="{{this.quantity}}"
-                      min="1"
-                      readonly
-                    />
-                  </td>     
-                  <td class="item-price"> <span>Price : </span> {{this.productId.price}} $</td>
-                  <td class="item-total"> <span>Total : </span> {{this.total}} $</td>
-                  <td>
-                    <a
-                      href="/cart/removeItem/{{this.productId._id}}"
-                      class="btn-remove"
-                    >Remove</a></td>
-                </tr>
-              {{/each}}
-            </tbody>
-          </table>
-
-          <div class="cart-total">
-
-            <div style="display: flex ; justify-content :space-between; align-items :center ;margin-bottom : 20px">
-              <a class="btn-remove" href="/cart/empty">Empty Cart</a>
-              <div style="display: flex;">
-                <h2>Total: </h2>
-                <h2 style="color: antiquewhite; margin-left : 10px">
-                  {{user.cartValue}}
-                  $</h2>
-              </div>
-            </div>
+<link rel="stylesheet" href="/css/cart.css" />
 
 
-            <a href="/order/create" class="btn-checkout">Proceed to Order</a>
+
+
+<!-- Shopping Cart Section -->
+<section class="cart-section">
+
+  {{#if message}}
+  <div class="empty-cart-message">
+    <h2>{{message}}</h2>
+
+    <a class="btn" href="/user/cart">Go back </a>
+  </div>
+  {{else}}
+  <div class="cart-container">
+    <h2>Shopping Cart</h2>
+
+    <form method="post" action="/order/create">
+      <table class="cart-table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each user.cart}}
+          <tr class="cart-item">
+            <td><img src="{{this.productId.imageUrl}}" alt="{{this.productId.name}}" /></td>
+            <td>
+              {{this.productId.name}} <br>
+              <b>{{this.color}}, {{this.size}}</b> <br>
+              {{#range this.productId.rating}}
+              <img class="star" src="/assets/star.svg" alt="star" />
+              {{/range}}
+            </td>
+            <td>
+              <input type="number" class="item-quantity" value="{{this.quantity}}" min="1"
+                name="quantities[{{this.productId._id}}]" />
+            </td>
+            <td class="item-price"><span>Price:</span> <span class="item-amount">{{this.productId.price}}</span>$</td>
+            <td class="item-total"><span>Total:</span> <span class="total-amount">{{calculateTotal this.productId.price
+                this.quantity}}</span> $</td>
+            <td>
+              <a href="/cart/removeItem/{{this.productId._id}}" class="btn-remove">Remove</a>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+
+      <div class="cart-total">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <a class="btn-remove" href="/cart/empty">Empty Cart</a>
+          <div style="display: flex;">
+            <h2>Total: </h2>
+            <h2 style="color: antiquewhite; margin-left: 10px;">{{user.cartValue}} $</h2>
           </div>
         </div>
 
-      {{/if}}
+        <button type="submit" class="btn-checkout">Proceed to Order</button>
+      </div>
+    </form>
+  </div>
 
-    </section>
+  {{/if}}
 
-  </body>
-</html>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Select all quantity input fields
+    const quantityInputs = document.querySelectorAll('.item-quantity');
+
+    quantityInputs.forEach(input => {
+      input.addEventListener('input', function (e) {
+        // Get the current row
+        const row = this.closest('.cart-item');
+        const price = parseInt(row.querySelector('.item-amount').innerText); // Get the price
+        const quantity = e.target.value ; // Get the new quantity
+        
+        const totalAmount = row.querySelector('.total-amount'); // Select the total amount span
+        console.log(quantity)
+        console.log(price)
+        // Calculate the new total
+        const newTotal = price * quantity;
+
+        // Update the total amount in the row
+        totalAmount.innerText = newTotal.toFixed(2); // Update with two decimal places
+
+        // Optionally update the overall cart total if you want to
+        updateCartTotal();
+      });
+    });
+
+    function updateCartTotal() {
+      let grandTotal = 0;
+
+      // Calculate the overall total
+      document.querySelectorAll('.total-amount').forEach(total => {
+        grandTotal += parseFloat(total.innerText) || 0;
+      });
+
+      // Update the grand total display
+      document.querySelector('.cart-total h2:last-child').innerText = grandTotal.toFixed(2) + ' $';
+    }
+  });
+</script>

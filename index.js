@@ -42,12 +42,25 @@ const app = express();
 app.engine(
   "hbs",
   xhbs.engine({
-    extname: "hbs", // engine
-    defaultLayout: "layout", // layout is the main page
+    extname: "hbs",
+    defaultLayout: "layout",
     layoutsDir: path.join(__dirname, "views", "layouts"),
     partialsDir: path.join(__dirname, "views", "partials"),
+    helpers: {
+      range: function (n, options) {
+        let output = "";
+        for (let i = 0; i < n; i++) {
+          output += options.fn(i);  // options.fn is the correct method for block helpers
+        }
+        return output;
+      } ,
+      calculateTotal: (price, quantity) => {
+        return (price * quantity).toFixed(2);
+      }
+    }
   })
 );
+
 
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "views", "pages"));
@@ -57,7 +70,7 @@ app.set("views", path.join(__dirname, "views", "pages"));
 connectDB();
 
 //middle wares
-app.use(bodyParser.urlencoded({ extended: false })); // relevant for post methods
+app.use(bodyParser.urlencoded({ extended: true })); // relevant for post methods
 app.use(express.json()); //parsing  json data
 app.use(express.static(path.join(__dirname, "public"))); // serving static files
 app.use(cookie());
@@ -182,7 +195,7 @@ app.post("/search", dataHelper , renderPageSearchProducts);
 app.get("/men", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Men")});
 app.get("/women", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Women")});
 app.get("/kids", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Kids")});
-app.get("/accessories", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Accessoriesn")});
+app.get("/accessories", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Accessories")});
 
 // rendering Subcategory
 app.get("/sarees", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Sarees")});
@@ -239,14 +252,12 @@ app.get("/product/delete/:id", deleteProduct);
 app.get("/product/:productId" ,isAuthenticated , getProduct)
 app.post("/product/review/:productId" , isAuthenticated , addProductReview)
 
-
 app.post("/cart/add/:productId" ,isAuthenticated , addToCart)
 app.get("/cart/removeItem/:productId" ,isAuthenticated , removeFromCart)
 app.get("/cart/empty" ,isAuthenticated , emptyCart)
 
-
 app.post("/order/create/:productId" ,isAuthenticated ,createOrder)
-app.get("/order/create" ,isAuthenticated ,createCartOrder)
+app.post("/order/create" ,isAuthenticated ,createCartOrder)
 app.get("/order/checkout/:orderId" ,isAuthenticated ,checkout)
 app.get("/order/delete/:orderId" , isAuthenticated ,deleteorder )
 app.get("/order/cancel/:orderId" , isAuthenticated ,cancelOrder )

@@ -140,7 +140,9 @@ const getProduct = async (req, res) => {
   try {
     const { productId } = req.params;
 
-    const product = await Product.findById(productId).lean();
+    const product = await Product.findById(productId).populate({
+      path : "reviews.user"
+    }).lean();
     const search_query = product.category;
     const products = await Product.find({
       $or: [
@@ -199,24 +201,25 @@ const getProduct = async (req, res) => {
     console.log(error);
   }
 };
-
 const addProductReview = async (req, res) => {
   try {
-    const userId = req.user;
-    const {productId} = req.params;
+    const userId = req.userId;
+    const { productId } = req.params;
     const { review, star } = req.body;
 
     const product = await Product.findById(productId);
 
-    console.log(product)
     if (!product) {
       return res.status(404).render("error", { message: "Product not found" });
     }
 
-    const alreadyReviewed = product.reviews.find(
-      (r) => r.user.toString() === userId.toString()
+    // Use findIndex to find if the user has already reviewed the product
+    const reviewIndex = product.reviews.findIndex(
+      (r) => r.user.toString() === userId
     );
-    if (alreadyReviewed) {
+
+
+    if (reviewIndex !== -1) {
       return res
         .status(400)
         .render("error", { message: "Product already reviewed by this user" });
@@ -231,6 +234,7 @@ const addProductReview = async (req, res) => {
 
     product.reviews.push(newReview);
 
+    // Calculate the new average rating
     product.rating =
       product.reviews.reduce((acc, item) => item.star + acc, 0) /
       product.reviews.length;
@@ -244,6 +248,7 @@ const addProductReview = async (req, res) => {
     res.render("error", { message: "Server Error" });
   }
 };
+
 
 module.exports = {
   createProduct,

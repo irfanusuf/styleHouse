@@ -49,21 +49,23 @@ const createOrder = async (req, res) => {
     res.render("cart", { message: "An error occurred during checkout." });
   }
 };
-
 const createCartOrder = async (req, res) => {
   try {
+    const { quantities } = req.body; // 'quantities' should be an object with productId as key and updated quantity as value
     const userId = req.userId;
+
 
     const user = await User.findById(userId);
 
     if (!user || user.cart.length === 0) {
-      return res.render("cart", { message: "Your cart is empty !" });
+      return res.render("cart", { message: "Your cart is empty!" });
     }
 
     let totalAmount = 0;
     const productsInCart = [];
     const address = user.addresses[0];
 
+    
     for (const cartItem of user.cart) {
       const product = cartItem.productId;
 
@@ -73,19 +75,29 @@ const createCartOrder = async (req, res) => {
         });
       }
 
-      const itemTotal = cartItem.price * cartItem.quantity;
+    
+      const updatedQuantity = quantities[cartItem.productId];
 
+     
+      const finalQuantity = updatedQuantity ? parseInt(updatedQuantity) : cartItem.quantity;
+
+    
+      cartItem.quantity = finalQuantity;
+
+    
+      const itemTotal = cartItem.price * finalQuantity;
       totalAmount += itemTotal;
 
       productsInCart.push({
         productId: product._id,
-        quantity: cartItem.quantity,
+        quantity: finalQuantity,
         price: cartItem.price,
         color: cartItem.color,
         size: cartItem.size,
       });
     }
 
+    // Create a new order
     const newOrder = new Order({
       user: userId,
       products: productsInCart,
@@ -98,8 +110,6 @@ const createCartOrder = async (req, res) => {
 
     user.orders.push(savedOrder._id);
 
-    // user.cart = [];
-
     await user.save();
 
     res.redirect(`/order/checkout/${newOrder._id}`);
@@ -109,6 +119,7 @@ const createCartOrder = async (req, res) => {
   }
 };
 
+
 // admin controller 
 
 const deleteorder = async (req, res) => {
@@ -117,17 +128,14 @@ const deleteorder = async (req, res) => {
     const userId = req.userId;
 
     const delOrder = await Order.findByIdAndDelete(orderId);
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $pull: { orders: orderId } },
+      { new: true }
+    );
 
-    if (delOrder) {
-      const updatedUser = await User.findByIdAndUpdate(
-        userId,
-        { $pull: { orders: orderId } },
-        { new: true }
-      );
-
-      if (updatedUser) {
-        return res.redirect("/admin/dashboard");
-      }
+    if (delOrder && updatedUser) {
+      return res.redirect("/admin/dashboard");
     }
   } catch (error) {
     console.log(error);
