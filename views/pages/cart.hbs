@@ -59,7 +59,7 @@
           <a class="btn-remove" href="/cart/empty">Empty Cart</a>
           <div style="display: flex;">
             <h2>Total: </h2>
-            <h2 style="color: antiquewhite; margin-left: 10px;">{{user.cartValue}} $</h2>
+            <h2 style="color: antiquewhite; margin-left: 10px;">$</h2>
           </div>
         </div>
 
@@ -74,6 +74,8 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
+
+    updateCartTotal()
     // Select all quantity input fields
     const quantityInputs = document.querySelectorAll('.item-quantity');
 
@@ -110,4 +112,6 @@
       document.querySelector('.cart-total h2:last-child').innerText = grandTotal.toFixed(2) + ' $';
     }
   });
+
+
 </script>
