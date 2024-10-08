@@ -9,14 +9,18 @@ const addToCart = async (req, res) => {
 
     const user = await User.findById(userId);
     if (!user) {
-      return res.render("productPage", {
-        message: "Some Error , Kindly Login Again!",
+      return res.render("error", {
+        backToPage: "/",
+        errorMessage: "Some Error , Kindly Login Again!",
       });
     }
 
     const product = await Product.findById(productId);
     if (!product) {
-      return res.render("productPage", { message: "Product Not available" });
+      return res.render("error", {
+        backToPage: "/",
+        errorMessage: "Product Not available",
+      });
     }
 
     const cartItemIndex = user.cart.findIndex((item) => {
@@ -53,6 +57,10 @@ const addToCart = async (req, res) => {
     return res.redirect("/user/cart");
   } catch (error) {
     console.error(error);
+    return res.render("error", {
+      backToPage: "/",
+      errorMessage: "Server Error",
+    });
   }
 };
 

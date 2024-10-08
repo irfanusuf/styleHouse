@@ -138,7 +138,10 @@ const deleteorder = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.render("admin", { message: "Error canceling the order" });
+    res.render("error", {
+      backToPage: "/admin/dashboard",
+      errorMessage: "Error deleting the order | Server Error!",
+    });
   }
 };
 
@@ -150,7 +153,11 @@ const cancelOrder = async (req, res) => {
     const userId = req.userId;
 
     if (userId === "" || orderId === "") {
-      return res.render("cart", { message: "Error canceling the order" });
+      return res.render("error", {
+        backToPage: "/user/orders",
+        errorMessage:
+          "Some Error while canceling order , kindly try again after Sometime !",
+      });
     }
 
     const delOrder = await Order.findByIdAndDelete(orderId);
@@ -165,15 +172,20 @@ const cancelOrder = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.render("cart", { message: "Error canceling the order" });
+    res.render("error", {
+      backToPage: "/user/orders",
+      errorMessage: "Error canceling the order | server Error!",
+    });
   }
 };
 
 // confirm order  with updated addresss
 
 const orderAddAddress = async (req, res) => {
+
+  const { orderId } = req.params;
   try {
-    const { orderId } = req.params;
+    
     const user = req.user;
 
     const address = user.addresses[0];
@@ -194,14 +206,13 @@ const orderAddAddress = async (req, res) => {
 
     if (updateOrder) {
       return res.redirect("/user/orders");
-    } else {
-      return res.render("error", {
-        message: "Can't place order, Try after sometime ! ",
-      });
     }
   } catch (error) {
     console.log(error);
-    res.render("error", { message: "Server Error" });
+    res.render("error", {
+      backToPage: `/order/checkout/${orderId}`,
+      errorMessage: "Error adding the Address | Server Error!",
+    });
   }
 };
 
@@ -220,6 +231,7 @@ const verifyOrder = async (req, res) => {
         username: req.user.username,
         cart: req.user.cart,
         errorMessage: "Some Error With the Order Id",
+        backToPage: "/user/orders",
       });
     }
 
@@ -316,7 +328,10 @@ const verifyOrder = async (req, res) => {
     res.redirect("/user/orders");
   } catch (error) {
     console.log(error);
-    res.render("cart", { message: "Server Error" });
+    return res.render("error", {
+      backToPage: "/user/orders",
+      errorMessage: "Error verifying the Order !",
+    });
   }
 };
 
@@ -332,14 +347,21 @@ const updateOrderEmailVerification = async (req, res) => {
       { new: true }
     );
     if (!order) {
-      return res.render("cart", { message: "Order not found" });
+      return res.render("error", {
+        backToPage: "/user/orders",
+        errorMessage: "Order not found",
+      });
     }
 
     return res.redirect(`/user/orders`);
   } catch (error) {
     console.log(error);
 
-    return res.render("cart", { message: "Error verifying email" });
+    return res.render("error", {
+      backToPage: "/user/orders",
+      errorMessage:
+        "Some Error while verifying Order . Kindly try after sometime!!",
+    });
   }
 };
 
@@ -356,19 +378,20 @@ const cancelOrderRequest = async (req, res) => {
       .populate({ path: "user" })
       .lean();
 
+    const userEmail = order.user.email;
+
     if (!order) {
-      return res.status(404).render("orders", {
+      return res.status(404).render("error", {
         userId: req.user._id,
         username: req.user.username,
         cart: req.user.cart,
         pageTitle: "Style House | Order cancel",
-        message: "Order not found !.",
+        errorMessage: "Order not found !.",
+        backToPage: "/user/orders",
       });
     }
 
-    const userEmail = order.user.email;
-
-    if (order) {
+   else {
       let mailOptions = {
         from: '"Style House | Cancel Order" <services@stylehouse.world>',
         to: userEmail,
@@ -431,8 +454,9 @@ const cancelOrderRequest = async (req, res) => {
     }
   } catch (error) {
     console.error("Error sending email:", error);
-    res.render("orders", {
-      message: "Failed to send cancellation request. Please try again.",
+    return res.render("error", {
+      backToPage: "/user/orders",
+      errorMessage: "Some Error , Kindly Login Again!",
     });
   }
 };

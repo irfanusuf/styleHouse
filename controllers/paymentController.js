@@ -72,9 +72,15 @@ const productPayment = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    res.render("orders", {
+      message: "An error occurred while processing your payment",
+    });
   }
 };
 
+
+
+//api 
 const createIntent = async (req, res) => {
   try {
     const { amount, currency } = req.body;

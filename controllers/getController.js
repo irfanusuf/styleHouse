@@ -37,6 +37,10 @@ const getAdminPage = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    res.render("error", {
+      backToPage: "/",
+      errorMessage: "Error loading the admin page | Server Error!",
+    });
   }
 };
 
@@ -56,6 +60,10 @@ const getIndexPage = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    res.render("error", {
+      backToPage: "/",
+      errorMessage: "Error loading the home page | Server Error!",
+    });
   }
 };
 
@@ -69,6 +77,10 @@ const getUserDash = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    res.render("error", {
+      backToPage: "/",
+      errorMessage: "Error loading the home page | Server Error!",
+    });
   }
 };
 
@@ -92,6 +104,10 @@ const getCart = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    res.render("error", {
+      backToPage: "/",
+      errorMessage: "Error Loading the cart | Server Error!",
+    });
   }
 };
 
@@ -105,8 +121,7 @@ const getOrder = async (req, res) => {
       })
       .lean();
 
-
-    const inverseOrder = orders.reverse()
+    const inverseOrder = orders.reverse();
 
     let message = "";
 
@@ -124,26 +139,29 @@ const getOrder = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    res.render("error", {
+      backToPage: "/",
+      errorMessage: "Error loading the Orders | Server Error!",
+    });
   }
 };
 
-const getQuery = async (req,res) =>{
-try {
-  res.render("query", {
-    userId: req.user._id,
-    username: req.user.username,
-    cart: req.user.cart,
-    pageTitle: "Style House | query",
-  
-  });
-
-  
-} catch (error) {
-  console.log(error)
-  res.render("error" , {message : "Server Error !"})
-}
-
-}
+const getQuery = async (req, res) => {
+  try {
+    res.render("query", {
+      userId: req.user._id,
+      username: req.user.username,
+      cart: req.user.cart,
+      pageTitle: "Style House | query",
+    });
+  } catch (error) {
+    console.log(error);
+    res.render("error", {
+      backToPage: "",
+      errorMessage: "Error loading the Query! | Server Error!",
+    });
+  }
+};
 
 module.exports = {
   getAdminPage,
@@ -151,5 +169,5 @@ module.exports = {
   getUserDash,
   getCart,
   getOrder,
-  getQuery
+  getQuery,
 };
