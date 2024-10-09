@@ -15,7 +15,6 @@ const bodyParser = require("body-parser");
 const { isAuthenticated, isAdmin, dataHelper } = require("./authorization/auth");
 const {renderSubCategoryPage, renderCategoryPage, renderPageSearchProducts} =require("./utils/feature")
 
-
 const {
   createProduct,
   editProduct,
@@ -35,7 +34,7 @@ const {
 const { addToCart, removeFromCart,   emptyCart} = require("./controllers/cartController");
 const {createOrder , createCartOrder, deleteorder, dispatchOrder, cancelOrder, verifyOrder, updateOrderEmailVerification, cancelOrderRequest, orderAddAddress} = require("./controllers/orderController")
 const {checkout , productPayment, createIntent, paymentSuccess } = require("./controllers/paymentController");
-const { getAdminPage, getUserReport, getOrderReport, getProductReport, addStorekeeper, addRemovekeeper, removeStorekeeper, checkNewsLetter } = require("./controllers/adminController");
+const { getAdminPage, getUserReport, getOrderReport, getProductReport, addStorekeeper, removeStorekeeper, checkNewsLetter } = require("./controllers/adminController");
 const port = 4000;
 const app = express();
   
@@ -77,21 +76,18 @@ app.use(cookie());
 
 // rendering is on server side      SSR
 
-// admin Routes
+// admin Routes // admin controller
 app.get("/admin/dashboard", isAuthenticated, isAdmin,getAdminPage );
 app.get("/admin/dashboard/userReport", isAuthenticated, isAdmin, getUserReport );
 app.get("/admin/dashboard/orderReport", isAuthenticated, isAdmin, getOrderReport );
 app.get("/admin/dashboard/productReport", isAuthenticated, isAdmin, getProductReport);
 app.get("/admin/dashboard/checkNewsLetter", isAuthenticated, isAdmin, checkNewsLetter);
-
-
 app.post("/admin/addKeeper" , isAuthenticated , isAdmin , addStorekeeper)
 app.post("/admin/removeKeeper" , isAuthenticated , isAdmin , removeStorekeeper)
 
 
 
 // guest Routes
-
 app.get("/", dataHelper ,getIndexPage);
 app.get("/user/register",dataHelper, (req, res) => {
   res.render("signup", {
@@ -196,7 +192,9 @@ app.get("/complain", dataHelper,(req, res) => {
 
 
 
-//rendering Search
+// features   
+
+// rendering Search
 app.post("/search", dataHelper , renderPageSearchProducts);
 
 // rendering category
@@ -227,7 +225,7 @@ app.get("/kid-jhuttis", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"
 app.get("/baby-booties", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Baby-booties")});
 
 
-//user routes
+//user controller   // getController 
 app.post("/user/register", registerhandler);
 app.get("/user/verify/:userId" , verifyUserEmail)
 app.post("/user/login", loginhandler);
@@ -237,8 +235,6 @@ app.get("/user/dashboard",isAuthenticated, getUserDash);
 app.get("/user/cart" , isAuthenticated , getCart)
 app.get("/user/orders" ,isAuthenticated , getOrder)
 app.get("/user/query" ,isAuthenticated , getQuery)
-
-
 app.get('/user/logout', (req, res) => {
   try {
     const { token } = req.cookies;
@@ -246,24 +242,28 @@ app.get('/user/logout', (req, res) => {
       res.clearCookie("token")
       res.redirect('/');
     }
-    
   } catch (error) {
     console.log(error)
   }
  
 });
 
-// product routes
+// product controller
 app.post("/product/add", multMid, createProduct);
 app.post("/product/edit/:id", multMid, editProduct);
 app.get("/product/delete/:id", deleteProduct);
 app.get("/product/:productId" ,isAuthenticated , getProduct)
 app.post("/product/review/:productId" , isAuthenticated , addProductReview)
 
+
+
+// cart controller
 app.post("/cart/add/:productId" ,isAuthenticated , addToCart)
 app.get("/cart/removeItem/:productId/:color/:size" ,isAuthenticated , removeFromCart)
 app.get("/cart/empty" ,isAuthenticated , emptyCart)
 
+
+//order controller
 app.post("/order/create/:productId" ,isAuthenticated ,createOrder)
 app.post("/order/create" ,isAuthenticated ,createCartOrder)
 app.get("/order/checkout/:orderId" ,isAuthenticated ,checkout)
@@ -277,8 +277,6 @@ app.post("/order/paymentIntent" , isAuthenticated , createIntent)    //api for p
 app.get("/order/payment/success/:orderId" , isAuthenticated , paymentSuccess)
 app.get("/order/cancel/mail/:orderId" , isAuthenticated , cancelOrderRequest)
 app.get("/order/dispatch/:orderId" , isAuthenticated ,dispatchOrder )
-
-
 
 
 
