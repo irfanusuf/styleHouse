@@ -78,8 +78,6 @@ const productPayment = async (req, res) => {
   }
 };
 
-
-
 //api 
 const createIntent = async (req, res) => {
   try {

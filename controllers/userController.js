@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const { transporter } = require("../utils/nodemailer");
+const NewsLetter = require("../models/newsletterModel");
 
 const registerhandler = async (req, res) => {
   const { email, username, password } = req.body;
@@ -91,11 +92,9 @@ const verifyUserEmail = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .render("error", {
-        message: "An error occurred while verifying your email.",
-      });
+    res.status(500).render("error", {
+      message: "An error occurred while verifying your email.",
+    });
   }
 };
 
@@ -207,12 +206,47 @@ const addressHandler = async (req, res) => {
     );
 
     if (!updatedUser) {
-      return res.render("cart", { message: "Some Error" });
+      return res.render("error", { 
+        backToPage : "/",
+        errorMessage: "Some Error" });
     }
     res.redirect(`/order/checkout/${orderId}`);
   } catch (error) {
     console.log(error);
     res.render("cart", { message: "Some Error " });
+  }
+};
+
+const addToNewsLetter = async (req, res) => {
+  try {
+    const {email} = req.body;
+    const checkmail = await NewsLetter.findOne({email})
+
+    if(checkmail){
+      return res.render("error" ,{
+        backToPage : "/",
+        errorMessage : "You are already in our Subscriber's List!"})
+    }
+    const subscriber = await  new NewsLetter({email})
+    const updateNewsLetter = await  subscriber.save()
+
+    if(updateNewsLetter) {
+     return res.render("success" ,{
+        backToPage : "/",
+        successMessage : "We added your Email in our Subscriber's List. You will get Excited offers right away!"})
+    }
+    else{
+     return res.render("error" ,{
+        backToPage : "/",
+        errorMessage : "Error While adding You to newsLetter . Try after Sometime!"})
+    }
+
+  
+  } catch (error) {
+    console.log(error);
+    res.render("error" ,{
+      backToPage : "/",
+      errorMessage : "Server Error , Try after Sometime !"})
   }
 };
 
@@ -222,4 +256,5 @@ module.exports = {
   deleteHandler,
   addressHandler,
   verifyUserEmail,
+  addToNewsLetter,
 };

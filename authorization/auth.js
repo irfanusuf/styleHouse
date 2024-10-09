@@ -42,7 +42,7 @@ const isAdmin = async (req, res, next) => {
     const admin = req.admin
     const storekeeper = req.storekeeper
 
-    if (!admin || !storekeeper) {
+    if (!admin && !storekeeper) {
       res.status(401).render("login", { message: "UnAuthorized to access!" });
     } else {
       return next();

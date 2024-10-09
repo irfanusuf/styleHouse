@@ -5,6 +5,8 @@ const User = require("../models/userModel");
 
 const getAdminPage = async (req, res) => {
   try {
+
+
     res.render("admin", {
       userId: req.user._id,
       username: req.user.username,
@@ -36,7 +38,6 @@ const getUserReport = async (req, res) => {
       userId: req.user._id,
       username: req.user.username,
       cart: req.user.cart,
-      email: req.user.email,
       pageTitle: "Style house |admin@userReport",
       users: users,
     });
@@ -57,7 +58,6 @@ const getProductReport = async (req, res) => {
       userId: req.user._id,
       username: req.user.username,
       cart: req.user.cart,
-      email: req.user.email,
       pageTitle: "Style house  |admin@productReport",
       products: products,
     });
@@ -87,7 +87,6 @@ const getOrderReport = async (req, res) => {
       userId: req.user._id,
       username: req.user.username,
       cart: req.user.cart,
-      email: req.user.email,
       pageTitle: "Style house  | admin@orderReport",
       orders: orders,
     });
@@ -102,6 +101,21 @@ const getOrderReport = async (req, res) => {
 
 const addStorekeeper = async (req, res) => {
   try {
+
+    const loggedInUser = req.user
+
+    const isAdmin = loggedInUser.isAdmin
+
+    if (!isAdmin) {
+      return res.render("admin", {
+        userId: req.user._id,
+        username: req.user.username,
+        email: req.user.email,
+        cart: req.user.cart,
+        errorMessage: "Only admin can update or Remove store keeper ,   ",
+      });
+    }
+
     const { email } = req.body;
 
     
@@ -151,6 +165,21 @@ const addStorekeeper = async (req, res) => {
 
 const removeStorekeeper = async (req, res) => {
   try {
+    const loggedInUser = req.user
+
+    const isAdmin = loggedInUser.isAdmin
+
+    if (!isAdmin) {
+      return res.render("admin", {
+        userId: req.user._id,
+        username: req.user.username,
+        email: req.user.email,
+        cart: req.user.cart,
+        errorMessage: "Only admin can update or Remove store keeper ,   ",
+      });
+    }
+
+
     const { email } = req.body;
 
     

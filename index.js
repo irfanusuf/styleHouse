@@ -9,6 +9,7 @@ const {
   deleteHandler,
   addressHandler,
   verifyUserEmail,
+  addToNewsLetter,
 } = require("./controllers/userController");
 
 const bodyParser = require("body-parser");
@@ -229,8 +230,10 @@ app.get("/baby-booties", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,
 app.post("/user/register", registerhandler);
 app.get("/user/verify/:userId" , verifyUserEmail)
 app.post("/user/login", loginhandler);
-app.post("/user/delete/:userId" ,deleteHandler)
-app.post("/user/address/:userId/:orderId" , addressHandler)
+app.post("/user/delete/:userId" ,isAuthenticated , deleteHandler)
+app.post("/user/address/:userId/:orderId" , isAuthenticated, addressHandler)
+app.post("/user/addNewsLetter" , isAuthenticated , addToNewsLetter )
+
 app.get("/user/dashboard",isAuthenticated, getUserDash);
 app.get("/user/cart" , isAuthenticated , getCart)
 app.get("/user/orders" ,isAuthenticated , getOrder)

@@ -5,49 +5,92 @@
 {{> adminNav}}
 
 
- {{#if errorMessage}}
+  <div class="d-flex p-5">
 
-<div class="container-fluid p-5">
+           <div class="mt-3">
+            <h3 class="text-primary"> App Admin Info</h3>
+            <p class="text-dark m-0 fw-bolder">Admin name : <span class="fst-italic fw-normal ">Savitri</span></p>
+            <p class="text-dark m-0 fw-bolder">Admin Email : <span class="fst-italic fw-normal">savitriraol30@gmail.com</span></p>
+        </div>
 
-    <div class=" alert alert-danger alert-dismissible">
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        <strong>{{errorMessage}} </strong>
-    </div>  
+
+        <div class="mt-3 ms-5">
+            <h3 class="text-primary"> Store keeper Info</h3>
+            <p class="text-dark m-0 fw-bolder">Store Keeper : <span class="fst-italic fw-normal ">{{username}}</span></p>
+            <p class="text-dark m-0 fw-bolder">Store Keeper mail : <span class="fst-italic fw-normal">{{email}}</span></p>
+        </div>
+
+
+         <div class="mt-3 ms-5">
+            <h3 class="text-primary"> Check NewsLetter Subscribers</h3>
+
+            <a class="btn btn-sm  btn-success" href="/admin/dashboard/checkNewsLetter"> Check</a>
+            
+        </div>
+
+
+
+        <div class="mt-3 ms-5 ms-5">
+            <h3 class="text-success"> Add Store keeper</h3>
+            <form method="post" action="/admin/addKeeper" class="d-flex">
+                <input name="email" class="form-control form-control-sm" required placeholder="Enter email" >
+                <button  class="btn btn-sm btn-success ms-2"> Update</button>
+            </form>
+        </div>  
+
+
+          <div class="mt-3 ms-5 ms-5">
+            <h3 class="text-Danger"> Remove Store keeper</h3>
+            <form method="post" action="/admin/removeKeeper" class="d-flex">
+                <input name="email" class="form-control form-control-sm" required placeholder="Enter email" >
+                <button  class="btn btn-sm btn-danger ms-2"> Update</button>
+            </form>
+        </div>
+
+       
+
+    </div>
+
+
+
+
+<div class="container-fluid p-5 " style="position : absolute">
+
+  {{#if errorMessage}}
+  <div id="autoDismissAlert" class=" alert alert-danger alert-dismissible fade show" role="alert">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <strong>{{errorMessage}} </strong>
+  </div>
+  {{/if}}
+
+  {{#if successMessage}}
+  <div id="autoDismissAlert" class=" alert alert-success alert-dismissible fade show" role="alert">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <strong>{{successMessage}} </strong>
+  </div>
+  {{/if}}
+
+  {{#if infoMessage}}
+  <div id="autoDismissAlert" class=" alert alert-warning alert-dismissible fade show" role="alert">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <strong>{{infoMessage}} </strong>
+  </div>
+  {{/if}}
+
 </div>
 
-{{/if}}
 
 
-{{#if successMessage}}
-
-<div class="container-fluid p-5">
-
-    <div class=" alert alert-success alert-dismissible">
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        <strong>{{successMessage}} </strong>
-    </div>  
-</div>
-
-{{/if}}
-
-
-{{#if infoMessage}}
-
-<div class="container-fluid p-5">
-
-    <div class=" alert alert-info alert-dismissible">
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        <strong>{{infoMessage}} </strong>
-    </div>  
-</div>
-
-{{/if}}
+<style>
+  .my-style{
+    margin-top: 130px;
+    background-color: #ff6b6b3f;
+  }
+</style>
 
 
 
-
-
-<div class="mt-4 p-5  rounded" style="background-color: #ff6b6b3f;;">
+<div class=" p-5  rounded my-style">
   <div class="container">
     <h2>"Kindly check users for any orders; for in every request lies the potential for connection and fulfillment."
     </h2>
@@ -60,7 +103,7 @@
 </div>
 
 
-<div class="mt-4 p-5  rounded" style="background-color: #ff6b6b3f;">
+<div class="mt-4 p-5  rounded my-style">
   <div class="container">
     <h1>"Give Away Soon..."</h1>
     <p> Team, I want to highlight the strategic benefits of our upcoming giveaway and discount campaign. This initiative
@@ -84,7 +127,14 @@
 </div>
 
 
+<script>
 
+  setTimeout(function () {
+    var alertElement = document.getElementById('autoDismissAlert');
+    var bsAlert = new bootstrap.Alert(alertElement);
+    bsAlert.close();
+  }, 3000); 
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

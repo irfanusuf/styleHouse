@@ -1,5 +1,5 @@
 <style>
-    .error-toast {
+    .success-toast {
         color: #f0d7d9;
         border-radius: 5px;
         min-width: 600px;
@@ -15,7 +15,7 @@
         min-height: 700px;
 
         >h2 {
-            color: rgb(247, 38, 38);
+            color: rgb(45, 247, 38);
         }
     }
 
@@ -23,14 +23,12 @@
 
 
 
-{{#if errorMessage}}
+{{#if successMessage}}
 
 
 <div class="error-message">
 
-    
-
-    <h2>{{errorMessage}} </h2>
+    <h2>{{successMessage}} </h2>
 
     <a href="{{backToPage}}" class="btn"> Go Back </a>
 </div>
@@ -44,7 +42,7 @@
 
 <script>
     window.onload = function () {
-        const message = "{{errorMessage}}"; // Get the message from the backend
+        const message = "{{successMessage}}"; // Get the message from the backend
         if (message && message.trim() !== "") {
             Toastify({
                 text: message,
@@ -52,8 +50,8 @@
                 close: true,    // Adds a close button to the toast
                 gravity: "bottom", // `top` or `bottom`
                 position: "center", // `left`, `center` or `right`
-                backgroundColor: "#d40015", // Error color
-                className: "error-toast",   // Add a custom class for styling
+                backgroundColor: "#37942a", // success color
+                className: "success-toast",   // Add a custom class for styling
             }).showToast();
         }
     };
