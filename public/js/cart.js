@@ -49,17 +49,6 @@
 //   updateCartTotal();
 // });
 
-document.getElementById("dropdown").addEventListener("click", () => {
-  const targetdiv = document.getElementById("dropdown-list");
-
-  targetdiv.classList.remove("display-none");
-});
-
-document.getElementById("dropdown-close").addEventListener("click", () => {
-  const targetdiv = document.getElementById("dropdown-list");
-
-  targetdiv.classList.add("display-none");
-});
 
 
 

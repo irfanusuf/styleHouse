@@ -1,21 +1,140 @@
 
 
 
-
-
-{{!-- <h1> Our Latest Products </h1> --}}
-
-{{> productCards}}
+<div id="flterIcon" class="filter-icon">
+  <img src="/assets/filter.svg">
+</div>
 
 
 
-{{! <script>
+<div class="side-navbar display-none" id="side-navbar">
+
+
+  <div class="heading">
+    <h3> Apply Filters </h3>
+
+    <img id="sideNav-close" src="/assets/close.svg" alt="close-btn">
+  </div>
+
+
+
+  <form method="post" action="/products/filter">
+
+    <div class="form-group">
+      <label for="productName">Product Name:</label>
+      <input type="text" id="productName" name="name" placeholder="Enter name of the product">
+    </div>
+
+    <div class="form-group">
+      <label for="size">Size:</label>
+      <select id="size" name="size">
+        <option value="">Select Size</option>
+        <option value="S">S</option>
+        <option value="M">M</option>
+        <option value="L">L</option>
+        <option value="XL">XL</option>
+        <option value="30">30</option>
+        <option value="32">32</option>
+        <option value="34">34</option>
+        <option value="36">36</option>
+        <option value="38">38</option>
+        <option value="40">40</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="color">Color:</label>
+      <select id="color" name="color">
+        <option value="">Select Color</option>
+        <option value="Black">Black</option>
+        <option value="White">White</option>
+        <option value="Red">Red</option>
+        <option value="Blue">Blue</option>
+        <option value="Yellow">Yellow</option>
+        <option value="Green">Green</option>
+        <option value="Pink">Pink</option>
+        <option value="Purple">Purple</option>
+        <option value="Grey">Grey</option>
+        <option value="Orange">Orange</option>
+        <option value="Brown">Brown</option>
+        <option value="Beige">Beige</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="subCategory">Sub Category:</label>
+      <select id="subCategory" name="subCategory">
+        <option value="">Select Sub Category</option>
+        <option value="Sarees">Sarees</option>
+        <option value="Clutches">Clutches</option>
+        <option value="Kurti">Kurti</option>
+        <option value="Pyjamas">Pyjamas</option>
+        <option value="Trouser">Trouser</option>
+        <option value="Sherwani">Sherwani</option>
+        <option value="Bangles">Bangles</option>
+        <option value="Jhuttis">Jhuttis</option>
+        <option value="Necklaces">Necklaces</option>
+        <option value="Jhumkas">Jhumkas</option>
+        <option value="Lehengas">Lehengas</option>
+        <option value="Kolapuris">Kolapuris</option>
+      </select>
+    </div>
+
+    <button class="btn " type="submit">Filter Products</button>
+  </form>
+</div>
+
+
+
+
+<div class="main-products-div">
+
+  {{> productCards}}
+
+</div>
+
+
+<script>
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const closeButton = document.getElementById("sideNav-close");
+    const sideNavbar = document.getElementById("side-navbar");
+    const flterIcon = document.getElementById("flterIcon")
+
+    if (flterIcon) {
+      flterIcon.addEventListener("click", () => {
+        console.log("Button clicked, toggling the sidebar.");
+        sideNavbar.classList.toggle("display-none");
+      });
+
+    }
+
+    if (closeButton && sideNavbar) {
+      closeButton.addEventListener("click", () => {
+        console.log("Button clicked, toggling the sidebar.");
+        sideNavbar.classList.toggle("display-none");
+      });
+    } else {
+      console.error("Close button or side-navbar is missing in the DOM.");
+    }
+  });
+
+
+
+</script>
+
+
+
+
+
+{{!
+<script>
   const form = document.getElementById('productForm');
   const product = document.querySelector('.product-card')
-  const  _id = product.id
+  const _id = product.id
   const addToCartBtn = document.querySelector('.add-to-cart-btn');
   const buyNowBtn = document.querySelector('.buy-now-btn');
-  
+
 
   addToCartBtn.addEventListener('click', function (e) {
     form.action = `/cart/add/${_id}`;  // Add to cart action
@@ -24,4 +143,4 @@
   buyNowBtn.addEventListener('click', function (e) {
     form.action = `/place/order/${_id}`;  // Buy now action
   });
-</script> }}
+</> }}

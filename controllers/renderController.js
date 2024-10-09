@@ -1,16 +1,6 @@
 const Product = require("../models/itemModel");
 
-const errorHandler = (
-  res,
-  statusCode = 200,
-  page,
-  success = true,
-  message = "done"
-) => {
-  return res
-    .status(statusCode)
-    .render(page, { sucess: success, message: message });
-};
+
 
 const renderCategoryPage = async (req, res, category) => {
   try {
@@ -141,9 +131,60 @@ const renderPageSearchProducts = async (req, res) => {
   }
 };
 
+
+
+const renderfilteredProducts = async (req, res) => {
+  try {
+    const { size, color, name } = req.body;
+
+    console.log(req.body);
+
+    const products = await Product.find({
+      $or: [
+        { name: { $regex: name, $options: "i" } },
+        { searchTag: { $regex: name, $options: "i" } },
+      ],
+      size: { $regex: size, $options: "i" },
+      color: { $regex: color, $options: "i" },
+    }).lean();
+
+   
+    const productsWithSizes = products.map(product => ({
+      ...product,
+      sizesArray: typeof product.size === 'string' ? product.size.split(',').map(size => size.trim()) : [],
+      colorsArray: typeof product.color === 'string' ? product.color.split(',').map(color => color.trim()) : [],
+    }));
+
+   
+    if (productsWithSizes.length === 0) {
+      return res.render("productPage", {
+        userId: req.user._id,
+        username: req.user.username,
+        cart: req.user.cart,
+        pageTitle: `Style House | Search`,
+        message: "No products found!",
+      });
+    }
+
+ 
+    res.render("productPage", {
+      userId: req.user._id,
+      username: req.user.username,
+      cart: req.user.cart,
+      pageTitle: `Style House | Search`,
+      products: productsWithSizes,
+    });
+  } catch (error) {
+    console.error(error);
+    res.render("productPage", { message: "Network Error!" });
+  }
+};
+
+
+
 module.exports = {
-  errorHandler,
   renderCategoryPage,
   renderSubCategoryPage,
   renderPageSearchProducts,
+  renderfilteredProducts
 };

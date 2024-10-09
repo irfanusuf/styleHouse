@@ -1,7 +1,7 @@
 const cloudinary = require("cloudinary").v2;
 const Product = require("../models/itemModel");
 const Item = require("../models/itemModel");
-const errorHandler = require("../utils/feature");
+const errorHandler = require("./renderController");
 
 cloudinary.config({
   cloud_name: "dbo0xmbd7",

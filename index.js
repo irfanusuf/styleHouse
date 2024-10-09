@@ -14,7 +14,7 @@ const {
 
 const bodyParser = require("body-parser");
 const { isAuthenticated, isAdmin, dataHelper } = require("./authorization/auth");
-const {renderSubCategoryPage, renderCategoryPage, renderPageSearchProducts} =require("./utils/feature")
+const {renderSubCategoryPage, renderCategoryPage, renderPageSearchProducts, renderfilteredProducts} =require("./controllers/renderController")
 
 const {
   createProduct,
@@ -192,6 +192,17 @@ app.get("/complain", dataHelper,(req, res) => {
 });
 
 
+app.get("/nextDayCollect", dataHelper,(req, res) => {
+
+  res.render("nextDayCollect", {
+    userId: req.user._id,
+    username: req.user.username,
+    cart: req.user.cart,
+    pageTitle: "Style House | Complain",
+  });
+});
+
+
 
 // features   
 
@@ -232,7 +243,7 @@ app.get("/user/verify/:userId" , verifyUserEmail)
 app.post("/user/login", loginhandler);
 app.post("/user/delete/:userId" ,isAuthenticated , deleteHandler)
 app.post("/user/address/:userId/:orderId" , isAuthenticated, addressHandler)
-app.post("/user/addNewsLetter" , isAuthenticated , addToNewsLetter )
+app.post("/user/addNewsLetter"  , addToNewsLetter )
 
 app.get("/user/dashboard",isAuthenticated, getUserDash);
 app.get("/user/cart" , isAuthenticated , getCart)
@@ -251,15 +262,20 @@ app.get('/user/logout', (req, res) => {
  
 });
 
-// product controller
+// product controller // admin controller 
 app.post("/product/add", multMid, createProduct);
-app.post("/product/edit/:id", multMid, editProduct);
-app.get("/product/delete/:id", deleteProduct);
+app.post("/product/edit/:id", multMid, isAuthenticated , isAdmin ,editProduct);
+app.get("/product/delete/:id", isAuthenticated , isAdmin , deleteProduct);
+
+
 app.get("/product/:productId" ,isAuthenticated , getProduct)
 app.post("/product/review/:productId" , isAuthenticated , addProductReview)
 
 
+app.post("/products/filter" , dataHelper, renderfilteredProducts)
 
+
+  
 // cart controller
 app.post("/cart/add/:productId" ,isAuthenticated , addToCart)
 app.get("/cart/removeItem/:productId/:color/:size" ,isAuthenticated , removeFromCart)
