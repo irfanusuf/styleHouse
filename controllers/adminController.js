@@ -1,15 +1,11 @@
-
 const Product = require("../models/itemModel");
 const Order = require("../models/oderModel");
 const User = require("../models/userModel");
 
 
-
   const getAdminPage = async (req, res) => {
     try {
 
-    
-      
       res.render("admin", {
         userId: req.user._id,
         username: req.user.username,
@@ -106,7 +102,5 @@ const User = require("../models/userModel");
       });
     }
   };
-
-
 
   module.exports  = {getAdminPage,getUserReport,getProductReport ,getOrderReport}

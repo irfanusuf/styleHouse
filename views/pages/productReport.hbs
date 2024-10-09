@@ -1,4 +1,3 @@
-
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
   integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
 
@@ -11,36 +10,39 @@
 {{> adminNav}}
 
 
+{{#if true}}
 
-<div class="container-fluid ps-5 mt-5">
-
-  <div class="h1">Currently Available Products </div>
-
-
-
-  <button
-    type="button" 
-    class="btn btn-success"
-    data-bs-toggle="modal"
-    data-bs-target="#addBookModal"
-  >
-    Add Product
-  </button>
-
-  <div class="modal" id="addBookModal">
-  {{> addModal}}
+<div class="container-fluid  ps-5 pe-5 mt-3">
+  <div class=" alert alert-danger alert-dismissible">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <strong> Some of the products are near out of Stock . kindly check the physical stock! </strong>
   </div>
-
 
 </div>
 
-<div class="container-fluid p-5 table-responsive ">
+
+{{/if}}
+
+<div class="container-fluid ps-5 mt-3">
+  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addBookModal">
+    Add Product
+  </button>
+
+  <div class="h1 mb-3 text-center">Currently Available Products </div>
+
+  <div class="modal" id="addBookModal">
+    {{> addModal}}
+  </div>
+
+</div>
+
+<div class="container-fluid ps-5 pe-5 mb-5 table-responsive ">
 
 
-  <table  class="table table-striped table-bordered table-hover  table-responsive-sm">
+  <table class="table table-striped table-bordered table-hover  table-responsive-sm">
 
     <thead>
-      <tr  class="table-primary">
+      <tr class="table-primary">
 
         <th> Produtc Name </th>
         <th> Category</th>
@@ -57,7 +59,7 @@
         <th>Review</th>
         <th> Action </th>
 
-  
+
       </tr>
 
     </thead>
@@ -66,53 +68,44 @@
 
       {{#each products}}
 
-        <div class="modal" id="editModal-{{this._id}}">
-       {{> editModal}}
-        </div>
+      <div class="modal" id="editModal-{{this._id}}">
+        {{> editModal}}
+      </div>
 
-        <!-- The Modal -->
-        <div class="modal" id="delModal-{{this._id}}">
+      <!-- The Modal -->
+      <div class="modal" id="delModal-{{this._id}}">
         {{> deleteModal}}
-        </div>
+      </div>
 
-        <tr>
+      <tr>
 
-          <td> {{this.name}} </td>
-          <td> {{this.category}} </td>
-          <td> {{this.subCategory}} </td>
-          <td> {{this.searchTag}} </td>
-          <td> {{this.size}} </td>
-          <td> {{this.color}} </td>
-          <td> {{this.price}}$</td>
-          <td> {{this.discount}}% </td>
-          <td> {{this.itemQty}} no.s </td>
-          <td> {{this.description}}</td>
-          <td> <img width="50px" src={{this.imageUrl}} alt="no-image" /> </td>
-          <th>{{this.rating}}</th>
-          <th>{{this.reviews.length}}</th>
-          <td class="d-flex">
+        <td> {{this.name}} </td>
+        <td> {{this.category}} </td>
+        <td> {{this.subCategory}} </td>
+        <td> {{this.searchTag}} </td>
+        <td> {{this.size}} </td>
+        <td> {{this.color}} </td>
+        <td> {{this.price}}$</td>
+        <td> {{this.discount}}% </td>
+        <td> {{this.itemQty}} no.s </td>
+        <td> {{this.description}}</td>
+        <td> <img width="50px" src={{this.imageUrl}} alt="no-image" /> </td>
+        <th>{{this.rating}}</th>
+        <th>{{this.reviews.length}}</th>
+        <td class="d-flex">
 
-            <button
-              type="button"
-              class="btn btn-success me-3"
-              data-bs-toggle="modal"
-              data-bs-target="#editModal-{{this._id}}"
-            >
-              Edit
-            </button>
+          <button type="button" class="btn btn-success me-3" data-bs-toggle="modal"
+            data-bs-target="#editModal-{{this._id}}">
+            Edit
+          </button>
 
-            <button
-              type="button"
-              class="btn btn-danger"
-              data-bs-toggle="modal"
-              data-bs-target="#delModal-{{this._id}}"
-            >
-              Delete
-            </button>
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delModal-{{this._id}}">
+            Delete
+          </button>
 
-          </td>
+        </td>
 
-        </tr>
+      </tr>
 
       {{/each}}
 
@@ -121,4 +114,3 @@
   </table>
 
 </div>
-

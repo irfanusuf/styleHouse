@@ -1,24 +1,41 @@
 <div class="container-fluid ps-5 mt-5">
 
     <h1 class="h1 text-dark text-center">
-        Authorized Secure Dashboard
+        Secure Admin  Dashboard
     </h1>
-
-
-    <a class="btn btn-primary" href="/admin/dashboard">  Admin Dashboard </a>
+    <a class="btn btn-primary" href="/admin/dashboard"> Admin Dashboard </a>
     <a class="btn btn-primary" href="/admin/dashboard/userReport"> User Reports </a>
     <a class="btn btn-primary" href="/admin/dashboard/productReport"> Product Reports </a>
     <a class="btn btn-primary" href="/admin/dashboard/orderReport"> Order Reports </a>
 
-    <div class="mt-2">
-        <p class="text-dark ">Store Keeper : {{username}}</p>  
-        <p class="text-dark ">Store Keeper mail : {{email}}</p>  
+
+    <div class="d-flex">
+        <div class="mt-3">
+            <h3 class="text-primary"> Store keeper information</h3>
+            <p class="text-dark m-0 ">Store Keeper : {{username}}</p>
+            <p class="text-dark m-0">Store Keeper mail : {{email}}</p>
+        </div>
+
+
+        <div class="mt-3 ms-5 ms-5">
+            <h3 class="text-primary"> Add Store keeper</h3>
+            <form  method="post" action="/admin/addKeeper" class="d-flex">
+                <input class="form-control form-control-sm" required placeholder="Enter email" readonly>
+                <button disabled class="btn btn-sm btn-success ms-2"> Update</button>
+            </form>
+           
+            
+        </div>
+
+
+
     </div>
-    
+
 
     {{#if errorMessage}}
 
-    <div class="alert alert-success alert-dismissible">
+
+    <div class=" alert alert-danger alert-dismissible">
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         <strong>{{errorMessage}} </strong>
     </div>
