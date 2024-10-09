@@ -1,0 +1,29 @@
+<div class="container-fluid ps-5 mt-5">
+
+    <h1 class="h1 text-dark text-center">
+        Authorized Secure Dashboard
+    </h1>
+
+
+    <a class="btn btn-primary" href="/admin/dashboard">  Admin Dashboard </a>
+    <a class="btn btn-primary" href="/admin/dashboard/userReport"> User Reports </a>
+    <a class="btn btn-primary" href="/admin/dashboard/productReport"> Product Reports </a>
+    <a class="btn btn-primary" href="/admin/dashboard/orderReport"> Order Reports </a>
+
+    <div class="mt-2">
+        <p class="text-dark ">Store Keeper : {{username}}</p>  
+        <p class="text-dark ">Store Keeper mail : {{email}}</p>  
+    </div>
+    
+
+    {{#if errorMessage}}
+
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>{{errorMessage}} </strong>
+    </div>
+
+    {{/if}}
+
+
+</div>

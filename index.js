@@ -27,7 +27,6 @@ const {
 const multMid = require("./middlewares/multMid");
 const {
   getIndexPage,
-  getAdminPage,
   getUserDash,
   getCart,
   getOrder,
@@ -35,7 +34,8 @@ const {
 } = require("./controllers/getController");
 const { addToCart, removeFromCart,   emptyCart} = require("./controllers/cartController");
 const {createOrder , createCartOrder, deleteorder, dispatchOrder, cancelOrder, verifyOrder, updateOrderEmailVerification, cancelOrderRequest, orderAddAddress} = require("./controllers/orderController")
-const {checkout , productPayment, createIntent, paymentSuccess } = require("./controllers/paymentController")
+const {checkout , productPayment, createIntent, paymentSuccess } = require("./controllers/paymentController");
+const { getAdminPage, getUserReport, getOrderReport, getProductReport } = require("./controllers/adminController");
 const port = 4000;
 const app = express();
   
@@ -78,9 +78,10 @@ app.use(cookie());
 // rendering is on server side      SSR
 
 // admin Routes
-app.get("/admin/dashboard", isAuthenticated, isAdmin, getAdminPage);
-
-
+app.get("/admin/dashboard", isAuthenticated, isAdmin,getAdminPage );
+app.get("/admin/dashboard/userReport", isAuthenticated, isAdmin, getUserReport );
+app.get("/admin/dashboard/orderReport", isAuthenticated, isAdmin, getOrderReport );
+app.get("/admin/dashboard/productReport", isAuthenticated, isAdmin, getProductReport);
 
 // guest Routes
 

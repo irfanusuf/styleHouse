@@ -2,47 +2,7 @@ const Product = require("../models/itemModel");
 const Order = require("../models/oderModel");
 const User = require("../models/userModel");
 
-const getAdminPage = async (req, res) => {
-  try {
-    const products = await Product.find().lean();
 
-    const users = await User.find()
-      .populate({
-        path: "cart.productId",
-      })
-      .populate({
-        path: "orders",
-      })
-      .lean();
-
-    const orders = await Order.find()
-      .populate({
-        path: "user",
-        select: "email",
-      })
-      .populate({
-        path: "products.productId",
-        select: "name",
-      })
-      .lean();
-
-    res.render("admin", {
-      userId: req.user._id,
-      username: req.user.username,
-      cart: req.user.cart,
-      pageTitle: "Style house  | AdminDashboard",
-      products: products,
-      users: users,
-      orders: orders,
-    });
-  } catch (error) {
-    console.log(error);
-    res.render("error", {
-      backToPage: "/",
-      errorMessage: "Error loading the admin page | Server Error!",
-    });
-  }
-};
 
 const getIndexPage = async (req, res) => {
   try {
@@ -164,7 +124,6 @@ const getQuery = async (req, res) => {
 };
 
 module.exports = {
-  getAdminPage,
   getIndexPage,
   getUserDash,
   getCart,
