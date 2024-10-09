@@ -1,46 +1,52 @@
 <div class="container-fluid ps-5 mt-5">
 
     <h1 class="h1 text-dark text-center">
-        Secure Admin  Dashboard
+        Secure Admin Dashboard
     </h1>
-    <a class="btn btn-primary" href="/admin/dashboard"> Admin Dashboard </a>
-    <a class="btn btn-primary" href="/admin/dashboard/userReport"> User Reports </a>
-    <a class="btn btn-primary" href="/admin/dashboard/productReport"> Product Reports </a>
-    <a class="btn btn-primary" href="/admin/dashboard/orderReport"> Order Reports </a>
 
+    <a class="btn btn-primary m-1" href="/admin/dashboard"> Admin Dashboard </a>
+    <a class="btn btn-primary m-1" href="/admin/dashboard/userReport"> User Reports </a>
+    <a class="btn btn-primary m-1" href="/admin/dashboard/productReport"> Product Reports </a>
+    <a class="btn btn-primary m-1" href="/admin/dashboard/orderReport"> Order Reports </a>
 
     <div class="d-flex">
         <div class="mt-3">
             <h3 class="text-primary"> Store keeper information</h3>
-            <p class="text-dark m-0 ">Store Keeper : {{username}}</p>
-            <p class="text-dark m-0">Store Keeper mail : {{email}}</p>
+            <p class="text-dark m-0 fw-bolder">Store Keeper : <span class="fst-italic fw-normal ">{{username}}</span></p>
+            <p class="text-dark m-0 fw-bolder">Store Keeper mail : <span class="fst-italic fw-normal">{{email}}</span></p>
         </div>
 
 
-        <div class="mt-3 ms-5 ms-5">
-            <h3 class="text-primary"> Add Store keeper</h3>
-            <form  method="post" action="/admin/addKeeper" class="d-flex">
-                <input class="form-control form-control-sm" required placeholder="Enter email" readonly>
-                <button disabled class="btn btn-sm btn-success ms-2"> Update</button>
-            </form>
-           
+         <div class="mt-3 ms-5 ms-5">
+            <h3 class="text-primary"> Check NewsLetter Subscribers</h3>
+
+            <a class="btn btn-sm  btn-success" href="/admin/dashboard/checkNewsLetter"> Check</a>
             
         </div>
 
 
 
+        <div class="mt-3 ms-5 ms-5">
+            <h3 class="text-success"> Add Store keeper</h3>
+            <form method="post" action="/admin/addKeeper" class="d-flex">
+                <input name="email" class="form-control form-control-sm" required placeholder="Enter email" >
+                <button  class="btn btn-sm btn-success ms-2"> Update</button>
+            </form>
+        </div>  
+
+
+          <div class="mt-3 ms-5 ms-5">
+            <h3 class="text-Danger"> Remove Store keeper</h3>
+            <form method="post" action="/admin/removeKeeper" class="d-flex">
+                <input name="email" class="form-control form-control-sm" required placeholder="Enter email" >
+                <button  class="btn btn-sm btn-danger ms-2"> Update</button>
+            </form>
+        </div>
+
+       
+
     </div>
 
-
-    {{#if errorMessage}}
-
-
-    <div class=" alert alert-danger alert-dismissible">
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        <strong>{{errorMessage}} </strong>
-    </div>
-
-    {{/if}}
 
 
 </div>

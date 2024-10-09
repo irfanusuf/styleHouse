@@ -9,6 +9,9 @@ cloudinary.config({
   api_secret: "fqcjtd3HxpH_t1dAEtqr595ULW0",
 });
 
+//admin  routes
+
+
 const createProduct = async (req, res) => {
   try {
     const {

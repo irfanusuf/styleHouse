@@ -5,6 +5,47 @@
 {{> adminNav}}
 
 
+ {{#if errorMessage}}
+
+<div class="container-fluid p-5">
+
+    <div class=" alert alert-danger alert-dismissible">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>{{errorMessage}} </strong>
+    </div>  
+</div>
+
+{{/if}}
+
+
+{{#if successMessage}}
+
+<div class="container-fluid p-5">
+
+    <div class=" alert alert-success alert-dismissible">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>{{successMessage}} </strong>
+    </div>  
+</div>
+
+{{/if}}
+
+
+{{#if infoMessage}}
+
+<div class="container-fluid p-5">
+
+    <div class=" alert alert-info alert-dismissible">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>{{infoMessage}} </strong>
+    </div>  
+</div>
+
+{{/if}}
+
+
+
+
 
 <div class="mt-4 p-5  rounded" style="background-color: #ff6b6b3f;;">
   <div class="container">
