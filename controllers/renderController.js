@@ -7,7 +7,7 @@ const renderCategoryPage = async (req, res, category) => {
     const products = await Product.find({ category: category }).lean();
 
    
-
+ 
     if (products.length === 0) {
       return res.render("productPage", {
         userId: req.user._id,

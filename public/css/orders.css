@@ -97,7 +97,7 @@
         gap: 10px;
 
         > .card {
-          width: 600px;
+          max-width: 600px;
           display: flex;
           justify-content: space-between;
           gap: 10px;
@@ -132,6 +132,10 @@
         display: flex;
         justify-content: center;
         align-items: center;
+
+        >h3{
+          text-align: center;
+        }
       }
     }
   }
@@ -182,5 +186,135 @@
     &:hover {
       background-color: rgb(5, 82, 5);
     }
+  }
+}
+
+
+
+/* Responsive design for tablets */
+@media screen and (max-width: 1024px) {
+  .container {
+    width: 90%;
+  }
+
+  .details {
+    flex-direction: column;
+  }
+
+  .order-details, .address-details {
+    padding: 10px;
+  }
+
+  .product-cards .card {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .product-details {
+    padding: 10px;
+  }
+
+  .track-order {
+    padding: 10px;
+  }
+
+  .btn {
+    padding: 8px 15px;
+  }
+}
+
+/* Responsive design for mobile devices */
+@media screen and (max-width: 768px) {
+  .container {
+    width: 90%;
+    /* margin: 20px; */
+    padding: 10px;
+  }
+
+  .order-container {
+    padding: 20px;
+  }
+
+  .details {
+    flex-direction: column;
+  }
+
+  .product-cards {
+    flex-direction: column;
+    >.card{
+      width: 480px;
+      >p{
+        width: 400px;
+      }
+    }
+  }
+
+  .product-cards {
+    width: 100%;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .card img {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .track-order {
+    height: auto;
+  }
+
+  .btn {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .btn-small {
+    padding: 3px 5px;
+  }
+
+  h1, h2 {
+    font-size: 1.5em;
+  }
+}
+
+/* Responsive design for very small screens */
+@media screen and (max-width: 500px) {
+  .container {
+    padding: 5px;
+  }
+
+  .order-header {
+    font-size: 1.2em;
+  }
+
+  .details {
+    gap: 5px;
+  }
+
+  .product-cards {
+    flex-direction: column;
+    >.card{
+      width: 300px;
+      >p{
+        width: 300px;
+      }
+    }
+  }
+  .product-details, .track-order {
+    padding: 10px;
+  }
+
+  .btn {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  h1, h2 {
+    font-size: 1.2em;
+  }
+
+  p {
+    font-size: 0.9em;
   }
 }

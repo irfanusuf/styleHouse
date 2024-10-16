@@ -1,16 +1,19 @@
 <link rel="stylesheet" href="/css/orders.css" />
 
 
-
-
-
 <div class="container">
+
   {{#if message}}
   <div class="message">{{message}}</div>
   <a class="btn btn-track" href="/user/orders"> Track Order </a>
   {{else}}
+
+
+
   <h1>Your Orders</h1>
+
   {{#each orders}}
+
   <div class="order-container">
 
     <div class="order-header">Order ID: {{this._id}}</div>
@@ -84,7 +87,7 @@
         {{#each this.products}}
         <div class="card">
           <p>
-            <strong>Product ID:</strong>
+            <strong>Product Name:</strong>
             {{this.productId.name}}<br />
             <strong>Quantity:</strong>
             {{this.quantity}}<br />

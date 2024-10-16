@@ -29,7 +29,7 @@ header {
 }
 
 .main-menu {
-  display: flex;
+  display: flex;  
   align-items: center;
 
   > .menu {
@@ -164,7 +164,7 @@ header {
     width: 15px;
     float: right;
     padding: 10px;
-
+    
     &:hover {
       background-color: #ff6b6b;
     }

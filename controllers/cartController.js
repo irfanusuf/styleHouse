@@ -134,6 +134,11 @@ module.exports = {
   emptyCart,
 };
 
+
+
+
+
+
 // const checkout = async (req, res) => {
 //   try {
 //     const userId = req.userId;
