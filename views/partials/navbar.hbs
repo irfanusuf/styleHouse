@@ -71,7 +71,8 @@
               <img src="/assets/cart.svg" alt="cart icon" />
             </a>
             {{#if username}}
-              <span style="color: aliceblue;">{{cart.length}}</span>
+              <span style="color: aliceblue;">
+                {{cart.length}}</span>
             {{/if}}
           </li>
 
@@ -134,8 +135,6 @@
 
 document.addEventListener("DOMContentLoaded", () => {
 
-
-
   document.getElementById("dropdown").addEventListener("click", () => {
     const targetdiv = document.getElementById("dropdown-list");
     targetdiv.classList.remove("display-none");
@@ -145,6 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const targetdiv = document.getElementById("dropdown-list");
     targetdiv.classList.add("display-none");
   });
+
 
   const target = document.getElementById("target_div");
   const hamburger = document.getElementById("hamburger");
@@ -156,9 +156,6 @@ document.addEventListener("DOMContentLoaded", () => {
    close.addEventListener("click", () => {
     target.style.display = "none"
   });
-
-
-
 
 });
 

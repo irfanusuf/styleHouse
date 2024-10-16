@@ -30,7 +30,7 @@ const {
   getUserDash,
   getCart,
   getOrder,
-  getQuery,
+  // getQuery,
 } = require("./controllers/getController");
 const { addToCart, removeFromCart,   emptyCart} = require("./controllers/cartController");
 const {createOrder , createCartOrder, deleteorder, dispatchOrder, cancelOrder, verifyOrder, updateOrderEmailVerification, cancelOrderRequest, orderAddAddress} = require("./controllers/orderController")
@@ -90,6 +90,7 @@ app.post("/admin/removeKeeper" , isAuthenticated , isAdmin , removeStorekeeper)
 
 // guest Routes
 app.get("/", dataHelper ,getIndexPage);
+
 app.get("/user/register",dataHelper, (req, res) => {
   res.render("signup", {
     userId: req.user._id,
@@ -106,7 +107,6 @@ app.get("/user/login",dataHelper, (req, res) => {
     pageTitle: "Style House | Login",
   });
 });
-
 app.get("/about", dataHelper ,(req, res) => {
   res.render("about", {
     userId: req.user._id,
@@ -131,7 +131,6 @@ app.get("/locator", dataHelper,(req, res) => {
     pageTitle: "Style House | Store location",
   });
 });
-
 app.get("/shipping-policy", dataHelper,(req, res) => {
   res.render("shipping", {
     userId: req.user._id,
@@ -140,8 +139,6 @@ app.get("/shipping-policy", dataHelper,(req, res) => {
     pageTitle: "Style House | Shipping policy",
   });
 });
-
-
 app.get("/return-policy", dataHelper,(req, res) => {
   res.render("return", {
     userId: req.user._id,
@@ -150,7 +147,6 @@ app.get("/return-policy", dataHelper,(req, res) => {
     pageTitle: "Style House | Return policy",
   });
 });
-
 app.get("/privacy-policy", dataHelper,(req, res) => {
   res.render("privacy", {
     userId: req.user._id,
@@ -159,8 +155,6 @@ app.get("/privacy-policy", dataHelper,(req, res) => {
     pageTitle: "Style House | Privacy policy",
   });
 });
-
-
 app.get("/terms&conditions", dataHelper,(req, res) => {
   res.render("termsAndConditions", {
     userId: req.user._id,
@@ -169,7 +163,6 @@ app.get("/terms&conditions", dataHelper,(req, res) => {
     pageTitle: "Style House | Terms & Conditions",
   });
 });
-
 app.get("/payment-method", dataHelper,(req, res) => {
 
   res.render("paymentMethod", {
@@ -179,8 +172,6 @@ app.get("/payment-method", dataHelper,(req, res) => {
     pageTitle: "Style House | Payment Method",
   });
 });
-
-
 app.get("/complain", dataHelper,(req, res) => {
 
   res.render("complain", {
@@ -190,8 +181,6 @@ app.get("/complain", dataHelper,(req, res) => {
     pageTitle: "Style House | Complain",
   });
 });
-
-
 app.get("/nextDayCollect", dataHelper,(req, res) => {
 
   res.render("nextDayCollect", {
@@ -203,9 +192,7 @@ app.get("/nextDayCollect", dataHelper,(req, res) => {
 });
 
 
-
 // features   
-
 // rendering Search
 app.post("/search", dataHelper , renderPageSearchProducts);
 
@@ -248,7 +235,7 @@ app.post("/user/addNewsLetter"  , addToNewsLetter )
 app.get("/user/dashboard",isAuthenticated, getUserDash);
 app.get("/user/cart" , isAuthenticated , getCart)
 app.get("/user/orders" ,isAuthenticated , getOrder)
-app.get("/user/query" ,isAuthenticated , getQuery)
+// app.get("/user/query" ,isAuthenticated , getQuery)
 app.get('/user/logout', (req, res) => {
   try {
     const { token } = req.cookies;

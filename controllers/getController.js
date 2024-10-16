@@ -7,7 +7,7 @@ const User = require("../models/userModel");
 const getIndexPage = async (req, res) => {
   try {
     if (req.userId) {
-      res.render("userDash", {
+      res.render("index", {
         userId: req.user._id,
         username: req.user.username,
         cart: req.user.cart,
@@ -29,7 +29,7 @@ const getIndexPage = async (req, res) => {
 
 const getUserDash = async (req, res) => {
   try {
-    res.render("userDash", {
+    res.render("index", {
       userId: req.user._id,
       username: req.user.username,
       cart: req.user.cart,
@@ -106,27 +106,27 @@ const getOrder = async (req, res) => {
   }
 };
 
-const getQuery = async (req, res) => {
-  try {
-    res.render("query", {
-      userId: req.user._id,
-      username: req.user.username,
-      cart: req.user.cart,
-      pageTitle: "Style House | query",
-    });
-  } catch (error) {
-    console.log(error);
-    res.render("error", {
-      backToPage: "",
-      errorMessage: "Error loading the Query! | Server Error!",
-    });
-  }
-};
+// const getQuery = async (req, res) => {
+//   try {
+//     res.render("query", {
+//       userId: req.user._id,
+//       username: req.user.username,
+//       cart: req.user.cart,
+//       pageTitle: "Style House | query",
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.render("error", {
+//       backToPage: "",
+//       errorMessage: "Error loading the Query! | Server Error!",
+//     });
+//   }
+// };
 
 module.exports = {
   getIndexPage,
   getUserDash,
   getCart,
   getOrder,
-  getQuery,
+  // getQuery,
 };
