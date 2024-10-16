@@ -22,39 +22,40 @@
 
       <div class="order-details">
         <h2>Order Details</h2>
-        <p><strong>Total Amount:</strong> ${{this.totalAmount}}</p>
-        <p><strong>Status:</strong> {{this.status}}</p>
-        <p><strong>Order Date:</strong> {{this.orderDate}}</p>
-
+      
+        <p><strong>Total Amount:</strong> <span>{{this.totalAmount}} $ </span></p>
+        <p><strong>Status:</strong> <span>{{this.status}}</span></p>
+        {{!-- <p><strong>Order Date:</strong> {{this.orderDate}}</p> --}}
+      
         <p><strong>Payment Done:</strong>
-          {{#if this.isPaymentDone}} Payment successful using Card! {{else}} Payment
-          pending! {{/if}}</p>
-
-
-
-        <p><strong>Order Verified Through Email:</strong>
-
-          {{#if this.emailVerified}} Order Email Verified {{else}}
-          <a href="/order/verify/{{this._id}}" class="btn btn-verify btn-small">Verify
-          </a>
-          {{/if}}
-
+          <span> {{#if this.isPaymentDone}} Card.{{else}} Payment
+            pending! {{/if}}</span>
         </p>
-
+      
+        <p><strong>Verified Order:</strong>
+      
+          <span> {{#if this.emailVerified}} Through Mail{{else}}
+            <a href="/order/verify/{{this._id}}" class="btn btn-verify btn-small">Verify
+            </a>
+            {{/if}}</span>
+        </p>
+      
         <p><strong>Order Status :</strong>
-          {{#if this.isPaymentDone}}
-
-          {{#if this.cancelRequest}}
-
-          Cancelled ...
-          {{else}}
-          Awaiting Dispatch !
-
-          {{/if}}
-
-          {{else}}
-          Payment pending!
-          {{/if}}</p>
+      
+          <span>{{#if this.isPaymentDone}}
+      
+            {{#if this.cancelRequest}}
+      
+            Order Cancelled.
+            {{else}}
+            Awaiting Dispatch !
+      
+            {{/if}}
+      
+            {{else}}
+            Payment pending!
+            {{/if}} </span>
+        </p>
       </div>
 
       <div class="address-details">
@@ -84,22 +85,37 @@
       <h2>Product Details</h2>
 
       <div class="product-cards">
+
         {{#each this.products}}
         <div class="card">
-          <p>
-            <strong>Product Name:</strong>
-            {{this.productId.name}}<br />
-            <strong>Quantity:</strong>
-            {{this.quantity}}<br />
-            <strong>Price:</strong>
-            ${{this.price}}<br />
-            <strong>Size:</strong>
-            {{this.size}}<br />
-            <strong>Color:</strong>
-            {{this.color}}<br />
-            <strong>Description:</strong>
-            {{this.productId.description}}<br />
-          </p>
+          <div class="card-left">
+          
+            <h2>{{this.productId.name}}</h2>
+            
+          
+            <p> <strong>Quantity:</strong>
+              <span> {{this.quantity}} </span>
+            </p>
+          
+            <p>
+              <strong>Price:</strong>
+              <span>{{this.price}} $ </span>
+            </p>
+          
+            <p> <strong>Size:</strong>
+              <span> {{this.size}}</span>
+            </p>
+          
+            <p><strong>Color:</strong>
+              <span> {{this.color}} </span>
+            </p>
+          
+            
+            <h4> {{this.productId.description}} </h4>
+            
+          
+          
+          </div>
 
           <img src="{{this.productId.imageUrl}}" alt="{{this.productId.name}}" />
         </div>
@@ -151,12 +167,9 @@
 
 
     {{else}}
-
     <a href="/order/cancel/mail/{{this._id}}" class="btn btn-cancel">Request Cancel </a>
 
     {{/if}}
-
-
     {{else}}
 
     <a href="/order/cancel/{{this._id}}" class="btn btn-cancel">Cancel Order</a>

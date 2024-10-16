@@ -12,9 +12,9 @@
 <h1 style="text-align: center;"> Proceed To checkout </h1>
 <div class="checkout-page">
 
-  <div class="section">
+  <div class="address">
 
-    <div class="address-section">
+    <div class="address-form">
 
       <h2>Shipping Address</h2>
 
@@ -213,8 +213,9 @@
     <div class="product-details">
       <h2> Product Details</h2>
       {{#each order.products}}
-        <p><span>{{this.productId.name}}| {{this.color}} | {{this.size}}</span>
-          <span>QTY : {{this.quantity}}</span>
+        <p> 
+          <label>{{this.productId.name}}| {{this.color}} | {{this.size}}</label>
+          <span>{{this.quantity}} no.s</span>
         </p>
 
       {{/each}}

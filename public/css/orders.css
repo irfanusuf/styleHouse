@@ -61,6 +61,8 @@
         > p {
           margin: 0;
           margin-bottom: 5px;
+          display: flex;
+          justify-content: space-between;
         }
       }
       > .address-details {
@@ -102,12 +104,24 @@
           justify-content: space-between;
           gap: 10px;
           margin-bottom: 10px;
-          > p {
-            margin-bottom: 10px;
-            line-height: 25px;
+
+          >.card-left{
+
+            >h4{
+                font-weight: 400;
+                letter-spacing: 1px;
+            }
+            > p {
+              margin: 0;
+              margin-bottom: 5px;
+              display: flex;
+              justify-content: space-between;
+            }
           }
+         
           > img {
             width: 200px;
+            margin: auto;
             border-radius: 10px;
           }
         }
@@ -244,7 +258,7 @@
     >.card{
       width: 480px;
       >p{
-        width: 400px;
+        width: 350px;
       }
     }
   }
@@ -295,9 +309,9 @@
   .product-cards {
     flex-direction: column;
     >.card{
-      width: 300px;
+      width: 310px;
       >p{
-        width: 300px;
+        width: 310px;
       }
     }
   }
