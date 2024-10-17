@@ -132,12 +132,12 @@ const deleteorder = async (req, res) => {
     );
 
     if (delOrder && updatedUser) {
-      return res.redirect("/admin/dashboard");
+      return res.redirect("/admin/dashboard/orderReport");
     }
   } catch (error) {
     console.log(error);
     res.render("error", {
-      backToPage: "/admin/dashboard",
+      backToPage: "/admin/dashboard/orderReport",
       errorMessage: "Error deleting the order | Server Error!",
     });
   }

@@ -56,7 +56,18 @@ app.engine(
       } ,
       calculateTotal: (price, quantity) => {
         return (price * quantity).toFixed(2);
-      }
+      },
+      formatDate: (date) => {
+        return new Date(date).toLocaleDateString('en-GB' , {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false, // Use 24-hour format
+        }); // Format: DD/MM/YYYY
+      },
     }
   })
 );
@@ -242,7 +253,7 @@ app.get('/user/logout', (req, res) => {
     if(token){
       res.clearCookie("token")
       res.redirect('/');
-    }
+    } 
   } catch (error) {
     console.log(error)
   }

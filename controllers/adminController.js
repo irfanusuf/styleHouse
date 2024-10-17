@@ -17,7 +17,7 @@ const getAdminPage = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.render("error", {
-      backToPage: "/",
+      backToPage: "/admin/dashboard",
       errorMessage: "Error loading the admin page | Server Error!",
     });
   }
@@ -44,7 +44,7 @@ const getUserReport = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.render("admin", {
-      backToPage: "/",
+      backToPage: "/admin/dashboard/userReport",
       errorMessage: "Error loading the user  Report | Server Error!",
     });
   }
@@ -64,7 +64,7 @@ const getProductReport = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.render("error", {
-      backToPage: "/",
+      backToPage: "/admin/dashboard/productReport",
       errorMessage: "Error loading the product Report | Server Error!",
     });
   }
@@ -72,7 +72,42 @@ const getProductReport = async (req, res) => {
 
 const getOrderReport = async (req, res) => {
   try {
-    const orders = await Order.find()
+
+
+    const { startDate, endDate } = req.query;
+
+    // Set default to current day if no dates are provided
+    
+      const start = startDate 
+      ? new Date(startDate) 
+      : new Date(new Date().setDate(new Date().getDate() -7 ));
+    
+   
+    const end = endDate 
+      ? new Date(endDate) 
+      : new Date(new Date().setDate(new Date().getDate() ));
+    
+  
+    start.setHours(0, 0, 0, 0); // Start of the day
+    end.setHours(23, 59, 59, 999); // End of the day
+
+    
+
+    let dateAvailable
+
+    if(startDate){
+
+       dateAvailable = true
+
+    }
+
+
+    const orders = await Order.find({
+      orderDate: {
+        $gte: start,
+        $lte: end,
+      },
+    })
       .populate({
         path: "user",
         select: "email",
@@ -83,17 +118,32 @@ const getOrderReport = async (req, res) => {
       })
       .lean();
 
+      const totalOrdersValue = orders.reduce((acc, order) => acc + order.totalAmount, 0);
+      const totalCancelledValue = orders.filter(order => order.cancelRequest).reduce((acc, order) => acc + order.totalAmount, 0);
+      const totalRefundedValue = orders.filter(order => order.refunded).reduce((acc, order) => acc + order.totalAmount, 0);
+      const totalDispatchedValue = orders.filter(order => order.status === 'Dispatched').reduce((acc, order) => acc + order.totalAmount, 0);
+      const totalPaymentDoneValue = orders.filter(order => order.isPaymentDone).reduce((acc, order) => acc + order.totalAmount, 0); // Added payment done logic
+
+
     res.render("orderReport", {
       userId: req.user._id,
       username: req.user.username,
       cart: req.user.cart,
       pageTitle: "Style house  | admin@orderReport",
       orders: orders,
+      totalOrdersValue: totalOrdersValue,
+      totalCancelledValue: totalCancelledValue,
+      totalRefundedValue: totalRefundedValue,
+      totalDispatchedValue: totalDispatchedValue,
+      totalPaymentDoneValue : totalPaymentDoneValue,
+      startDate : start,
+      endDate : end,
+      dateAvailable : dateAvailable
     });
   } catch (error) {
     console.log(error);
     res.render("error", {
-      backToPage: "/",
+      backToPage: "admin/dashboard/orderReport",
       errorMessage: "Error loading the order Report | Server Error!",
     });
   }
@@ -162,7 +212,6 @@ const addStorekeeper = async (req, res) => {
   }
 };
 
-
 const removeStorekeeper = async (req, res) => {
   try {
     const loggedInUser = req.user
@@ -229,8 +278,6 @@ const removeStorekeeper = async (req, res) => {
     });
   }
 };
-
-
 
 const checkNewsLetter = async (req,res) =>{
 
