@@ -118,6 +118,20 @@ const getOrderReport = async (req, res) => {
       })
       .lean();
 
+
+      
+      const totalOrders = orders.length
+      const totalCancelledOrders = orders.filter(order =>order.cancelRequest).length
+      const totalRefundedOrders = orders.filter(order =>order.refunded).length
+      const totalDispatchedOrders = orders.filter(order =>order.status === 'Dispatched').length
+
+
+
+      const orderNumbers = {
+        totalOrders ,totalCancelledOrders ,totalRefundedOrders,totalDispatchedOrders
+      }
+
+
       const totalOrdersValue = orders.reduce((acc, order) => acc + order.totalAmount, 0);
       const totalCancelledValue = orders.filter(order => order.cancelRequest).reduce((acc, order) => acc + order.totalAmount, 0);
       const totalRefundedValue = orders.filter(order => order.refunded).reduce((acc, order) => acc + order.totalAmount, 0);
@@ -138,7 +152,8 @@ const getOrderReport = async (req, res) => {
       totalPaymentDoneValue : totalPaymentDoneValue,
       startDate : start,
       endDate : end,
-      dateAvailable : dateAvailable
+      dateAvailable : dateAvailable,
+      orderNumbers :orderNumbers
     });
   } catch (error) {
     console.log(error);

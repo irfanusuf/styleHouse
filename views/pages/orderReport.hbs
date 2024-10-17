@@ -8,24 +8,24 @@
 
 
 <style>
+  .date-range-container {
+    background-color: #f0f8ff;
 
-.date-range-container {
-  background-color: #f0f8ff; /* Soft light blue */
-  padding: 10px 20px;
-  border-radius: 8px;
-  text-align: center;
-  font-size: 1.2rem; /* Slightly larger text */
-  font-weight: bold; /* Make it stand out */
-  color: #333; /* Dark text color for contrast */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-  margin-bottom: 20px;
-}
+    padding: 10px 20px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
 
-.date-range-container span {
-  color: #007bff; /* Dark blue for the date values */
-}
-
-
+  .date-range-container span {
+    color: #007bff;
+    /* Dark blue for the date values */
+  }
 </style>
 
 
@@ -34,7 +34,7 @@
 
 <div class="container-fluid ps-5 pe-5 d-flex justify-content-between mt-4">
 
-  
+
   <div class="card mb-3" style="max-width: 18rem; border-radius: 10px; background-color: rgba(23, 162, 184, 0.2);">
     <div class="card-body text-center" style="color: rgb(20, 79, 88);">
       <h5 class="card-title">Total Orders Value</h5>
@@ -42,7 +42,7 @@
     </div>
   </div>
 
-  
+
   <div class="card mb-3" style="max-width: 18rem; border-radius: 10px; background-color: rgba(220, 53, 69, 0.2);">
     <div class="card-body text-center" style="color: rgb(117, 28, 37);">
       <h5 class="card-title">Total Cancelled Orders</h5>
@@ -50,7 +50,7 @@
     </div>
   </div>
 
- 
+
   <div class="card mb-3" style="max-width: 18rem; border-radius: 10px; background-color: rgba(255, 193, 7, 0.2);">
     <div class="card-body text-center" style="color: rgb(117, 96, 32);">
       <h5 class="card-title">Total Refunded Orders</h5>
@@ -58,7 +58,7 @@
     </div>
   </div>
 
-  
+
   <div class="card mb-3" style="max-width: 18rem; border-radius: 10px; background-color: rgba(40, 167, 69, 0.2);">
     <div class="card-body text-center" style="color: rgb(25, 92, 41);">
       <h5 class="card-title">Total Dispatched Orders</h5>
@@ -80,15 +80,17 @@
 
 <div class="container-fluid ps-5 pe-5 table-responsive mt-3 mb-5">
 
-<div class="date-range-container">
- 
-{{#if dateAvailable}}  All the Orders From: {{else}} This Weeks Orders {{/if}}
+  <div class="date-range-container">
+   <div>{{#if dateAvailable}} All the Orders From: {{else}} This Weeks Orders {{/if}} <span>{{ formatDate
+        startDate}}</span> To: <span>{{formatDate endDate}}</span> </div>
+    <div> Total Orders : <span> {{orderNumbers.totalOrders}} </span> </div>
+    <div> Total Orders Cancelled :  <span> {{orderNumbers.totalCancelledOrders}} </span> </div>
+    <div> Total Orders Refunded : <span> {{orderNumbers.totalRefundedOrders}} </span> </div>
+    <div> Total Orders Of Dispatched : <span> {{orderNumbers.totalDispatchedOrders}} </span> </div>
 
+  
 
-
- <span>{{ formatDate startDate}}</span> To: <span>{{formatDate endDate}}</span>
-
-</div>
+  </div>
 
 
   <div class="h3 mb-3 text-center"> Sales Reports</div>
