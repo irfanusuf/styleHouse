@@ -60,7 +60,7 @@ const createProduct = async (req, res) => {
       const save = await product.save();
 
       if (save) {
-        res.redirect("/admin/dashboard");
+        res.redirect("/admin/dashboard/productReport");
       } else {
         res.render("admin", {
           message: "Some Error during saving ",
@@ -116,7 +116,7 @@ const editProduct = async (req, res) => {
     });
 
     if (updateProduct) {
-      return res.redirect("/admin/dashboard");
+      return res.redirect("/admin/dashboard/productReport");
     }
   } catch (error) {
     console.log(error);
@@ -130,7 +130,7 @@ const deleteProduct = async (req, res) => {
     const delItem = await Product.findByIdAndDelete(_id);
 
     if (delItem) {
-      return res.redirect("/admin/dashboard");
+      return res.redirect("/admin/dashboard/productReport");
     } else {
       return res.render("admin", { message: "Some Error" });
     }
@@ -213,7 +213,6 @@ const getProduct = async (req, res) => {
     console.log(error);
   }
 };
-
 
 const addProductReview = async (req, res) => {
   try {

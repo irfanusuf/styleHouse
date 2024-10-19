@@ -309,9 +309,9 @@ const checkNewsLetter = async (req, res) => {
 
 const broadCastMessage = async (req, res) => {
   try {
-    let{ message ,promoCode ,selectedSubscribers} = req.body
+    const { message, promoCode } = req.body;
 
-
+    let selectedSubscribers = req.body.subscribers;
 
     console.log(selectedSubscribers);
 
@@ -326,34 +326,91 @@ const broadCastMessage = async (req, res) => {
     // If only one checkbox is selected, it might be a string, so convert it to an array
     if (!Array.isArray(selectedSubscribers)) {
       selectedSubscribers = [selectedSubscribers];
-
-      for (let email of selectedSubscribers) {
-        let info = await transporter.sendMail({
-          from: '"style House" <services@stylehouse.world>',
-          to: email,
-          subject: "Newsletter Broadcast",
-          text: message + promoCode,
-          html: `<p>${message} </p>`,
-        });
-
-        console.log("Message sent to:", email, info.messageId);
-      }
-
-      // If all emails sent successfully, respond with success
-     return res.status(200).render("success", {
-        backToPage: "/admin/dashboard/checkNewsLetter",
-        successMessage:
-          "Broadcast sent successfully to all selected subscribers.",
-      });
-    } else {
-      return res.status(200).render("error", {
-        backToPage: "/admin/dashboard/checkNewsLetter",
-        successMessage: "Something Went Wrong !",
-      });
     }
+
+    for (let email of selectedSubscribers) {
+      let info = await transporter.sendMail({
+        from: '"Style House" <services@stylehouse.world>',
+        to: email,
+        subject: "Exclusive Offer Just for You!",
+        text: message + promoCode, // Fallback text for email clients that don't support HTML
+        html: `
+        <div style="font-family: Arial, sans-serif; color: #333;">
+          <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f7f7f7; padding: 20px;">
+            <tr>
+              <td>
+                <table width="600" cellpadding="0" cellspacing="0" align="center" style="background-color: #ffffff; border-radius: 8px; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                  <tr>
+                    <td align="center" style="padding: 10px 0;">
+                      <img src="https://yourlogo.com/logo.png" alt="Style House" style="width: 150px;">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <h2 style="color: #2d2d2d; font-size: 24px; text-align: center;">Exclusive Offer Just for You!</h2>
+                      <p style="font-size: 16px; line-height: 1.6; text-align: center; color: #555;">
+                        Dear Valued Subscriber,
+                      </p>
+                      <p style="font-size: 16px; line-height: 1.6; text-align: center; color: #555;">
+                        ${message}
+                      </p>
+                      <div style="background-color: #f0f0f0; padding: 15px; margin: 20px 0; border-radius: 8px; text-align: center;">
+                        <p style="font-size: 18px; font-weight: bold; color: #2c3e50;">
+                          Your Promo Code: <span style="color: #e74c3c; font-size: 22px;">${promoCode}</span>
+                        </p>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center">
+                      <a href="mailto:services@stylehouse.world" style="text-decoration: none;">
+                        <button style="background-color: #3498db; color: #ffffff; border: none; padding: 15px 30px; border-radius: 5px; font-size: 16px; cursor: pointer;">
+                          Contact Sales
+                        </button>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center" style="padding-top: 30px;">
+                      <p style="font-size: 12px; color: #888;">
+                        If you have any questions, feel free to <a href="mailto:services@stylehouse.world" style="color: #3498db; text-decoration: none;">contact us</a>.
+                      </p>
+                      <p style="font-size: 12px; color: #888;">
+                        Style House,  Acropolis Avenue,   Rooty Hill, NSW 2766
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </div>
+        `
+      });
+      
+
+      // console.log("Message sent to:", email, info.messageId);  
+
+      await NewsLetter.updateOne(
+        { email: email }, // Find the subscriber by email
+        {
+          $push: {
+            offers: { offer: message, promo: promoCode }, // Add the message and promoCode as an offer
+          },
+        }
+      );
+    }
+
+    // If all emails sent successfully, redirect
+    return res.redirect("/admin/dashboard/checkNewsLetter");
+
+
   } catch (error) {
     console.error(error);
-    res.render("error");
+    return res.status(500).render("error", {
+      backToPage: "/admin/dashboard/checkNewsLetter",
+      errorMessage: "Server Error!",
+    });
   }
 };
 

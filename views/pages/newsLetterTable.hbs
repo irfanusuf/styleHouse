@@ -7,13 +7,28 @@
 
 {{> adminNav}}
 
+
+{{#if successMessage}}
+
+<div class="container-fluid  ps-5 pe-5 mt-3">
+  <div class=" alert alert-danger alert-dismissible">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <strong> {{successMessage}}</strong>
+  </div>
+
+</div>
+
+
+{{/if}}
+
+
 <div class="container-fluid ps-5 pe-5 table-responsive mt-2">
   <div class="h3 mb-3 text-center">Broadcast Message to Subscribers</div>
 
   <!-- Form for broadcasting message -->
   <form action="/admin/broadcast/message" method="POST" class="mb-4">
 
-  <div class="mb-3">
+    <div class="mb-3">
       <label for="promoCode" class="form-label">Send Promo Code</label>
       <input class="form-control" style="width: 200px;" id="promoCode" name="promoCode" rows="5"
         placeholder="Promo Code ">
@@ -27,30 +42,58 @@
     <div class="mb-3">
       <button type="submit" class="btn btn-primary ">Send Broadcast</button>
     </div>
- 
 
-  <div class="h3 mb-3 text-center">Newsletter Subscribers</div>
-  <table class="table table-striped table-bordered table-hover table-responsive-sm">
-    <thead>
-      <tr class="table-primary">
-        <th>Select</th>
-        <th>Email</th>
-        <th>Promo Codes & Offers </th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each subscribers}}
-      <tr>
-        <td><input type="checkbox" name="subscribers" value="{{this.email}}"></td>
-        <td>{{this.email}}</td>
-        <td>{{#each this.offers}}
-            <p> {{this.offer}} </p>
 
-          {{/each}}
-        </td>
-      </tr>
-      {{/each}}
-    </tbody>
-  </table>
-   </form>
+    <div class="h3 mb-3 text-center">Newsletter Subscribers</div>
+    <table class="table table-striped table-bordered table-hover table-responsive-sm">
+      <thead>
+        <tr class="table-primary">
+          <th>Select</th>
+          <th>Email</th>
+          <th>Promo Codes & Offers </th>
+          <th> Offer Updation</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each subscribers}}
+        <tr>
+          <td><input type="checkbox" name="subscribers" value="{{this.email}}"></td>
+          <td>{{this.email}}</td>
+
+          <td>
+
+            {{#if this.offers}}
+
+            <p> <b>Offers :</b>
+              {{#each this.offers}}
+              <span>{{this.offer}},</span>
+              {{/each}}
+              <span>
+            </p>
+
+            <p>
+              <b>Promo Codes : </b> 
+          
+                {{#each this.offers}}
+                
+                    <span>{{this.promo}}, </span>
+                
+                {{/each}}
+            </p>
+
+
+
+            {{/if}}
+
+
+          </td>
+          <td> {{#if this.offers}}Offers will be removed automaticaly after Some Time {{/if}}</td>
+
+          <td> {{#if this.offers}}<button class="btn btn-danger" disabled> Remove Offer</button> {{/if}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </form>
 </div>
