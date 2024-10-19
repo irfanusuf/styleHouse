@@ -35,7 +35,7 @@ const {
 const { addToCart, removeFromCart,   emptyCart} = require("./controllers/cartController");
 const {createOrder , createCartOrder, deleteorder, dispatchOrder, cancelOrder, verifyOrder, updateOrderEmailVerification, cancelOrderRequest, orderAddAddress} = require("./controllers/orderController")
 const {checkout , productPayment, createIntent, paymentSuccess } = require("./controllers/paymentController");
-const { getAdminPage, getUserReport, getOrderReport, getProductReport, addStorekeeper, removeStorekeeper, checkNewsLetter } = require("./controllers/adminController");
+const { getAdminPage, getUserReport, getOrderReport, getProductReport, addStorekeeper, removeStorekeeper, checkNewsLetter, broadCastMessage } = require("./controllers/adminController");
 const port = 4000;
 const app = express();
   
@@ -96,6 +96,7 @@ app.get("/admin/dashboard/productReport", isAuthenticated, isAdmin, getProductRe
 app.get("/admin/dashboard/checkNewsLetter", isAuthenticated, isAdmin, checkNewsLetter);
 app.post("/admin/addKeeper" , isAuthenticated , isAdmin , addStorekeeper)
 app.post("/admin/removeKeeper" , isAuthenticated , isAdmin , removeStorekeeper)
+app.post("/admin/broadcast/message" ,isAuthenticated , isAdmin ,broadCastMessage)
 
 
 // guest Routes

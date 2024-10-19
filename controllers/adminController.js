@@ -2,11 +2,10 @@ const Product = require("../models/itemModel");
 const NewsLetter = require("../models/newsletterModel");
 const Order = require("../models/oderModel");
 const User = require("../models/userModel");
+const { transporter } = require("../utils/nodemailer");
 
 const getAdminPage = async (req, res) => {
   try {
-
-
     res.render("admin", {
       userId: req.user._id,
       username: req.user.username,
@@ -73,25 +72,21 @@ const getProductReport = async (req, res) => {
 const getOrderReport = async (req, res) => {
   try {
     const { startDate, endDate } = req.query;
-      const start = startDate 
-      ? new Date(startDate) 
-      : new Date(new Date().setDate(new Date().getDate() -7 ));
-    
-    const end = endDate 
-      ? new Date(endDate) 
-      : new Date(new Date().setDate(new Date().getDate() ));
-    
-  
+    const start = startDate
+      ? new Date(startDate)
+      : new Date(new Date().setDate(new Date().getDate() - 7));
+
+    const end = endDate
+      ? new Date(endDate)
+      : new Date(new Date().setDate(new Date().getDate()));
+
     start.setHours(0, 0, 0, 0); // Start of the day
     end.setHours(23, 59, 59, 999); // End of the day
 
-    let dateAvailable
-    if(startDate){
-
-       dateAvailable = true
-
+    let dateAvailable;
+    if (startDate) {
+      dateAvailable = true;
     }
-
 
     const orders = await Order.find({
       orderDate: {
@@ -109,29 +104,38 @@ const getOrderReport = async (req, res) => {
       })
       .lean();
 
+    const totalOrders = orders.length;
+    const totalCancelledOrders = orders.filter(
+      (order) => order.cancelRequest
+    ).length;
+    const totalRefundedOrders = orders.filter((order) => order.refunded).length;
+    const totalDispatchedOrders = orders.filter(
+      (order) => order.status === "Dispatched"
+    ).length;
 
-      
-      const totalOrders = orders.length
-      const totalCancelledOrders = orders.filter(order =>order.cancelRequest).length
-      const totalRefundedOrders = orders.filter(order =>order.refunded).length
-      const totalDispatchedOrders = orders.filter(order =>order.status === 'Dispatched').length
+    const orderNumbers = {
+      totalOrders,
+      totalCancelledOrders,
+      totalRefundedOrders,
+      totalDispatchedOrders,
+    };
 
-
-
-      const orderNumbers = {
-        totalOrders,
-        totalCancelledOrders,
-        totalRefundedOrders,
-        totalDispatchedOrders,
-      };
-
-
-      const totalOrdersValue = orders.reduce((acc, order) => acc + order.totalAmount, 0);
-      const totalCancelledValue = orders.filter(order => order.cancelRequest).reduce((acc, order) => acc + order.totalAmount, 0);
-      const totalRefundedValue = orders.filter(order => order.refunded).reduce((acc, order) => acc + order.totalAmount, 0);
-      const totalDispatchedValue = orders.filter(order => order.status === 'Dispatched').reduce((acc, order) => acc + order.totalAmount, 0);
-      const totalPaymentDoneValue = orders.filter(order => order.isPaymentDone).reduce((acc, order) => acc + order.totalAmount, 0); // Added payment done logic
-
+    const totalOrdersValue = orders.reduce(
+      (acc, order) => acc + order.totalAmount,
+      0
+    );
+    const totalCancelledValue = orders
+      .filter((order) => order.cancelRequest)
+      .reduce((acc, order) => acc + order.totalAmount, 0);
+    const totalRefundedValue = orders
+      .filter((order) => order.refunded)
+      .reduce((acc, order) => acc + order.totalAmount, 0);
+    const totalDispatchedValue = orders
+      .filter((order) => order.status === "Dispatched")
+      .reduce((acc, order) => acc + order.totalAmount, 0);
+    const totalPaymentDoneValue = orders
+      .filter((order) => order.isPaymentDone)
+      .reduce((acc, order) => acc + order.totalAmount, 0); // Added payment done logic
 
     res.render("orderReport", {
       userId: req.user._id,
@@ -143,11 +147,11 @@ const getOrderReport = async (req, res) => {
       totalCancelledValue: totalCancelledValue,
       totalRefundedValue: totalRefundedValue,
       totalDispatchedValue: totalDispatchedValue,
-      totalPaymentDoneValue : totalPaymentDoneValue,
-      startDate : start,
-      endDate : end,
-      dateAvailable : dateAvailable,
-      orderNumbers :orderNumbers
+      totalPaymentDoneValue: totalPaymentDoneValue,
+      startDate: start,
+      endDate: end,
+      dateAvailable: dateAvailable,
+      orderNumbers: orderNumbers,
     });
   } catch (error) {
     console.log(error);
@@ -160,10 +164,9 @@ const getOrderReport = async (req, res) => {
 
 const addStorekeeper = async (req, res) => {
   try {
+    const loggedInUser = req.user;
 
-    const loggedInUser = req.user
-
-    const isAdmin = loggedInUser.isAdmin
+    const isAdmin = loggedInUser.isAdmin;
 
     if (!isAdmin) {
       return res.render("admin", {
@@ -177,7 +180,6 @@ const addStorekeeper = async (req, res) => {
 
     const { email } = req.body;
 
-    
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -223,9 +225,9 @@ const addStorekeeper = async (req, res) => {
 
 const removeStorekeeper = async (req, res) => {
   try {
-    const loggedInUser = req.user
+    const loggedInUser = req.user;
 
-    const isAdmin = loggedInUser.isAdmin
+    const isAdmin = loggedInUser.isAdmin;
 
     if (!isAdmin) {
       return res.render("admin", {
@@ -237,13 +239,11 @@ const removeStorekeeper = async (req, res) => {
       });
     }
 
-
     const { email } = req.body;
 
-    
     const user = await User.findOne({ email });
 
-    console.log(user)
+    console.log(user);
     if (!user) {
       return res.render("admin", {
         userId: req.user._id,
@@ -257,8 +257,6 @@ const removeStorekeeper = async (req, res) => {
     if (user.isStorekeeper === true) {
       user.isStorekeeper = false;
       await user.save();
-
-      
 
       return res.render("admin", {
         userId: req.user._id,
@@ -288,8 +286,7 @@ const removeStorekeeper = async (req, res) => {
   }
 };
 
-const checkNewsLetter = async (req,res) =>{
-
+const checkNewsLetter = async (req, res) => {
   try {
     const subscribers = await NewsLetter.find().lean();
 
@@ -308,9 +305,57 @@ const checkNewsLetter = async (req,res) =>{
       errorMessage: "Error loading the product Report | Server Error!",
     });
   }
-}
+};
+
+const broadCastMessage = async (req, res) => {
+  try {
+    let{ message ,promoCode ,selectedSubscribers} = req.body
 
 
+
+    console.log(selectedSubscribers);
+
+    // Ensure selectedSubscribers is an array, even if only one subscriber is selected
+    if (!selectedSubscribers) {
+      return res.status(400).render("error", {
+        backToPage: "/admin/dashboard/checkNewsLetter",
+        errorMessage: "No subscribers selected.",
+      });
+    }
+
+    // If only one checkbox is selected, it might be a string, so convert it to an array
+    if (!Array.isArray(selectedSubscribers)) {
+      selectedSubscribers = [selectedSubscribers];
+
+      for (let email of selectedSubscribers) {
+        let info = await transporter.sendMail({
+          from: '"style House" <services@stylehouse.world>',
+          to: email,
+          subject: "Newsletter Broadcast",
+          text: message + promoCode,
+          html: `<p>${message} </p>`,
+        });
+
+        console.log("Message sent to:", email, info.messageId);
+      }
+
+      // If all emails sent successfully, respond with success
+     return res.status(200).render("success", {
+        backToPage: "/admin/dashboard/checkNewsLetter",
+        successMessage:
+          "Broadcast sent successfully to all selected subscribers.",
+      });
+    } else {
+      return res.status(200).render("error", {
+        backToPage: "/admin/dashboard/checkNewsLetter",
+        successMessage: "Something Went Wrong !",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.render("error");
+  }
+};
 
 module.exports = {
   getAdminPage,
@@ -319,5 +364,6 @@ module.exports = {
   getOrderReport,
   addStorekeeper,
   removeStorekeeper,
-  checkNewsLetter
+  checkNewsLetter,
+  broadCastMessage,
 };
