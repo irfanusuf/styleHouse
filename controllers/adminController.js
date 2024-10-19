@@ -72,17 +72,11 @@ const getProductReport = async (req, res) => {
 
 const getOrderReport = async (req, res) => {
   try {
-
-
     const { startDate, endDate } = req.query;
-
-    // Set default to current day if no dates are provided
-    
       const start = startDate 
       ? new Date(startDate) 
       : new Date(new Date().setDate(new Date().getDate() -7 ));
     
-   
     const end = endDate 
       ? new Date(endDate) 
       : new Date(new Date().setDate(new Date().getDate() ));
@@ -91,10 +85,7 @@ const getOrderReport = async (req, res) => {
     start.setHours(0, 0, 0, 0); // Start of the day
     end.setHours(23, 59, 59, 999); // End of the day
 
-    
-
     let dateAvailable
-
     if(startDate){
 
        dateAvailable = true
@@ -128,8 +119,11 @@ const getOrderReport = async (req, res) => {
 
 
       const orderNumbers = {
-        totalOrders ,totalCancelledOrders ,totalRefundedOrders,totalDispatchedOrders
-      }
+        totalOrders,
+        totalCancelledOrders,
+        totalRefundedOrders,
+        totalDispatchedOrders,
+      };
 
 
       const totalOrdersValue = orders.reduce((acc, order) => acc + order.totalAmount, 0);

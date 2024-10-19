@@ -98,7 +98,6 @@ app.post("/admin/addKeeper" , isAuthenticated , isAdmin , addStorekeeper)
 app.post("/admin/removeKeeper" , isAuthenticated , isAdmin , removeStorekeeper)
 
 
-
 // guest Routes
 app.get("/", dataHelper ,getIndexPage);
 
