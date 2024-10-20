@@ -135,30 +135,42 @@
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  document.getElementById("dropdown").addEventListener("click", () => {
-    const targetdiv = document.getElementById("dropdown-list");
-    targetdiv.classList.remove("display-none");
-  });
-  
-  document.getElementById("dropdown-close").addEventListener("click", () => {
-    const targetdiv = document.getElementById("dropdown-list");
-    targetdiv.classList.add("display-none");
-  });
-
-
   const target = document.getElementById("target_div");
   const hamburger = document.getElementById("hamburger");
   const close = document.getElementById("close");
 
-  hamburger.addEventListener("click", () => {
-    target.style.display = "block"
-  });
-   close.addEventListener("click", () => {
-    target.style.display = "none"
-  });
+  if (hamburger) {
+    hamburger.addEventListener("click", () => {
+      target.style.display = "block";
+     // console.log("Hamburger clicked");
+    });
+  }
+
+  if (close) {
+    close.addEventListener("click", () => {
+      target.style.display = "none";
+      //console.log("Close clicked");
+    });
+  }
+
+  // Dropdown logic
+  const dropdown = document.getElementById("dropdown");
+  const dropdownClose = document.getElementById("dropdown-close");
+  const dropdownList = document.getElementById("dropdown-list");
+
+  if (dropdown) {
+    dropdown.addEventListener("click", () => {
+      dropdownList.classList.remove("display-none");
+    });
+  }
+
+  if (dropdownClose) {
+    dropdownClose.addEventListener("click", () => {
+      dropdownList.classList.add("display-none");
+    });
+  }
 
 });
-
 
 
 </script>
