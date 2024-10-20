@@ -3,6 +3,7 @@ header {
   background-color: #1f1f1f;
   padding: 20px 0;
   border-bottom: 1px solid #333;
+  width: 100%;
 }
 
 .header-container {
@@ -195,7 +196,7 @@ header {
 }
 
 /* Media Queries for Responsiveness */
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1320px) {
   .header-container {
     flex-direction: column;
   }

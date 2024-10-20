@@ -9,7 +9,9 @@ h1{
   margin: auto;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 30px;
+  gap: 20px;
 
   > .summary {
     width: 600px;
@@ -106,7 +108,7 @@ h1{
 
 
 
-@media (max-width: 1024px) {
+@media (max-width: 900px) {
 
   .payment-container{
     width: 100%;
