@@ -83,6 +83,7 @@ const renderSubCategoryPage = async (req, res, subCategory) => {
   }
 };
 
+
 const renderPageSearchProducts = async (req, res) => {
   try {
 
@@ -127,8 +128,6 @@ const renderPageSearchProducts = async (req, res) => {
     res.render("productPage", { message: "Network Error!" });
   }
 };
-
-
 
 const renderfilteredProducts = async (req, res) => {
   try {
