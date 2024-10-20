@@ -18,6 +18,7 @@ const createProduct = async (req, res) => {
       name,
       category,
       description,
+      subCategory,
       searchTag,
       size,
       color,
@@ -29,6 +30,7 @@ const createProduct = async (req, res) => {
     if (
       name !== "" &&
       category !== "" &&
+      subCategory !== "" &&
       searchTag !== "" &&
       size !== "" &&
       color !== "" &&
@@ -48,6 +50,7 @@ const createProduct = async (req, res) => {
       const product = await new Product({
         name,
         category,
+        subCategory,
         searchTag,
         size,
         color,

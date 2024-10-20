@@ -137,7 +137,7 @@ const renderfilteredProducts = async (req, res) => {
   try {
     const { size, color, name } = req.body;
 
-    console.log(req.body);
+    // console.log(req.body);
 
     const products = await Product.find({
       $or: [

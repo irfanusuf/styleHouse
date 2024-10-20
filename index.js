@@ -211,13 +211,13 @@ app.post("/search", dataHelper , renderPageSearchProducts);
 app.get("/men", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Men")});
 app.get("/women", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Women")});
 app.get("/kids", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Kids")});
-app.get("/accessories", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Accessories")});
+app.get("/accessories", dataHelper , (req,res)=>{renderCategoryPage(req,res, "Accessories & Shoes")});
 
 // rendering Subcategory
 app.get("/sarees", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Sarees")});
 app.get("/lehengas", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Lehengas")});
 app.get("/sherwanis", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Sherwani")});
-app.get("/kurta-pyjama-sets", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Kurta pyjama sets")});
+app.get("/kurta-pyjama-sets", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Kurta")});
 app.get("/anarkali-dresses", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Anarkali-dresses")});
 app.get("/kids-ethnic", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Kids-ethnic")});
 app.get("/baby-girl-frocks", dataHelper , (req,res)=>{renderSubCategoryPage(req,res,"Baby-girl-frocks")});
