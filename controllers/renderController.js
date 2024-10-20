@@ -50,9 +50,6 @@ const renderSubCategoryPage = async (req, res, subCategory) => {
       ],
     }).lean();
 
-
-
-
     const productsWithSizes = products.map(product => {
       return {
         ...product,
